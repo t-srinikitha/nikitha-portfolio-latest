@@ -2,16 +2,17 @@ import { useState, useEffect } from "react"
 import { Link, useLocation } from "react-router-dom"
 import { ExternalLink } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 const navigation = [
-  { name: "Ships", href: "/ships" },
-  { name: "Now", href: "/now" },
-  { name: "Writing", href: "/writing", disabled: true },
+  { name: "Projects", href: "/projects" },
+  { name: "Writing", href: "/writing" },
 ]
 
 export function Header() {
   const location = useLocation()
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isMinimal, setIsMinimal] = useState(true)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,6 +22,8 @@ export function Header() {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  const togglePortfolio = undefined
 
   return (
     <header
@@ -38,41 +41,23 @@ export function Header() {
             to="/"
             className="text-lg font-semibold text-foreground hover:text-primary transition-colors"
           >
-            Nikitha Thummanapalli
+            Sri Nikitha T
           </Link>
 
           {/* Navigation */}
-          <nav className="flex items-center space-x-8">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={cn(
-                  "text-sm font-medium transition-colors relative",
-                  item.disabled
-                    ? "text-muted-foreground cursor-not-allowed"
-                    : location.pathname === item.href
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {item.name}
-                {location.pathname === item.href && (
-                  <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary rounded-full" />
-                )}
-              </Link>
-            ))}
-
-            {/* Resume Link */}
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
+          <nav className="hidden md:flex items-center space-x-6">
+            <Link
+              to="/projects"
+              className="text-sm font-medium transition-colors hover:text-primary"
             >
-              Resume
-              <ExternalLink className="h-3 w-3" />
-            </a>
+              Projects
+            </Link>
+            <Link
+              to="/writing"
+              className="text-sm font-medium transition-colors hover:text-primary"
+            >
+              Writings
+            </Link>
           </nav>
         </div>
       </div>

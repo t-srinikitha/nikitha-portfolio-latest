@@ -48,7 +48,7 @@ export function Footer() {
           
           <div className="text-center text-sm text-muted-foreground">
             <p>Building developer tools from first principles</p>
-            <p className="mt-1">© 2024 Nikitha Thummanapalli</p>
+            <p className="mt-1">© 2024 Sri Nikitha T</p>
           </div>
         </div>
       </div>
