@@ -35,7 +35,7 @@ export default function DepressionArticle() {
         </div>
         
         <h1 className="text-4xl font-bold mb-4 leading-tight">
-          Living with Depression: A Personal Take on Mental Health Screening
+          Mental Health Screening is a sham
         </h1>
         
         <p className="text-xl text-muted-foreground leading-relaxed">

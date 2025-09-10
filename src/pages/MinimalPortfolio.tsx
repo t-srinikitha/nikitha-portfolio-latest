@@ -76,11 +76,24 @@ export default function MinimalPortfolio() {
                 
                 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button size="lg" className="bg-white text-black hover:bg-gray-200 transition-all duration-200 hover:scale-105">
-                    Get in touch
+                  <Button 
+                    size="lg" 
+                    className="bg-white text-black hover:bg-gray-200 transition-all duration-200 hover:scale-105"
+                    asChild
+                  >
+                    <a href="mailto:t.srinikitha@gmail.com">
+                      Get in touch
+                    </a>
                   </Button>
-                  <Button variant="outline" size="lg" className="border-white/30 text-black hover:bg-white/10 transition-all duration-200">
-                    View my work
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="border-white/30 text-black hover:bg-white/10 hover:text-white transition-all duration-200"
+                    asChild
+                  >
+                    <a href="projects">
+                      View my work
+                    </a>
                   </Button>
                 </div>
               </div>
@@ -196,7 +209,7 @@ export default function MinimalPortfolio() {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-6">What Did I Achieve?</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Sometimes I feel I did nothing. Sometimes I feel maybe I did something if people remember me after many years. 
+              Sometimes I feel I did nothing. Sometimes I feel maybe I did something. 
               I really don't know the answer. I'm just reflecting.
             </p>
           </div>
@@ -309,8 +322,15 @@ export default function MinimalPortfolio() {
           </div>
           
           <div className="text-center mt-12">
-            <Button variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10">
-              View All Projects
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="border-white/30 text-black hover:bg-white/10 hover:text-white transition-all duration-200"
+              asChild
+            >
+              <a href="/projects">
+                View All Projects
+              </a>
             </Button>
           </div>
         </div>
@@ -366,8 +386,14 @@ export default function MinimalPortfolio() {
             Whether you need help with product strategy, system design, or building 
             AI-powered solutions, I'd love to collaborate.
           </p>
-          <Button size="lg" className="bg-black text-white hover:bg-gray-800">
-            Get in Touch
+          <Button 
+            size="lg" 
+            className="bg-black text-white hover:bg-gray-800 transition-all duration-200"
+            asChild
+          >
+            <a href="mailto:t.srinikitha@gmail.com">
+              Get in Touch
+            </a>
           </Button>
         </div>
       </section>
