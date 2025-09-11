@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { ProjectCard } from "@/components/project-card";
 import { Github, Linkedin, Twitter } from "lucide-react";
 
-const roles = ["Builder", "Systems Thinker", "AI Product Manager"];
+const roles = ["Builder", "Systems Thinker", "AI\u00A0Product\u00A0Manager"];
 
 const projects = [
   {
@@ -171,13 +171,13 @@ export default function MinimalPortfolio() {
         </div>
       </section>
 
-      {/* 3. Why I am PM Section */}
+      {/* 3. Why I am a Product Manager Section */}
       <section className="py-20 bg-black">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6">Why I am PM</h2>
+            <h2 className="text-4xl font-bold mb-6">Why I am a Product Manager</h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              PMing feels like play to me.
+              Solving problems and building products feels like play to me.
             </p>
           </div>
           
@@ -325,8 +325,9 @@ export default function MinimalPortfolio() {
             <Button 
               variant="outline" 
               size="lg" 
-              className="border-white/30 text-black hover:bg-white/10 hover:text-white transition-all duration-200"
+              className="border-white/30 text-black hover:bg-black/10 hover:text-white transition-all duration-200"
               asChild
+              
             >
               <a href="/projects">
                 View All Projects
@@ -344,7 +345,7 @@ export default function MinimalPortfolio() {
             <h2 className="text-4xl font-bold mb-6 text-black">My Story</h2>
           </div>
           
-          <div className="bg-gray-900 border border-gray-700 rounded-lg p-8">
+          <div className="bg-black border border-gray-700 rounded-lg p-8">
             <div className="space-y-6 text-lg text-gray-300 leading-relaxed">
               <div>
                
@@ -368,8 +369,8 @@ export default function MinimalPortfolio() {
                   I'm inherently inquisitive to learn different things to solve any kind of problems.
                 </p>
                 <p className="mt-4">
-                  Recently became a mother, figuring my shit out and realizing how mothers are 
-                  a different breed. Currently, I'm consulting for <strong>DrDroid</strong>, an AI SRE agent 
+                  I had two spinal surgeries and a bicornuate uterus, super complicated pregnancy. Gathered so much courage and I became a mother, now figuring my shit out and realizing how mothers are 
+                  a different breed. Currently, I'm consulting for <strong>DrDroid</strong>(YC-backed), an AI SRE agent 
                   for automatic debugging and resolution of issues.
                 </p>
               </div>

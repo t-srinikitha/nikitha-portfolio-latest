@@ -22,7 +22,7 @@ export default function DepressionArticle() {
         <div className="flex items-center gap-2 mb-4">
           <Badge variant="outline" className="gap-1">
             <Tag className="h-3 w-3" />
-            Mental Health & Systems
+            Health system
           </Badge>
           <Badge variant="secondary" className="gap-1">
             <Calendar className="h-3 w-3" />
