@@ -2,7 +2,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calendar, Clock, Tag } from "lucide-react";
-import { Link } from "react-router-dom";
 
 export default function DepressionArticle() {
   return (
@@ -10,10 +9,10 @@ export default function DepressionArticle() {
       {/* Back Button */}
       <div className="mb-8">
         <Button variant="ghost" asChild className="gap-2">
-          <Link to="/writing">
+          <a href="https://tsrinikitha.substack.com/" target="_blank" rel="noopener noreferrer">
             <ArrowLeft className="h-4 w-4" />
             Back to Writings
-          </Link>
+          </a>
         </Button>
       </div>
 
@@ -115,7 +114,7 @@ export default function DepressionArticle() {
               And sometimes, the options they give you just don't fit. Like this question:
             </p>
 
-            <blockquote className="border-l-4 border-gray-300 pl-4 italic text-gray-600 my-6">
+            <blockquote className="border-l-4 border-primary pl-4 italic text-gray-600 my-6">
               "0 I don't feel that I look any worse than I used to.<br/>
               1 I am worried that I am looking old or unattractive.<br/>
               2 I feel there are permanent changes in my appearance that make me look unattractive<br/>

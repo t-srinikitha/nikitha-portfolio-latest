@@ -54,22 +54,22 @@ export default function MinimalPortfolio() {
         <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-transparent to-black"></div>
         
-        <div className="relative z-10 container mx-auto px-4 py-20 max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+        <div className="relative z-10 container mx-auto px-4 py-12 lg:py-16 max-w-7xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             {/* Left Column - Main Content */}
-            <div className="lg:col-span-7 space-y-8">
-              <div className="space-y-6">
+            <div className="lg:col-span-7 space-y-6">
+              <div className="space-y-4">
                 
                 <p className="text-xl text-gray-400 mb-2">Hello</p>
 
                 <h1 className="text-5xl lg:text-7xl font-light leading-tight mb-4 text-white">
-                  I'm Sri Nikitha, <span className="font-serif italic">{roles[currentRoleIndex]}</span>
+                  I'm Sri Nikitha, <span className="font-serif italic text-primary">{roles[currentRoleIndex]}</span>
                   <br />
                   based out of Bangalore
                 </h1>
               </div>
               
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <p className="text-xl text-gray-300 leading-relaxed max-w-2xl">
                 Problem solver with 8+ years of experience in building products from ground up to scale across government, manufacturing, and developer tools. Alum of IIT Kharagpur and Ashoka University. 
                 </p>
@@ -77,8 +77,8 @@ export default function MinimalPortfolio() {
                 
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button 
-                    size="lg" 
-                    className="bg-white text-black hover:bg-gray-200 transition-all duration-200 hover:scale-105"
+                    variant="default"
+                    size="lg"
                     asChild
                   >
                     <a href="mailto:t.srinikitha@gmail.com">
@@ -86,9 +86,8 @@ export default function MinimalPortfolio() {
                     </a>
                   </Button>
                   <Button 
-                    variant="outline" 
-                    size="lg" 
-                    className="border-white/30 text-black hover:bg-white/10 hover:text-white transition-all duration-200"
+                    variant="secondary" 
+                    size="lg"
                     asChild
                   >
                     <a href="projects">
@@ -100,7 +99,7 @@ export default function MinimalPortfolio() {
             </div>
 
             {/* Right Column - Profile & Info */}
-            <div className="lg:col-span-5 space-y-8">
+            <div className="lg:col-span-5 space-y-6">
               {/* Profile Photo */}
               <div className="flex justify-center lg:justify-end">
                 <div className="relative">
@@ -133,12 +132,12 @@ export default function MinimalPortfolio() {
           </div>
 
           {/* Social Links */}
-          <div className="flex justify-center lg:justify-start mt-20 space-x-6">
+          <div className="flex justify-center lg:justify-start mt-8 space-x-6">
             <a
               href="https://github.com/t-srinikitha"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-all duration-200 hover:scale-110"
+              className="text-gray-400 hover:text-primary transition-all duration-200 hover:scale-110"
             >
               <Github className="h-6 w-6" />
             </a>
@@ -146,7 +145,7 @@ export default function MinimalPortfolio() {
               href="https://x.com/sri_nikitha"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-all duration-200 hover:scale-110"
+              className="text-gray-400 hover:text-primary transition-all duration-200 hover:scale-110"
             >
               <Twitter className="h-6 w-6" />
             </a>
@@ -154,7 +153,7 @@ export default function MinimalPortfolio() {
               href="https://linkedin.com/in/sri-nikitha-thummanapalli/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-all duration-200 hover:scale-110"
+              className="text-gray-400 hover:text-primary transition-all duration-200 hover:scale-110"
             >
               <Linkedin className="h-6 w-6" />
             </a>
@@ -163,7 +162,7 @@ export default function MinimalPortfolio() {
       </section>
 
       {/* 2. Quote Section */}
-      <section className="py-20 bg-white text-black">
+      <section className="py-20 bg-white text-black relative">
         <div className="container mx-auto px-4 max-w-4xl text-center">
           <blockquote className="text-3xl lg:text-4xl font-medium leading-relaxed">
             "Do what feels like play to you, but looks like work to others"
@@ -182,18 +181,18 @@ export default function MinimalPortfolio() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="bg-white/5 border-white/20">
+            <Card className="bg-white/5 border-white/20 hover:border-primary/50 transition-all duration-300 group">
               <CardContent className="p-8">
-                <h3 className="text-2xl font-semibold mb-4 text-white">Empathising with Users</h3>
+                <h3 className="text-2xl font-semibold mb-4 text-white group-hover:text-primary transition-colors">Empathising with Users</h3>
                 <p className="text-gray-300 text-lg leading-relaxed">
                   I like talking to users and understanding their problems.
                 </p>
               </CardContent>
             </Card>
             
-            <Card className="bg-white/5 border-white/20">
+            <Card className="bg-white/5 border-white/20 hover:border-primary/50 transition-all duration-300 group">
               <CardContent className="p-8">
-                <h3 className="text-2xl font-semibold mb-4 text-white">Building Things</h3>
+                <h3 className="text-2xl font-semibold mb-4 text-white group-hover:text-primary transition-colors">Building Things</h3>
                 <p className="text-gray-300 text-lg leading-relaxed">
                   I love to build things. Earlier, I was building policies. Now, I'm building products using AI. It feels empowering.
                 </p>
@@ -220,9 +219,9 @@ export default function MinimalPortfolio() {
               <div className="lg:order-2">
                 <h3 className="text-2xl font-bold mb-4">Grassroots Innovation Policy Implementation</h3>
                 <p className="text-gray-600 mb-4">
-                  Led the design and implementation of Telangana's first Grassroots Innovation Policy, establishing entrepreneurship programs across 31 districts. Created the state's innovation ecosystem that continues to operate today.
+                  Led the design and implementation of Telangana's first Grassroots Innovation Policy, establishing entrepreneurship programs and innovation hubs across the state. Built the framework for identifying and supporting grassroots innovators, connecting them with resources, mentorship, and markets.
                 </p>
-                <div className="bg-gray-50 border-l-4 border-gray-300 p-4 rounded-r-lg mb-4">
+                <div className="bg-gray-50 border-l-4 border-primary p-4 rounded-r-lg mb-4">
                   <p className="text-gray-700 italic">
                     "Programs I designed are still running across 31 districts, with Telangana being the only state with a dedicated Grassroots Innovation Policy."
                   </p>
@@ -240,7 +239,8 @@ export default function MinimalPortfolio() {
                   className="max-h-16 max-w-full object-contain"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
-                    e.currentTarget.nextElementSibling.style.display = 'block';
+                    const next = e.currentTarget.nextElementSibling as HTMLElement | null;
+                    if (next) next.style.display = 'block';
                   }}
                 />
                 <div className="text-gray-400 text-sm" style={{display: 'none'}}>Telangana Government Logo</div>
@@ -267,7 +267,8 @@ export default function MinimalPortfolio() {
                   className="max-h-16 max-w-full object-contain"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
-                    e.currentTarget.nextElementSibling.style.display = 'block';
+                    const next = e.currentTarget.nextElementSibling as HTMLElement | null;
+                    if (next) next.style.display = 'block';
                   }}
                 />
                 <div className="text-gray-400 text-sm" style={{display: 'none'}}>French Startup Logo</div>
@@ -294,7 +295,8 @@ export default function MinimalPortfolio() {
                   className="max-h-16 max-w-full object-contain"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
-                    e.currentTarget.nextElementSibling.style.display = 'block';
+                    const next = e.currentTarget.nextElementSibling as HTMLElement | null;
+                    if (next) next.style.display = 'block';
                   }}
                 />
                 <div className="text-gray-400 text-sm" style={{display: 'none'}}>Facets Logo</div>
@@ -323,11 +325,9 @@ export default function MinimalPortfolio() {
           
           <div className="text-center mt-12">
             <Button 
-              variant="outline" 
-              size="lg" 
-              className="border-white/30 text-black hover:bg-black/10 hover:text-white transition-all duration-200"
+              variant="secondary" 
+              size="lg"
               asChild
-              
             >
               <a href="/projects">
                 View All Projects
@@ -388,8 +388,8 @@ export default function MinimalPortfolio() {
             AI-powered solutions, I'd love to collaborate.
           </p>
           <Button 
-            size="lg" 
-            className="bg-black text-white hover:bg-gray-800 transition-all duration-200"
+            variant="default"
+            size="lg"
             asChild
           >
             <a href="mailto:t.srinikitha@gmail.com">

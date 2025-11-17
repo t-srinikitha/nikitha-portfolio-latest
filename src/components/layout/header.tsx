@@ -52,12 +52,15 @@ export function Header() {
             >
               Projects
             </Link>
-            <Link
-              to="/writing"
-              className="text-sm font-medium transition-colors hover:text-primary"
+            <a
+              href="https://tsrinikitha.substack.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium transition-colors hover:text-primary flex items-center gap-1"
             >
               Writings
-            </Link>
+              <ExternalLink className="h-3 w-3" />
+            </a>
           </nav>
         </div>
       </div>
