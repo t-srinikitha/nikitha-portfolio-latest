@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ProjectCard } from "@/components/project-card";
+import { ChatWidget } from "@/components/chat/ChatWidget";
 import { Github, Linkedin, Twitter } from "lucide-react";
 
 const roles = ["Builder", "Systems Thinker", "AI\u00A0Product\u00A0Manager"];
@@ -398,6 +399,9 @@ export default function MinimalPortfolio() {
           </Button>
         </div>
       </section>
+
+      {/* Chat Widget */}
+      <ChatWidget />
     </div>
   );
 }

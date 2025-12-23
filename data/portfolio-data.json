@@ -1,0 +1,311 @@
+{
+  "profile": {
+    "name": "Sri Nikitha T",
+    "location": "Bangalore, India",
+    "email": "t.srinikitha@gmail.com",
+    "summary": "Problem solver with 8+ years of experience in building products from ground up to scale across government, manufacturing, and developer tools. Alum of IIT Kharagpur and Ashoka University.",
+    "education": [
+      {
+        "institution": "IIT Kharagpur",
+        "degree": "B.Tech",
+        "field": "Materials Engineering"
+      },
+      {
+        "institution": "Ashoka University",
+        "degree": "Liberal Arts"
+      }
+    ],
+    "roles": ["Builder", "Systems Thinker", "AI Product Manager"],
+    "philosophy": "Talk → Understand → Empathise → Build → Set feedback loop → Iterate → Repeat"
+  },
+  "experiences": [
+    {
+      "id": "exp-1",
+      "company": "DrDroid (YC-backed)",
+      "role": "Product Manager (Consultant)",
+      "type": "consulting",
+      "startDate": "2024",
+      "endDate": "present",
+      "description": "Consulting for DrDroid, an AI SRE agent for automatic debugging and resolution of issues. Leading product strategy for AI-powered SRE automation.",
+      "responsibilities": [
+        "Product strategy for AI-powered SRE automation",
+        "User research and requirement gathering",
+        "Cross-functional collaboration with engineering teams",
+        "Feature prioritization and roadmap definition"
+      ],
+      "achievements": [
+        "Led product development for AI agent capabilities",
+        "Established product direction for AI SRE automation"
+      ],
+      "technologies": ["AI/ML", "SRE", "DevOps", "Cloud", "Product Management"],
+      "impact": []
+    },
+    {
+      "id": "exp-2",
+      "company": "Facets.cloud",
+      "role": "Founding Product Manager",
+      "type": "full-time",
+      "startDate": "2022",
+      "endDate": "2024",
+      "description": "Led product strategy and execution as the founding Product Manager at Facets, a cloud infrastructure platform. Built product-market fit from zero revenue to $410K ARR and 15 enterprise customers through user-centric development and cross-functional collaboration.",
+      "responsibilities": [
+        "Product strategy and roadmap definition",
+        "User-centric development and feature prioritization",
+        "Cross-functional collaboration",
+        "Product-market fit discovery",
+        "Enterprise customer acquisition and retention"
+      ],
+      "achievements": [
+        "Grew revenue from $0 to $410K ARR",
+        "Acquired 15 enterprise customers",
+        "Established product-market fit",
+        "Built product from ground up to scale"
+      ],
+      "technologies": ["Cloud Infrastructure", "B2B SaaS", "Enterprise Software", "Developer Tools"],
+      "impact": [
+        {
+          "metric": "ARR",
+          "value": "$410K",
+          "description": "Revenue growth from zero to $410K ARR"
+        },
+        {
+          "metric": "Enterprise Customers",
+          "value": 15,
+          "description": "Number of enterprise customers acquired"
+        },
+        {
+          "metric": "Product-Market Fit",
+          "value": "Achieved",
+          "description": "Established product-market fit through user-centric development"
+        }
+      ]
+    },
+    {
+      "id": "exp-3",
+      "company": "Government of Telangana",
+      "role": "Innovation Fellow",
+      "type": "government",
+      "startDate": "2019",
+      "endDate": "2021",
+      "description": "Led the design and implementation of Telangana's first Grassroots Innovation Policy, establishing entrepreneurship programs and innovation hubs across the state. Built the framework for identifying and supporting grassroots innovators, connecting them with resources, mentorship, and markets.",
+      "responsibilities": [
+        "Policy design and framework development",
+        "Program conceptualization and implementation",
+        "Stakeholder management across 31 districts",
+        "Innovation hub establishment",
+        "Framework for identifying and supporting grassroots innovators"
+      ],
+      "achievements": [
+        "Designed and implemented first Grassroots Innovation Policy in Telangana",
+        "Established entrepreneurship programs across 31 districts",
+        "Built framework for identifying and supporting grassroots innovators",
+        "Programs still running across all districts",
+        "Only state with dedicated Grassroots Innovation Policy"
+      ],
+      "technologies": ["Policy Design", "Public Administration", "Innovation Management", "Program Management"],
+      "impact": [
+        {
+          "metric": "Districts Covered",
+          "value": 31,
+          "description": "All districts in Telangana state"
+        },
+        {
+          "metric": "Policy Status",
+          "value": "Active",
+          "description": "Only state with dedicated Grassroots Innovation Policy"
+        },
+        {
+          "metric": "Media Coverage",
+          "value": "Netflix Documentary",
+          "description": "Featured in Netflix documentary"
+        },
+        {
+          "metric": "Programs Sustainability",
+          "value": "Ongoing",
+          "description": "Programs designed are still running across all districts"
+        }
+      ]
+    },
+    {
+      "id": "exp-4",
+      "company": "French Startup (Five Elements)",
+      "role": "Project Manager",
+      "type": "consulting",
+      "startDate": "2018",
+      "endDate": "2019",
+      "description": "Executed end-to-end project management for a French startup's sustainable housing initiative. Conducted comprehensive market research on Fiber-Reinforced Plastic (FRP) manufacturing in India, established supplier networks, and delivered custom die manufacturing within 3 months.",
+      "responsibilities": [
+        "Market research on FRP manufacturing in India",
+        "Supplier network establishment",
+        "Custom die manufacturing coordination",
+        "International client management",
+        "End-to-end project delivery"
+      ],
+      "achievements": [
+        "Delivered ₹1Cr project within 3 months",
+        "Established supplier networks in India",
+        "Successfully managed international client relationship",
+        "Completed comprehensive market research"
+      ],
+      "technologies": ["Manufacturing", "Materials Engineering", "FRP", "Supply Chain", "Project Management"],
+      "impact": [
+        {
+          "metric": "Project Value",
+          "value": "₹1Cr",
+          "description": "Total project value"
+        },
+        {
+          "metric": "Delivery Time",
+          "value": "3 months",
+          "description": "End-to-end project delivery"
+        },
+        {
+          "metric": "Client Type",
+          "value": "International",
+          "description": "Successfully managed international client relationship"
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj-1",
+      "name": "DrDroid - AI SRE Agent",
+      "type": "current",
+      "status": "in-progress",
+      "description": "An AI-powered Site Reliability Engineering (SRE) agent designed to automate incident response, root cause analysis, and proactive system health monitoring for complex cloud infrastructures.",
+      "technologies": ["AI/ML", "SRE", "DevOps", "Cloud", "Product Management"],
+      "role": "Product Manager",
+      "achievements": [],
+      "link": "#"
+    },
+    {
+      "id": "proj-2",
+      "name": "Waste Management Platform",
+      "type": "side-project",
+      "status": "completed",
+      "description": "A comprehensive platform for industrial waste management, optimizing collection, processing, and disposal workflows while ensuring regulatory compliance and promoting circular economy principles.",
+      "technologies": ["Sustainability", "IoT", "Logistics", "B2B SaaS", "Product Management"],
+      "role": "Product Manager",
+      "achievements": [],
+      "link": "#"
+    },
+    {
+      "id": "proj-3",
+      "name": "Wedsmart",
+      "type": "side-project",
+      "status": "completed",
+      "description": "Calculator for calculating emissions from weddings in India, helping couples make environmentally conscious decisions.",
+      "technologies": ["React", "TypeScript", "Tailwind CSS", "Vercel", "Sustainability", "Consumer Tech", "Impact"],
+      "role": "Builder",
+      "achievements": [],
+      "link": "#"
+    },
+    {
+      "id": "proj-4",
+      "name": "Tailor CRM",
+      "type": "side-project",
+      "status": "completed",
+      "description": "Order taking and tracking tool for tailors to manage customer orders, measurements, and delivery schedules.",
+      "technologies": ["Next.js", "Prisma", "PostgreSQL", "Stripe", "Local Business", "CRM", "SaaS"],
+      "role": "Builder",
+      "achievements": [],
+      "link": "#"
+    },
+    {
+      "id": "proj-5",
+      "name": "Weekly Meal Planner",
+      "type": "side-project",
+      "status": "completed",
+      "description": "Creates weekly meal plans for families based on dietary requirements, preferences, and available ingredients.",
+      "technologies": ["React", "Node.js", "MongoDB", "Express", "Health & Wellness", "AI/ML", "Consumer App"],
+      "role": "Builder",
+      "achievements": [],
+      "link": "#"
+    }
+  ],
+  "strengths": [
+    {
+      "category": "Product Management",
+      "items": [
+        "Product strategy and roadmap definition",
+        "User-centric development and empathy",
+        "Cross-functional collaboration",
+        "Product-market fit discovery",
+        "B2B SaaS experience",
+        "Enterprise software experience",
+        "Building products from zero to scale"
+      ]
+    },
+    {
+      "category": "Technical Domain",
+      "items": [
+        "Developer tools and infrastructure",
+        "Cloud platforms and infrastructure",
+        "AI/ML product development",
+        "SRE and DevOps",
+        "Platform engineering",
+        "Materials engineering background"
+      ]
+    },
+    {
+      "category": "Leadership & Execution",
+      "items": [
+        "Building products from zero to scale",
+        "Policy design and implementation",
+        "Stakeholder management",
+        "International project delivery",
+        "Program conceptualization",
+        "End-to-end project management"
+      ]
+    },
+    {
+      "category": "Industry Experience",
+      "items": [
+        "Government and public sector",
+        "Manufacturing and materials engineering",
+        "B2B SaaS",
+        "Developer tools",
+        "Sustainability and impact",
+        "Cloud infrastructure"
+      ]
+    }
+  ],
+  "achievements": [
+    {
+      "id": "ach-1",
+      "title": "Scaling Facets to $410K ARR",
+      "type": "revenue",
+      "description": "Led product strategy that grew Facets from zero revenue to $410K ARR with 15 enterprise customers",
+      "metrics": {
+        "revenue": "$410K ARR",
+        "customers": 15
+      },
+      "relatedExperience": "exp-2"
+    },
+    {
+      "id": "ach-2",
+      "title": "Grassroots Innovation Policy",
+      "type": "policy",
+      "description": "Designed and implemented Telangana's first Grassroots Innovation Policy, establishing programs across 31 districts",
+      "metrics": {
+        "districts": 31,
+        "status": "Active (only state with this policy)"
+      },
+      "relatedExperience": "exp-3"
+    },
+    {
+      "id": "ach-3",
+      "title": "International Project Delivery",
+      "type": "project",
+      "description": "Delivered ₹1Cr international manufacturing project within 3 months",
+      "metrics": {
+        "value": "₹1Cr",
+        "timeline": "3 months"
+      },
+      "relatedExperience": "exp-4"
+    }
+  ]
+}
+
+
