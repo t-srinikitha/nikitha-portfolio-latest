@@ -8,8 +8,10 @@ import path from 'path';
 const portfolioDataPath = path.join(process.cwd(), 'data', 'portfolio-data.json');
 const portfolioData = JSON.parse(fs.readFileSync(portfolioDataPath, 'utf-8'));
 
-// Initialize Gemini client
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+// Initialize Gemini client with trimmed key
+const apiKey = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim() : '';
+if (!apiKey) console.error("GEMINI_API_KEY is missing");
+const genAI = new GoogleGenerativeAI(apiKey);
 
 // Initialize Pinecone client
 let pinecone: Pinecone | null = null;
@@ -22,16 +24,17 @@ async function initializeVectorStore() {
   }
 
   try {
-    if (!process.env.PINECONE_API_KEY) {
+    const pineconeKey = process.env.PINECONE_API_KEY ? process.env.PINECONE_API_KEY.trim() : '';
+    if (!pineconeKey) {
       console.log('Pinecone API key not found, using keyword search fallback');
       return null;
     }
 
     pinecone = new Pinecone({
-      apiKey: process.env.PINECONE_API_KEY,
+      apiKey: pineconeKey,
     });
 
-    const indexName = process.env.PINECONE_INDEX_NAME || 'portfolio-chunks';
+    const indexName = (process.env.PINECONE_INDEX_NAME || 'portfolio-chunks').trim();
     pineconeIndex = pinecone.index(indexName);
 
     return pineconeIndex;
@@ -42,11 +45,11 @@ async function initializeVectorStore() {
 }
 
 // Question classification types
-type QuestionClassification = 
-  | 'ALLOWED' 
-  | 'PERSONAL' 
-  | 'SALARY' 
-  | 'OUT_OF_SCOPE' 
+type QuestionClassification =
+  | 'ALLOWED'
+  | 'PERSONAL'
+  | 'SALARY'
+  | 'OUT_OF_SCOPE'
   | 'JOB_FIT';
 
 // Classify question to determine if it's in scope
@@ -67,7 +70,7 @@ Respond with ONLY the category name.`;
     const result = await model.generateContent(classificationPrompt);
     const response = await result.response;
     const text = response.text();
-    
+
     const classification = text.trim().toUpperCase() as QuestionClassification;
     return classification || 'OUT_OF_SCOPE';
   } catch (error) {
@@ -101,7 +104,7 @@ async function retrieveRelevantChunks(
 ): Promise<Array<{ content: string; metadata: any; score: number }>> {
   try {
     const index = await initializeVectorStore();
-    
+
     if (!index) {
       // Fallback to keyword-based search
       return performKeywordSearch(queryText, topK);
@@ -115,7 +118,7 @@ async function retrieveRelevantChunks(
     });
 
     const chunks: Array<{ content: string; metadata: any; score: number }> = [];
-    
+
     if (queryResponse.matches) {
       queryResponse.matches.forEach((match: any) => {
         chunks.push({
@@ -216,13 +219,13 @@ function calculateKeywordScore(text: string, query: string): number {
   const textLower = text.toLowerCase();
   const queryWords = query.split(/\s+/).filter(w => w.length > 2);
   let score = 0;
-  
+
   queryWords.forEach((word) => {
     if (textLower.includes(word)) {
       score += 1;
     }
   });
-  
+
   return score / queryWords.length;
 }
 
@@ -290,7 +293,7 @@ async function generateResponse(
   }
 
   try {
-    const model = genAI.getGenerativeModel({ 
+    const model = genAI.getGenerativeModel({
       model: 'gemini-1.5-pro',
       systemInstruction: SYSTEM_PROMPT,
       generationConfig: {
@@ -298,11 +301,11 @@ async function generateResponse(
         maxOutputTokens: 1000,
       }
     });
-    
+
     const result = await model.generateContent(userPrompt);
     const response = await result.response;
     const text = response.text();
-    
+
     return text || 'I apologize, but I encountered an error generating a response.';
   } catch (error) {
     console.error('Response generation error:', error);

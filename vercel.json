@@ -1,11 +1,12 @@
 {
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/((?!api/|assets/|@vite/|@react-refresh|.*\\..*).*)",
       "destination": "/index.html"
     }
   ]
 }
-
-
-
