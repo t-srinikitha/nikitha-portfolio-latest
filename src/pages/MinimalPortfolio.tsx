@@ -10,31 +10,31 @@ const roles = ["Builder", "Systems Thinker", "AI\u00A0Product\u00A0Manager"];
 
 const projects = [
   {
-    id: 1,
-    name: "Wedsmart",
-    description: "Calculator for calculating emissions from weddings in India, helping couples make environmentally conscious decisions.",
-    techStack: ["React", "TypeScript", "Tailwind CSS", "Vercel"],
-    progress: 100,
-    status: "completed" as const,
-    link: "#"
-  },
-  {
-    id: 2,
+    id: 4,
     name: "Tailor CRM",
     description: "Order taking and tracking tool for tailors to manage customer orders, measurements, and delivery schedules.",
-    techStack: ["Next.js", "Prisma", "PostgreSQL", "Stripe"],
+    techStack: ["Local Business", "CRM", "SaaS"],
     progress: 100,
     status: "completed" as const,
     link: "#"
   },
   {
-    id: 3,
-    name: "Weekly Meal Planner",
-    description: "Creates weekly meal plans for families based on dietary requirements, preferences, and available ingredients.",
-    techStack: ["React", "Node.js", "MongoDB", "Express"],
+    id: 6,
+    name: "Advaita Birthday",
+    description: "A fun, interactive birthday website featuring dinosaur-themed games and activities including bubble popping, spinner games, dancing animations, drawing tools, and typing games.",
+    techStack: ["Next.js", "React", "Tailwind CSS", "Framer Motion", "TypeScript"],
     progress: 100,
     status: "completed" as const,
-    link: "#"
+    link: "https://happy-birthday-advaita.vercel.app/"
+  },
+  {
+    id: 7,
+    name: "Know Your Architecture",
+    description: "An interactive architecture visualization tool that helps understand and explore system architectures through visual representations.",
+    techStack: ["JavaScript", "CSS", "HTML", "Web Visualization"],
+    progress: 100,
+    status: "completed" as const,
+    link: "https://github.com/t-srinikitha/know-your-architecture"
   }
 ];
 
@@ -55,7 +55,7 @@ export default function MinimalPortfolio() {
         <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-transparent to-black"></div>
         
-        <div className="relative z-10 container mx-auto px-4 py-12 lg:py-16 max-w-7xl">
+        <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8 py-12 lg:py-16">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             {/* Left Column - Main Content */}
             <div className="lg:col-span-7 space-y-6">

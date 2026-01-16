@@ -60,6 +60,15 @@ export function Header() {
               Devops for Product Managers
               <ExternalLink className="h-3 w-3" />
             </a>
+            <Button
+              variant="default"
+              size="sm"
+              asChild
+            >
+              <Link to="/work-with-me">
+                Work with me
+              </Link>
+            </Button>
           </nav>
         </div>
       </div>

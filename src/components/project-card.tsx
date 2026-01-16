@@ -47,49 +47,54 @@ export function ProjectCard({
   const cardContent = (
     <Card
       className={cn(
-        "h-full transition-all duration-300 hover:shadow-hover cursor-pointer group border border-transparent",
-        slug && "hover:-translate-y-1",
+        "h-full w-full transition-all duration-300 hover:shadow-md cursor-pointer group border border-white/20 bg-white/5 hover:bg-white/10",
+        (link && link !== "#") || slug ? "hover:-translate-y-0.5" : "",
         "hover:border-primary/30"
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <CardHeader className="pb-3">
+      <CardHeader className="pb-2 px-4 pt-4">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <CardTitle className="text-base sm:text-lg mb-1 group-hover:text-primary transition-colors">
+            <CardTitle className="text-sm font-semibold mb-1.5 group-hover:text-primary transition-colors line-clamp-2 text-white">
               {name}
             </CardTitle>
-            <CardDescription className="text-sm">
+            <CardDescription className="text-xs leading-relaxed line-clamp-3 text-gray-300">
               {description}
             </CardDescription>
           </div>
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-3">
+      <CardContent className="px-4 pb-4 space-y-2">
         {techStack.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
-            {techStack.map((tech) => (
-              <Badge key={tech} variant="outline" className="text-xs py-0.5">
+          <div className="flex flex-wrap gap-1">
+            {techStack.slice(0, 3).map((tech) => (
+              <Badge key={tech} variant="outline" className="text-[10px] py-0 px-1.5 h-5 text-white border-white/30">
                 {tech}
               </Badge>
             ))}
+            {techStack.length > 3 && (
+              <Badge variant="outline" className="text-[10px] py-0 px-1.5 h-5 text-white border-white/30">
+                +{techStack.length - 3}
+              </Badge>
+            )}
           </div>
         )}
 
         {(slug || link) && (
           <div
             className={cn(
-              "flex items-center text-sm text-primary transition-all duration-200",
-              isHovered ? "opacity-100 translate-x-1" : "opacity-0 translate-x-0"
+              "flex items-center text-xs text-primary transition-all duration-200",
+              isHovered ? "opacity-100 translate-x-0.5" : "opacity-0 translate-x-0"
             )}
           >
-            <span>See more</span>
+            <span>View</span>
             {link && link !== "#" ? (
-              <ExternalLink className="h-4 w-4 ml-1" />
+              <ExternalLink className="h-3 w-3 ml-1" />
             ) : (
-              <ArrowRight className="h-4 w-4 ml-1" />
+              <ArrowRight className="h-3 w-3 ml-1" />
             )}
           </div>
         )}
@@ -104,7 +109,7 @@ export function ProjectCard({
         href={link}
         target="_blank"
         rel="noopener noreferrer"
-        className="block"
+        className="block h-full"
       >
         {cardContent}
       </a>
@@ -114,10 +119,15 @@ export function ProjectCard({
   // Handle internal routing with slug
   if (slug) {
     return (
-      <Link to={`/project/${slug}`}>
+      <Link to={`/project/${slug}`} className="block h-full">
         {cardContent}
       </Link>
     )
+  }
+
+  // Handle links that are "#" - make them non-clickable but keep styling
+  if (link === "#") {
+    return cardContent
   }
 
   // Default: no link
