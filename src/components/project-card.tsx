@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, ExternalLink } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
@@ -12,6 +12,7 @@ interface ProjectCardProps {
   status?: "active" | "planning" | "completed"
   techStack?: string[]
   slug?: string
+  link?: string
   lastUpdated?: string
   isComingSoon?: boolean
 }
@@ -23,6 +24,7 @@ export function ProjectCard({
   status,
   techStack = [],
   slug,
+  link,
   lastUpdated,
   isComingSoon = false
 }: ProjectCardProps) {
@@ -76,7 +78,7 @@ export function ProjectCard({
           </div>
         )}
 
-        {slug && (
+        {(slug || link) && (
           <div
             className={cn(
               "flex items-center text-sm text-primary transition-all duration-200",
@@ -84,18 +86,40 @@ export function ProjectCard({
             )}
           >
             <span>See more</span>
-            <ArrowRight className="h-4 w-4 ml-1" />
+            {link && link !== "#" ? (
+              <ExternalLink className="h-4 w-4 ml-1" />
+            ) : (
+              <ArrowRight className="h-4 w-4 ml-1" />
+            )}
           </div>
         )}
       </CardContent>
     </Card>
   )
 
-  return slug ? (
-    <Link to={`/project/${slug}`}>
-      {cardContent}
-    </Link>
-  ) : (
-    cardContent
-  )
+  // Handle external links
+  if (link && link !== "#" && !link.startsWith("/")) {
+    return (
+      <a
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block"
+      >
+        {cardContent}
+      </a>
+    )
+  }
+
+  // Handle internal routing with slug
+  if (slug) {
+    return (
+      <Link to={`/project/${slug}`}>
+        {cardContent}
+      </Link>
+    )
+  }
+
+  // Default: no link
+  return cardContent
 }

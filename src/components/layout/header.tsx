@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 
 const navigation = [
   { name: "Projects", href: "/projects" },
-  { name: "Writing", href: "/writing" },
 ]
 
 export function Header() {
@@ -53,12 +52,12 @@ export function Header() {
               Projects
             </Link>
             <a
-              href="https://tsrinikitha.substack.com/"
+              href="https://devopsforpms.substack.com/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm font-medium transition-colors hover:text-primary flex items-center gap-1"
             >
-              Writings
+              Devops for Product Managers
               <ExternalLink className="h-3 w-3" />
             </a>
           </nav>

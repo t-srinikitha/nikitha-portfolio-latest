@@ -2,27 +2,6 @@ import { ProjectCard } from "@/components/project-card";
 
 const allProjects = [
   {
-    id: 1,
-    name: "DrDroid - AI SRE Agent",
-    description: "An AI-powered Site Reliability Engineering (SRE) agent designed to automate incident response, root cause analysis, and proactive system health monitoring for complex cloud infrastructures.",
-    techStack: ["AI/ML", "SRE", "DevOps", "Cloud", "Product Management"],
-    link: "#"
-  },
-  {
-    id: 2,
-    name: "Waste Management Platform",
-    description: "A comprehensive platform for industrial waste management, optimizing collection, processing, and disposal workflows while ensuring regulatory compliance and promoting circular economy principles.",
-    techStack: ["Sustainability", "IoT", "Logistics", "B2B SaaS", "Product Management"],
-    link: "#"
-  },
-  {
-    id: 3,
-    name: "Wedsmart",
-    description: "Calculator for calculating emissions from weddings in India, helping couples make environmentally conscious decisions.",
-    techStack: ["Sustainability", "Consumer Tech", "Impact"],
-    link: "#"
-  },
-  {
     id: 4,
     name: "Tailor CRM",
     description: "Order taking and tracking tool for tailors to manage customer orders, measurements, and delivery schedules.",
@@ -35,6 +14,27 @@ const allProjects = [
     description: "Creates weekly meal plans for families based on dietary requirements, preferences, and available ingredients.",
     techStack: ["Health & Wellness", "AI/ML", "Consumer App"],
     link: "#"
+  },
+  {
+    id: 6,
+    name: "Advaita Birthday",
+    description: "A fun, interactive birthday website featuring dinosaur-themed games and activities including bubble popping, spinner games, dancing animations, drawing tools, and typing games.",
+    techStack: ["Next.js", "React", "Tailwind CSS", "Framer Motion", "TypeScript"],
+    link: "https://happy-birthday-advaita.vercel.app/"
+  },
+  {
+    id: 7,
+    name: "Know Your Architecture",
+    description: "An interactive architecture visualization tool that helps understand and explore system architectures through visual representations.",
+    techStack: ["JavaScript", "CSS", "HTML", "Web Visualization"],
+    link: "https://github.com/t-srinikitha/know-your-architecture"
+  },
+  {
+    id: 8,
+    name: "The Green Indian Wedding Toolkit",
+    description: "A comprehensive toolkit and resource guide for planning environmentally conscious Indian weddings, providing practical tips, checklists, and sustainable alternatives.",
+    techStack: ["Sustainability", "Content", "Resource Toolkit", "Wedding Planning"],
+    link: "https://www.notion.so/The-Green-Indian-Wedding-Toolkit-9081b8732ff54248b1f369f591a51929"
   }
 ];
 
