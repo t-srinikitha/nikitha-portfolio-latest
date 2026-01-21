@@ -1,42 +1,9 @@
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ProjectCard } from "@/components/project-card";
-import { ChatWidget } from "@/components/chat/ChatWidget";
-import { Github, Linkedin, Twitter } from "lucide-react";
+import { Github, Linkedin, Twitter, Mail, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Footer } from "@/components/layout/footer";
 
-const roles = ["Builder", "Systems Thinker", "AI\u00A0Product\u00A0Manager"];
-
-const projects = [
-  {
-    id: 4,
-    name: "Tailor CRM",
-    description: "Order taking and tracking tool for tailors to manage customer orders, measurements, and delivery schedules.",
-    techStack: ["Local Business", "CRM", "SaaS"],
-    progress: 100,
-    status: "completed" as const,
-    link: "#"
-  },
-  {
-    id: 6,
-    name: "Advaita Birthday",
-    description: "A fun, interactive birthday website featuring dinosaur-themed games and activities including bubble popping, spinner games, dancing animations, drawing tools, and typing games.",
-    techStack: ["Next.js", "React", "Tailwind CSS", "Framer Motion", "TypeScript"],
-    progress: 100,
-    status: "completed" as const,
-    link: "https://happy-birthday-advaita.vercel.app/"
-  },
-  {
-    id: 7,
-    name: "Know Your Architecture",
-    description: "An interactive architecture visualization tool that helps understand and explore system architectures through visual representations.",
-    techStack: ["JavaScript", "CSS", "HTML", "Web Visualization"],
-    progress: 100,
-    status: "completed" as const,
-    link: "https://github.com/t-srinikitha/know-your-architecture"
-  }
-];
+const roles = ["Builder", "Systems Thinker", "AI Product Manager"];
 
 export default function MinimalPortfolio() {
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
@@ -49,359 +16,244 @@ export default function MinimalPortfolio() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* 1. Hero Section - Improved */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-transparent to-black"></div>
-        
-        <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8 py-12 lg:py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-            {/* Left Column - Main Content */}
-            <div className="lg:col-span-7 space-y-6">
-              <div className="space-y-4">
-                
-                <p className="text-xl text-gray-400 mb-2">Hello</p>
-
-                <h1 className="text-5xl lg:text-7xl font-light leading-tight mb-4 text-white">
-                  I'm Sri Nikitha, <span className="font-serif italic text-primary">{roles[currentRoleIndex]}</span>
-                  <br />
-                  based out of Bangalore
-                </h1>
-              </div>
-              
-              <div className="space-y-4">
-                <p className="text-xl text-gray-300 leading-relaxed max-w-2xl">
-                Problem solver with 8+ years of experience in building products from ground up to scale across government, manufacturing, and developer tools. Alum of IIT Kharagpur and Ashoka University. 
-                </p>
-                
-                
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button 
-                    variant="default"
-                    size="lg"
-                    asChild
-                  >
-                    <a href="mailto:t.srinikitha@gmail.com">
-                      Get in touch
-                    </a>
-                  </Button>
-                  <Button 
-                    variant="secondary" 
-                    size="lg"
-                    asChild
-                  >
-                    <a href="projects">
-                      View my work
-                    </a>
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column - Profile & Info */}
-            <div className="lg:col-span-5 space-y-6">
-              {/* Profile Photo */}
-              <div className="flex justify-center lg:justify-end">
-                <div className="relative">
-                  <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl">
-                    <img
-                      src="/Profile.jpeg"
-                      alt="Sri Nikitha T"
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.currentTarget.src = "/placeholder.svg";
-                      }}
-                    />
-                  </div>
-                  <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-white/20 to-transparent blur-xl"></div>
-                </div>
-              </div>
-              
-              {/* Info Card */}
-              <Card className="bg-white/5 border-white/20 backdrop-blur-sm hover:bg-white/10 transition-all duration-300">
-                <CardContent className="p-6">
-                  <h3 className="text-lg font-semibold mb-4 text-white">
-                    What I do
-                  </h3>
-                  <p className="text-gray-300 leading-relaxed mb-4">
-                   Talk → Understand → Empathise → Build → Set feedback loop → Iterate → Repeat
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-
-          {/* Social Links */}
-          <div className="flex justify-center lg:justify-start mt-8 space-x-6">
-            <a
-              href="https://github.com/t-srinikitha"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-primary transition-all duration-200 hover:scale-110"
-            >
-              <Github className="h-6 w-6" />
-            </a>
-            <a
-              href="https://x.com/sri_nikitha"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-primary transition-all duration-200 hover:scale-110"
-            >
-              <Twitter className="h-6 w-6" />
-            </a>
-            <a
-              href="https://linkedin.com/in/sri-nikitha-thummanapalli/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-primary transition-all duration-200 hover:scale-110"
-            >
-              <Linkedin className="h-6 w-6" />
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* 2. Quote Section */}
-      <section className="py-20 bg-white text-black relative">
-        <div className="container mx-auto px-4 max-w-4xl text-center">
-          <blockquote className="text-3xl lg:text-4xl font-medium leading-relaxed">
-            "Do what feels like play to you, but looks like work to others"
-          </blockquote>
-        </div>
-      </section>
-
-      {/* 3. Why I am a Product Manager Section */}
-      <section className="py-20 bg-black">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6">Why I am a Product Manager</h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Solving problems and building products feels like play to me.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="bg-white/5 border-white/20 hover:border-primary/50 transition-all duration-300 group">
-              <CardContent className="p-8">
-                <h3 className="text-2xl font-semibold mb-4 text-white group-hover:text-primary transition-colors">Empathising with Users</h3>
-                <p className="text-gray-300 text-lg leading-relaxed">
-                  I like talking to users and understanding their problems.
-                </p>
-              </CardContent>
-            </Card>
+    <div className="min-h-screen">
+      {/* Hero */}
+      <section className="max-w-4xl mx-auto px-6 py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+          {/* Text Content */}
+          <div className="lg:col-span-2 space-y-6">
+            <p className="text-sm opacity-60">Hello, I'm</p>
             
-            <Card className="bg-white/5 border-white/20 hover:border-primary/50 transition-all duration-300 group">
-              <CardContent className="p-8">
-                <h3 className="text-2xl font-semibold mb-4 text-white group-hover:text-primary transition-colors">Building Things</h3>
-                <p className="text-gray-300 text-lg leading-relaxed">
-                  I love to build things. Earlier, I was building policies. Now, I'm building products using AI. It feels empowering.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. What Did I Achieve Section */}
-      <section className="py-20 bg-white text-black">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6">What Did I Achieve?</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Sometimes I feel I did nothing. Sometimes I feel maybe I did something. 
-              I really don't know the answer. I'm just reflecting.
+            <h1 className="text-4xl lg:text-5xl font-bold leading-tight">
+              Sri Nikitha T
+            </h1>
+            
+            <p className="text-lg">
+              <span className="relative inline-block">
+                <span 
+                  className="absolute inset-0 -skew-y-1 -rotate-1 scale-x-105"
+                  style={{ 
+                    backgroundColor: '#DFFF00',
+                    clipPath: 'polygon(2% 15%, 98% 5%, 100% 85%, 3% 95%)',
+                    opacity: 0.8
+                  }}
+                />
+                <span className="relative">{roles[currentRoleIndex]}</span>
+              </span>
             </p>
-          </div>
-          
-          <div className="space-y-12">
-            {/* Telangana Story */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-              <div className="lg:order-2">
-                <h3 className="text-2xl font-bold mb-4">Grassroots Innovation Policy Implementation</h3>
-                <p className="text-gray-600 mb-4">
-                  Led the design and implementation of Telangana's first Grassroots Innovation Policy, establishing entrepreneurship programs and innovation hubs across the state. Built the framework for identifying and supporting grassroots innovators, connecting them with resources, mentorship, and markets.
-                </p>
-                <div className="bg-gray-50 border-l-4 border-primary p-4 rounded-r-lg mb-4">
-                  <p className="text-gray-700 italic">
-                    "Programs I designed are still running across 31 districts, with Telangana being the only state with a dedicated Grassroots Innovation Policy."
-                  </p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary">Policy Design</Badge>
-                  <Badge variant="secondary">31 Districts</Badge>
-                  <Badge variant="secondary">Netflix Documentary</Badge>
-                </div>
-              </div>
-              <div className="lg:order-1 bg-white border-2 border-gray-200 rounded-2xl p-6 text-center flex items-center justify-center min-h-[120px]">
-                <img 
-                  src="/telangana-logo.jpg" 
-                  alt="Telangana Government Logo" 
-                  className="max-h-16 max-w-full object-contain"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    const next = e.currentTarget.nextElementSibling as HTMLElement | null;
-                    if (next) next.style.display = 'block';
-                  }}
-                />
-                <div className="text-gray-400 text-sm" style={{display: 'none'}}>Telangana Government Logo</div>
-              </div>
-            </div>
 
-            {/* France Project */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-              <div>
-                <h3 className="text-2xl font-bold mb-4">International Manufacturing Project Delivery</h3>
-                <p className="text-gray-600 mb-4">
-                  Executed end-to-end project management for a French startup's sustainable housing initiative. Conducted comprehensive market research on Fiber-Reinforced Plastic (FRP) manufacturing in India, established supplier networks, and delivered custom die manufacturing within 3 months.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary">₹1Cr Project Value</Badge>
-                  <Badge variant="secondary">3-Month Delivery</Badge>
-                  <Badge variant="secondary">International Client</Badge>
-                </div>
-              </div>
-              <div className="bg-white border-2 border-gray-200 rounded-2xl p-6 text-center flex items-center justify-center min-h-[120px]">
-                <img 
-                  src="/five elements.png" 
-                  alt="French Startup Logo" 
-                  className="max-h-16 max-w-full object-contain"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    const next = e.currentTarget.nextElementSibling as HTMLElement | null;
-                    if (next) next.style.display = 'block';
-                  }}
-                />
-                <div className="text-gray-400 text-sm" style={{display: 'none'}}>French Startup Logo</div>
-              </div>
-            </div>
-
-            {/* Facets Story */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-              <div className="lg:order-2">
-                <h3 className="text-2xl font-bold mb-4">Product Leadership: Scaling to $410K ARR</h3>
-                <p className="text-gray-600 mb-4">
-                  Led product strategy and execution as the founding Product Manager at Facets, a cloud infrastructure platform. Built product-market fit from zero revenue to $410K ARR and 15 enterprise customers through user-centric development and cross-functional collaboration.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary">$410K ARR Growth</Badge>
-                  <Badge variant="secondary">15 Enterprise Customers</Badge>
-                  <Badge variant="secondary">Product-Market Fit</Badge>
-                </div>
-              </div>
-              <div className="lg:order-1 bg-white border-2 border-gray-200 rounded-2xl p-6 text-center flex items-center justify-center min-h-[120px]">
-                <img 
-                  src="/facets.png" 
-                  alt="Facets Logo" 
-                  className="max-h-16 max-w-full object-contain"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    const next = e.currentTarget.nextElementSibling as HTMLElement | null;
-                    if (next) next.style.display = 'block';
-                  }}
-                />
-                <div className="text-gray-400 text-sm" style={{display: 'none'}}>Facets Logo</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      {/* 6. Side Projects Section */}
-      <section className="py-20 bg-black text-white">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6">Side Projects</h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Personal projects that showcase my passion for building solutions to real-world problems.
+            <p className="text-sm leading-relaxed opacity-70 max-w-lg">
+              Problem solver with 8+ years of experience building products 
+              from 0→1→scale across government, manufacturing, and developer tools.
+              IIT Kharagpur & Ashoka University.
             </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project) => (
-              <ProjectCard key={project.id} {...project} />
-            ))}
-          </div>
-          
-          <div className="text-center mt-12">
-            <Button 
-              variant="secondary" 
-              size="lg"
-              asChild
-            >
-              <a href="/projects">
-                View All Projects
+
+            {/* CTA */}
+            <div className="flex gap-4 pt-4">
+              <a 
+                href="mailto:t.srinikitha@gmail.com"
+                className="inline-flex items-center gap-2 px-5 py-2 border border-black dark:border-white rounded-full text-sm hover:bg-black hover:text-cream dark:hover:bg-white dark:hover:text-cream-dark transition-colors"
+              >
+                Get in touch
               </a>
-            </Button>
+              <Link 
+                to="/projects"
+                className="inline-flex items-center gap-2 px-5 py-2 text-sm opacity-70 hover:opacity-100 transition-opacity"
+              >
+                View projects <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+
+            {/* Social */}
+            <div className="flex gap-4 pt-4">
+              <a href="https://github.com/t-srinikitha" target="_blank" rel="noopener noreferrer" className="opacity-50 hover:opacity-100 transition-opacity">
+                <Github className="h-4 w-4" fill="currentColor" />
+              </a>
+              <a href="https://x.com/sri_nikitha" target="_blank" rel="noopener noreferrer" className="opacity-50 hover:opacity-100 transition-opacity">
+                <Twitter className="h-4 w-4" fill="currentColor" />
+              </a>
+              <a href="https://linkedin.com/in/sri-nikitha-thummanapalli/" target="_blank" rel="noopener noreferrer" className="opacity-50 hover:opacity-100 transition-opacity">
+                <Linkedin className="h-4 w-4" fill="currentColor" />
+              </a>
+            </div>
+          </div>
+
+          {/* Photo */}
+          <div className="lg:col-span-1">
+            <div className="aspect-square max-w-[240px] mx-auto lg:mx-0 overflow-hidden border border-black dark:border-white">
+              <img
+                src="/Profile.jpeg"
+                alt="Sri Nikitha T"
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.src = "/placeholder.svg";
+                }}
+              />
+            </div>
           </div>
         </div>
       </section>
 
+      {/* Divider */}
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="border-t border-black/10 dark:border-white/10" />
+      </div>
 
-      {/* 8. My Story Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6 text-black">My Story</h2>
+      {/* Quote */}
+      <section className="max-w-4xl mx-auto px-6 py-20">
+        <blockquote className="text-xl lg:text-2xl text-center leading-relaxed">
+          "Do what feels like play to you,<br />
+          but looks like work to others"
+        </blockquote>
+      </section>
+
+      {/* Divider */}
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="border-t border-black/10 dark:border-white/10" />
+      </div>
+
+      {/* What I Do */}
+      <section className="max-w-4xl mx-auto px-6 py-20">
+        <h2 className="text-sm font-medium mb-8 opacity-60">What I Do</h2>
+        
+        <p className="text-lg mb-8 max-w-2xl">
+          Talk → Understand → Empathise → Build → Feedback → Iterate → Repeat
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-6 border border-black/20 dark:border-white/20">
+            <h3 className="font-medium mb-2">User-Obsessed Discovery</h3>
+            <p className="text-sm opacity-70">
+              I talk to users and understand their problems deeply before building anything.
+            </p>
           </div>
-          
-          <div className="bg-black border border-gray-700 rounded-lg p-8">
-            <div className="space-y-6 text-lg text-gray-300 leading-relaxed">
-              <div>
-               
-                <p>
-                  When I was 15, my father told me the story of Sintex - a company manufacturing 
-                  plastic pipes that was about to go bankrupt. They recruited an IITian who said 
-                  they could build an overhead tank, already existing in other countries. They did 
-                  it and disrupted the market.
-                </p>
-                <p className="mt-4">
-                  My father said I should become that IITian. I thought IITians are the only problem solvers, 
-                  and going to an IIT would make me the best problem solver. So I strived to become 
-                  exactly that.
-                </p>
+          <div className="p-6 border border-black/20 dark:border-white/20">
+            <h3 className="font-medium mb-2">From Zero to Product</h3>
+            <p className="text-sm opacity-70">
+              Earlier building policies, now building products with AI. It feels empowering.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="border-t border-black/10 dark:border-white/10" />
+      </div>
+
+      {/* Key Milestones */}
+      <section className="max-w-4xl mx-auto px-6 py-20">
+        <h2 className="text-sm font-medium mb-8 opacity-60">Key Milestones</h2>
+
+        <div className="space-y-8">
+          {/* Telangana */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
+            <div className="md:col-span-1">
+              <p className="text-xs opacity-50">Telangana Government</p>
+            </div>
+            <div className="md:col-span-3">
+              <h3 className="font-medium mb-2">Grassroots Innovation Policy</h3>
+              <p className="text-sm opacity-70 mb-3">
+                Designed India's first state-level Grassroots Innovation Policy. 
+                Programs still running across 31 districts. Featured in Netflix documentary.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">Policy Design</span>
+                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">31 Districts</span>
               </div>
-              
-              <div>
-             
-                <p>
-                  I'm the first generation to earn an IIT degree and a liberal arts degree too. I worked across manufacturing, government, sustainability, B2B SaaS, and developer tools. 
-                  I'm inherently inquisitive to learn different things to solve any kind of problems.
-                </p>
-                <p className="mt-4">
-                  I had two spinal surgeries and a bicornuate uterus, super complicated pregnancy. Gathered so much courage and I became a mother, now figuring my shit out and realizing how mothers are 
-                  a different breed. Currently, I'm consulting for <strong>DrDroid</strong>(YC-backed), an AI SRE agent 
-                  for automatic debugging and resolution of issues.
-                </p>
+            </div>
+          </div>
+
+          {/* France */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
+            <div className="md:col-span-1">
+              <p className="text-xs opacity-50">French Startup</p>
+            </div>
+            <div className="md:col-span-3">
+              <h3 className="font-medium mb-2">International Manufacturing</h3>
+              <p className="text-sm opacity-70 mb-3">
+                Delivered ₹1Cr project for sustainable housing. 
+                End-to-end FRP manufacturing setup in 3 months.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">₹1Cr Value</span>
+                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">3-Month Delivery</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Facets */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
+            <div className="md:col-span-1">
+              <p className="text-xs opacity-50">Facets.cloud</p>
+            </div>
+            <div className="md:col-span-3">
+              <h3 className="font-medium mb-2">Product Leadership</h3>
+              <p className="text-sm opacity-70 mb-3">
+                Scaled from 0 to $410K ARR. 
+                Built product-market fit with 15 enterprise customers.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">$410K ARR</span>
+                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">15 Customers</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 9. Footer CTA */}
-      <section className="py-20 bg-white text-black">
-        <div className="container mx-auto px-4 max-w-4xl text-center">
-          <h2 className="text-4xl font-bold mb-6">Let's Build Something Together</h2>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Whether you need help with product strategy, system design, or building 
-            AI-powered solutions, I'd love to collaborate.
+      {/* Divider */}
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="border-t border-black/10 dark:border-white/10" />
+      </div>
+
+      {/* My Story */}
+      <section className="max-w-4xl mx-auto px-6 py-20">
+        <h2 className="text-sm font-medium mb-8 opacity-60">My Story</h2>
+        
+        <div className="max-w-2xl space-y-4 text-sm leading-relaxed opacity-80">
+          <p>
+            When I was 15, my father told me the story of Sintex — a company manufacturing 
+            plastic pipes about to go bankrupt. They recruited an IITian who built an 
+            overhead tank and disrupted the market.
           </p>
-          <Button 
-            variant="default"
-            size="lg"
-            asChild
-          >
-            <a href="mailto:t.srinikitha@gmail.com">
-              Get in Touch
-            </a>
-          </Button>
+          <p>
+            My father said I should become that IITian. I thought IITians are the only 
+            problem solvers. So I strived to become exactly that.
+          </p>
+          <p>
+            First generation to earn an IIT degree and a liberal arts degree. 
+            Worked across manufacturing, government, sustainability, B2B SaaS, and developer tools.
+          </p>
+          <p>
+            Two spinal surgeries. Complicated pregnancy. Became a mother. 
+            Now consulting for <strong>DrDroid</strong> (YC-backed) — an AI SRE agent.
+          </p>
         </div>
       </section>
 
-      {/* Chat Widget */}
-      <ChatWidget />
+      {/* Divider */}
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="border-t border-black/10 dark:border-white/10" />
+      </div>
+
+      {/* CTA */}
+      <section className="max-w-4xl mx-auto px-6 py-20 text-center">
+        <h2 className="text-2xl font-medium mb-4">Let's build something together</h2>
+        <p className="text-sm opacity-70 mb-8 max-w-md mx-auto">
+          Product strategy, system design, or AI-powered solutions.
+        </p>
+        <a 
+          href="mailto:t.srinikitha@gmail.com"
+          className="inline-flex items-center gap-2 px-6 py-2.5 border border-black dark:border-white rounded-full text-sm hover:bg-black hover:text-cream dark:hover:bg-white dark:hover:text-cream-dark transition-colors"
+        >
+          <Mail className="h-4 w-4" />
+          Get in touch
+        </a>
+      </section>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

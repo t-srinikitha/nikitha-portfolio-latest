@@ -19,10 +19,12 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['Inter', 'system-ui', 'sans-serif'],
-				mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+				sans: ['JetBrains Mono', 'Space Mono', 'ui-monospace', 'monospace'],
+				mono: ['JetBrains Mono', 'Space Mono', 'ui-monospace', 'monospace'],
 			},
 			colors: {
+				cream: '#FDF6E3',
+				'cream-dark': '#1a1a1a',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',

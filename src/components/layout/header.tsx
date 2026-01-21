@@ -1,53 +1,33 @@
 import { useState, useEffect } from "react"
-import { Link, useLocation } from "react-router-dom"
-import { ExternalLink } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-
-const navigation = [
-  { name: "Projects", href: "/projects" },
-]
+import { Link } from "react-router-dom"
+import { Sun, Moon } from "lucide-react"
+import { useTheme } from "next-themes"
 
 export function Header() {
-  const location = useLocation()
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMinimal, setIsMinimal] = useState(true)
+  const [mounted, setMounted] = useState(false)
+  const { theme, setTheme } = useTheme()
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10)
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+    setMounted(true)
   }, [])
 
-  const togglePortfolio = undefined
-
   return (
-    <header
-      className={cn(
-        "sticky top-0 z-50 w-full transition-all duration-200",
-        isScrolled
-          ? "bg-background/95 backdrop-blur-sm border-b shadow-sm"
-          : "bg-transparent"
-      )}
-    >
-      <div className="max-w-6xl mx-auto px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo/Name */}
+    <header className="fixed top-0 left-0 right-0 z-50 bg-cream dark:bg-cream-dark border-b border-black dark:border-white">
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="flex items-center justify-between h-14">
+          {/* Logo */}
           <Link
             to="/"
-            className="text-lg font-semibold text-foreground hover:text-primary transition-colors"
+            className="text-sm font-medium tracking-wide hover:opacity-60 transition-opacity"
           >
             Sri Nikitha T
           </Link>
 
           {/* Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
+          <nav className="flex items-center gap-8">
             <Link
               to="/projects"
-              className="text-sm font-medium transition-colors hover:text-primary"
+              className="text-sm hover:opacity-60 transition-opacity hidden sm:block"
             >
               Projects
             </Link>
@@ -55,20 +35,31 @@ export function Header() {
               href="https://devopsforpms.substack.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium transition-colors hover:text-primary flex items-center gap-1"
+              className="text-sm hover:opacity-60 transition-opacity hidden sm:block"
             >
-              Devops for Product Managers
-              <ExternalLink className="h-3 w-3" />
+              Newsletter
             </a>
-            <Button
-              variant="default"
-              size="sm"
-              asChild
+            <Link
+              to="/work-with-me"
+              className="text-sm px-4 py-1.5 border border-black dark:border-white rounded-full hover:bg-black hover:text-cream dark:hover:bg-white dark:hover:text-cream-dark transition-colors"
             >
-              <Link to="/work-with-me">
-                Work with me
-              </Link>
-            </Button>
+              Hire me
+            </Link>
+            
+            {/* Theme Toggle */}
+            {mounted && (
+              <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="p-2 hover:opacity-60 transition-opacity"
+                aria-label="Toggle theme"
+              >
+                {theme === "dark" ? (
+                  <Sun className="h-4 w-4" />
+                ) : (
+                  <Moon className="h-4 w-4" />
+                )}
+              </button>
+            )}
           </nav>
         </div>
       </div>

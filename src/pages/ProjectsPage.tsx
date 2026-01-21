@@ -1,4 +1,5 @@
 import { ProjectCard } from "@/components/project-card";
+import { Footer } from "@/components/layout/footer";
 
 const allProjects = [
   {
@@ -18,40 +19,45 @@ const allProjects = [
   {
     id: 6,
     name: "Advaita Birthday",
-    description: "A fun, interactive birthday website featuring dinosaur-themed games and activities including bubble popping, spinner games, dancing animations, drawing tools, and typing games.",
-    techStack: ["Next.js", "React", "Tailwind CSS", "Framer Motion", "TypeScript"],
+    description: "A fun, interactive birthday website featuring dinosaur-themed games and activities including bubble popping, spinner games, and drawing tools.",
+    techStack: ["Next.js", "React", "Tailwind CSS", "TypeScript"],
     link: "https://happy-birthday-advaita.vercel.app/"
   },
   {
     id: 7,
     name: "Know Your Architecture",
     description: "An interactive architecture visualization tool that helps understand and explore system architectures through visual representations.",
-    techStack: ["JavaScript", "CSS", "HTML", "Web Visualization"],
+    techStack: ["JavaScript", "CSS", "HTML"],
     link: "https://github.com/t-srinikitha/know-your-architecture"
   },
   {
     id: 8,
     name: "The Green Indian Wedding Toolkit",
-    description: "A comprehensive toolkit and resource guide for planning environmentally conscious Indian weddings, providing practical tips, checklists, and sustainable alternatives.",
-    techStack: ["Sustainability", "Content", "Resource Toolkit", "Wedding Planning"],
+    description: "A comprehensive toolkit and resource guide for planning environmentally conscious Indian weddings.",
+    techStack: ["Sustainability", "Content", "Resource Toolkit"],
     link: "https://www.notion.so/The-Green-Indian-Wedding-Toolkit-9081b8732ff54248b1f369f591a51929"
   }
 ];
 
 export default function ProjectsPage() {
   return (
-    <div className="min-h-screen bg-black text-white">
-      <div className="max-w-6xl mx-auto px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2 text-white">Projects</h1>
+    <div className="min-h-screen">
+      <div className="max-w-4xl mx-auto px-6 py-20">
+        <div className="mb-12">
+          <h1 className="text-3xl font-bold mb-2">Projects</h1>
+          <p className="text-sm opacity-60">
+            Side projects and experiments
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {allProjects.map((project) => (
             <ProjectCard key={project.id} {...project} />
           ))}
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }
