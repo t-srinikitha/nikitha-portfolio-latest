@@ -9,7 +9,7 @@ import { Toaster } from "./components/ui/sonner";
 
 function App() {
   return (
-    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
       <Router>
         <Layout>
           <Routes>
