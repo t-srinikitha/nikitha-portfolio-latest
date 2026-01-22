@@ -45,7 +45,7 @@ export default function MinimalPortfolio() {
             <p className="text-sm leading-relaxed opacity-70 max-w-lg">
               Problem solver with 8+ years of experience building products 
               from 0→1→scale across government, manufacturing, and developer tools.
-              IIT Kharagpur & Ashoka University.
+              IIT Kharagpur & Ashoka University alumnus.
             </p>
 
             {/* CTA */}
@@ -122,7 +122,7 @@ export default function MinimalPortfolio() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="p-6 border border-black/20 dark:border-white/20">
-            <h3 className="font-medium mb-2">User-Obsessed Discovery</h3>
+            <h3 className="font-medium mb-2">User-centric approach</h3>
             <p className="text-sm opacity-70">
               I talk to users and understand their problems deeply before building anything.
             </p>
@@ -146,20 +146,39 @@ export default function MinimalPortfolio() {
         <h2 className="text-sm font-medium mb-8 opacity-60">Key Milestones</h2>
 
         <div className="space-y-8">
-          {/* Telangana */}
+          {/* DrDroid */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
             <div className="md:col-span-1">
-              <p className="text-xs opacity-50">Telangana Government</p>
+              <p className="text-xs opacity-50">DrDroid (YC-backed)</p>
             </div>
             <div className="md:col-span-3">
-              <h3 className="font-medium mb-2">Grassroots Innovation Policy</h3>
+              <h3 className="font-medium mb-2">Building AI Agents</h3>
               <p className="text-sm opacity-70 mb-3">
-                Designed India's first state-level Grassroots Innovation Policy. 
-                Programs still running across 31 districts. Featured in Netflix documentary.
+                Leading product strategy for an AI SRE agent that automates debugging 
+                and incident resolution. From user research to shipping AI-powered automation.
               </p>
               <div className="flex flex-wrap gap-2">
-                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">Policy Design</span>
-                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">31 Districts</span>
+                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">AI/ML</span>
+                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">SRE Automation</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Facets */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
+            <div className="md:col-span-1">
+              <p className="text-xs opacity-50">Facets.cloud</p>
+            </div>
+            <div className="md:col-span-3">
+              <h3 className="font-medium mb-2">Product Leadership</h3>
+              <p className="text-sm opacity-70 mb-3">
+                Scaled from 0 to $410K ARR. 
+                Built product-market fit with 15+ enterprise customers and 500+ users.
+                Conducted 100+ user interviews for product feedback and feature prioritization.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">$410K ARR</span>
+                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">15 Customers</span>
               </div>
             </div>
           </div>
@@ -182,20 +201,21 @@ export default function MinimalPortfolio() {
             </div>
           </div>
 
-          {/* Facets */}
+          {/* Telangana */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
             <div className="md:col-span-1">
-              <p className="text-xs opacity-50">Facets.cloud</p>
+              <p className="text-xs opacity-50">Telangana Government</p>
             </div>
             <div className="md:col-span-3">
-              <h3 className="font-medium mb-2">Product Leadership</h3>
+              <h3 className="font-medium mb-2">State-wide Entrepreneurship Programs</h3>
               <p className="text-sm opacity-70 mb-3">
-                Scaled from 0 to $410K ARR. 
-                Built product-market fit with 15 enterprise customers.
+                Designed innovation courses across 31 districts. Telangana became India's first 
+                state with a Grassroots Innovation Policy. Two innovators received Padma Shri, 
+                one featured in a Netflix movie.
               </p>
               <div className="flex flex-wrap gap-2">
-                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">$410K ARR</span>
-                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">15 Customers</span>
+                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">Policy Design</span>
+                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">31 Districts</span>
               </div>
             </div>
           </div>
@@ -213,21 +233,20 @@ export default function MinimalPortfolio() {
         
         <div className="max-w-2xl space-y-4 text-sm leading-relaxed opacity-80">
           <p>
-            When I was 15, my father told me the story of Sintex — a company manufacturing 
-            plastic pipes about to go bankrupt. They recruited an IITian who built an 
-            overhead tank and disrupted the market.
+            When I was 15, my father told me the story of Sintex — a pipe manufacturer 
+            pivoted to making overhead tanks because of an idea from an IITian.
           </p>
           <p>
-            My father said I should become that IITian. I thought IITians are the only 
-            problem solvers. So I strived to become exactly that.
+            My father said I should become that IITian. So I did.
           </p>
           <p>
-            First generation to earn an IIT degree and a liberal arts degree. 
-            Worked across manufacturing, government, sustainability, B2B SaaS, and developer tools.
+            But at IIT, I realized most problems aren't solved with just better engineering — 
+            they need better understanding. So I went to Ashoka University to learn how to 
+            think in systems, not just solutions.
           </p>
           <p>
-            Two spinal surgeries. Complicated pregnancy. Became a mother. 
-            Now consulting for <strong>DrDroid</strong> (YC-backed) — an AI SRE agent.
+            Now I ship across government, manufacturing, and developer tools. Different 
+            industries, same approach: understand the system, then build.
           </p>
         </div>
       </section>
