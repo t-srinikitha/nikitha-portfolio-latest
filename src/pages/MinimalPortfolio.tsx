@@ -130,7 +130,7 @@ export default function MinimalPortfolio() {
           <div className="p-6 border border-black/20 dark:border-white/20">
             <h3 className="font-medium mb-2">From Zero to Product</h3>
             <p className="text-sm opacity-70">
-              Earlier building policies, now building products with AI. It feels empowering.
+              Earlier built policies, now building products with AI. It feels empowering.
             </p>
           </div>
         </div>
@@ -170,7 +170,7 @@ export default function MinimalPortfolio() {
               <p className="text-xs opacity-50">Facets.cloud</p>
             </div>
             <div className="md:col-span-3">
-              <h3 className="font-medium mb-2">Product Leadership</h3>
+              <h3 className="font-medium mb-2">Product Management</h3>
               <p className="text-sm opacity-70 mb-3">
                 Scaled from 0 to $410K ARR. 
                 Built product-market fit with 15+ enterprise customers and 500+ users.
