@@ -42,7 +42,7 @@ const allProjects = [
     name: "Letter to Self",
     description: "A reflective journaling app for writing letters to your future self.",
     techStack: ["Next.js", "React", "TypeScript"],
-    link: "https://letter-to-self-t-srinikithas-projects.vercel.app/"
+    link: "/letter-to-self"
   }
 ];
 
