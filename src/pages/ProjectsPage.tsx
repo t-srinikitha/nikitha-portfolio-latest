@@ -36,6 +36,13 @@ const allProjects = [
     description: "Creates weekly meal plans for families based on dietary requirements, preferences, and available ingredients.",
     techStack: ["Health & Wellness", "AI/ML", "Consumer App"],
     link: "#"
+  },
+  {
+    id: 6,
+    name: "Letter to Self",
+    description: "A reflective journaling app for writing letters to your future self.",
+    techStack: ["Next.js", "React", "TypeScript"],
+    link: "https://letter-to-self-t-srinikithas-projects.vercel.app/"
   }
 ];
 
