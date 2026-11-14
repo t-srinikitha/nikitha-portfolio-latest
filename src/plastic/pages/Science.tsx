@@ -2,20 +2,20 @@ import { stage0Done } from "../data";
 import { Block, Callout, NextLinks, PageHead, Src } from "../ui";
 
 const steps = [
-  { n: "01", t: "Sample", b: "Water drawn from the batch or line." },
-  { n: "02", t: "Filter", b: "A cartridge membrane traps particles." },
-  { n: "03", t: "Stain", b: "Dyes mark plastic particles apart from natural ones." },
-  { n: "04", t: "Image and count", b: "Microscope and optical filters image the membrane. AI counts stained particles." },
+  { n: "01", t: "Sample", b: "Water is drawn from the production batch or line." },
+  { n: "02", t: "Filter", b: "A membrane within the cartridge captures particles." },
+  { n: "03", t: "Stain", b: "Differential dyes distinguish plastic particles from natural particles." },
+  { n: "04", t: "Image and count", b: "A microscope with optical filters images the membrane. AI software counts the stained particles." },
 ];
 
 const compare = [
   ["Time to result", "72 hours+", "20–30 minutes"],
-  ["Where", "External lab", "On site"],
-  ["Who runs it", "Spectroscopy specialist", "Plant QC team"],
+  ["Location", "External laboratory", "On site"],
+  ["Operator", "Spectroscopy specialist", "Plant quality-control staff"],
   ["Cost per test", "₹3,000–5,000", "₹1,000–2,000 cartridge"],
-  ["Equipment to buy", "~₹1.5 Cr: Raman spectrometer + lab equipment", "₹3–4.5 L device"],
-  ["Tells you", "Polymer identity and count", "Microplastic count"],
-  ["Role", "Reference and confirmation", "Routine screening"],
+  ["Capital equipment", "~₹1.5 crore: Raman spectrometer and laboratory equipment", "₹3–4.5 lakh analyser"],
+  ["Output", "Polymer identity and count", "Microplastic count"],
+  ["Application", "Reference and confirmation", "Routine screening"],
 ];
 
 function Membrane() {
@@ -54,17 +54,17 @@ export default function Science() {
   return (
     <>
       <PageHead
-        kicker="PlasticOptics · Science"
-        title="Science"
+        kicker="PlasticOptics · Technology"
+        title="Technical Approach"
         lede={
           <p>
-            Spectroscopy identifies each particle chemically. It is slow and expensive. PlasticOptics counts plastic
-            particles with dyes, optics and software. Low cost. On site.
+            Spectroscopy identifies each particle chemically, which makes it slow and costly. PlasticOptics quantifies
+            plastic particles using dyes, optics and software, at low cost and on site.
           </p>
         }
       />
 
-      <Block id="method" tag="Method" title="Method">
+      <Block id="method" tag="Method" title="Measurement Method">
         <div className="grid md:grid-cols-[1fr_240px] gap-8 items-center">
           <ol className="grid gap-5">
             {steps.map((s) => (
@@ -79,12 +79,12 @@ export default function Science() {
           </ol>
           <figure className="flex flex-col items-center gap-2">
             <Membrane />
-            <figcaption className="text-[12px] muted text-center">Illustration. Stained plastics fluoresce.</figcaption>
+            <figcaption className="text-[12px] muted text-center">Illustration: stained plastic particles fluoresce.</figcaption>
           </figure>
         </div>
       </Block>
 
-      <Block id="compare" tag="Comparison" title="Versus spectroscopy">
+      <Block id="compare" tag="Comparison" title="Comparison with Spectroscopy">
         <div className="overflow-x-auto -mx-6 md:mx-0 px-6 md:px-0">
           <table className="po-table min-w-[520px]">
             <thead>
@@ -110,8 +110,8 @@ export default function Science() {
       <Block
         id="validation"
         tag="Stage 0"
-        title="Validation"
-        intro={<p>Same samples, two methods: ours and Raman/FTIR. Research collaborators: Prof. Sarit S. Agasti (JNCASR) and Prof. Suryasarathi Bose (IISc).</p>}
+        title="Validation Plan"
+        intro={<p>Each sample is analysed by both PlasticOptics and Raman/FTIR. Research collaborators: Prof. Sarit S. Agasti (JNCASR) and Prof. Suryasarathi Bose (IISc).</p>}
       >
         <ol className="grid gap-3">
           {stage0Done.map((d, i) => (
@@ -123,9 +123,9 @@ export default function Science() {
         </ol>
         <div className="mt-8 grid sm:grid-cols-3 gap-px bg-[var(--po-line)] border hair">
           {[
-            ["Iron", "Iron particles must not count as plastic."],
-            ["Organics", "Organic matter can bind dyes. Staining must separate it."],
-            ["Turbidity", "Suspended solids can hide particles."],
+            ["Iron", "Iron particles must be excluded from plastic counts."],
+            ["Organics", "Organic matter can bind dyes; differential staining must distinguish it."],
+            ["Turbidity", "Suspended solids can obscure particles."],
           ].map(([t, b]) => (
             <div key={t} className="bg-[var(--po-paper)] p-4">
               <div className="font-medium">{t}</div>
@@ -138,8 +138,8 @@ export default function Science() {
       <Block
         id="standards"
         tag="Regulation"
-        title="Standards"
-        intro={<p>Results must map to official size classes.</p>}
+        title="Regulatory Size Classes"
+        intro={<p>Results must align with official size classifications.</p>}
       >
         <table className="po-table">
           <thead>
@@ -168,21 +168,21 @@ export default function Science() {
         </table>
       </Block>
 
-      <Block id="removal" tag="Removal" title="Removal chemistry">
+      <Block id="removal" tag="Removal" title="Removal Chemistry">
         <p className="ink2 max-w-[62ch]">
-          Metal-phenolic networks (tamarind, iron) bind microplastics. Proven at millilitre scale only. Scaling to cubic
-          metres per hour is the hardest step in the plan.
+          Metal-phenolic networks (tamarind and iron) bind microplastics, but have been demonstrated only at millilitre
+          scale. Scaling to cubic metres per hour is the principal technical challenge in the plan.
         </p>
         <div className="mt-6">
-          <Callout tone="accent">Removal requires measurement. Detection comes first.</Callout>
+          <Callout tone="accent">Removal depends on measurement. Detection is therefore developed first.</Callout>
         </div>
       </Block>
 
-      <Block id="read-next" tag="More">
+      <Block id="read-next" tag="Further reading">
         <NextLinks
           items={[
-            { to: "/plastic/roadmap", title: "Roadmap", body: "Detection to removal." },
-            { to: "/plastic/numbers", title: "Numbers", body: "P&L and break-even model." },
+            { to: "/plastic/roadmap", title: "Product Roadmap", body: "Development path from detection to removal." },
+            { to: "/plastic/numbers", title: "Financial Model", body: "Financial model and break-even analysis." },
           ]}
         />
       </Block>

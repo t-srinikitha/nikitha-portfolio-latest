@@ -42,14 +42,14 @@ function ArcCard({ n, name, body, gate, capital, track, newTech, current, when }
           {n}
         </span>
         <h3 className="font-medium text-[16px] leading-tight">{name}</h3>
-        {current && <span className="ml-auto chip !bg-[var(--po-lime)] !text-black">Now</span>}
+        {current && <span className="ml-auto chip !bg-[var(--po-lime)] !text-black">Current</span>}
       </div>
       {when && <div className="mono text-[11.5px] muted">{when}</div>}
       <p className="text-[13.5px] ink2 leading-relaxed">{body}</p>
       <dl className="mt-auto pt-2 grid gap-1.5 text-[13px]">
         {gate && (
           <div>
-            <dt className="mono text-[10px] uppercase tracking-wide muted">Next stage when</dt>
+            <dt className="mono text-[10px] uppercase tracking-wide muted">Gate to next stage</dt>
             <dd>{gate}</dd>
           </div>
         )}
@@ -88,31 +88,33 @@ export default function Roadmap() {
     <>
       <PageHead
         kicker="PlasticOptics · Roadmap"
-        title="Roadmap"
+        title="Product Roadmap"
         lede={
           <p>
-            Goal: industrial-scale removal of microplastics from drinking water. It needs continuous detection and
-            plant-scale removal chemistry. Neither exists today. Detection comes first. Removal depends on measurement.
+            The long-term objective is industrial-scale removal of microplastics from drinking water. This requires
+            continuous detection and removal chemistry that operates at plant volumes. Neither is available today.
+            Detection is developed first, as removal must be dosed and verified against measurement.
           </p>
         }
       />
 
-      <Block id="arc" tag="Stages" title="Stages 0–6">
+      <Block id="arc" tag="Stages" title="Development Stages">
         <div className="grid gap-4">
-          <Band label="DETECT · BATCH" color="var(--po-detect)">
+          <Band label="DETECTION · BATCH" color="var(--po-detect)">
             <div className="grid md:grid-cols-3 gap-3">
               {near.map((s) => (
                 <ArcCard key={s.n} {...s} track="detect" />
               ))}
             </div>
           </Band>
-          <Band label="DETECT · CONTINUOUS" color="var(--po-detect)">
+          <Band label="DETECTION · CONTINUOUS" color="var(--po-detect)">
             <ArcCard {...longArc[0]} n={String(longArc[0].n)} />
           </Band>
           <p className="text-[12.5px] muted px-1">
-            ↓ The inline monitor controls removal. It measures, doses and verifies.
+            ↓ The inline monitor serves as the control system for removal. It measures inflow, sets dosage and verifies
+            output.
           </p>
-          <Band label="REMOVE" color="var(--po-accent)">
+          <Band label="REMOVAL" color="var(--po-accent)">
             <div className="grid md:grid-cols-2 gap-3">
               {longArc.slice(1, 3).map((s) => (
                 <ArcCard key={s.n} {...s} n={String(s.n)} />
@@ -121,11 +123,11 @@ export default function Roadmap() {
           </Band>
           <ArcCard {...longArc[3]} n={String(longArc[3].n)} />
         </div>
-        <p className="mt-4 text-[12.5px] muted">Dashed outline: new technology required.</p>
+        <p className="mt-4 text-[12.5px] muted">Dashed outlines indicate stages that require new technology.</p>
       </Block>
 
-      <Block id="capital" tag="Capital" title="Capital by stage">
-        <Figure title="Estimated capital, ₹" note="Log scale. Stages 3–5 are estimates.">
+      <Block id="capital" tag="Capital" title="Capital Requirements">
+        <Figure title="Estimated capital, ₹" note="Logarithmic scale. Figures for Stages 3–5 are preliminary estimates.">
           <Axis labels={[[0, "₹1 L"], [25, "₹10 L"], [50, "₹1 Cr"], [75, "₹10 Cr"], [100, "₹100 Cr"]]} />
           <div className="grid gap-2">
             {capitalByStage.map((c) => {
@@ -152,14 +154,15 @@ export default function Roadmap() {
       <Block
         id="long-range-economics"
         tag="Long-range economics"
-        title="Target unit economics"
+        title="Target Unit Economics"
         intro={
           <p>
-            Targets at production volume. Prices set by value to the plant. Validated with buyers before each stage.
+            Targets at production volume. Pricing reflects value to the plant and will be validated with buyers before each
+            stage.
           </p>
         }
       >
-        <Figure title="Target cost and price per product" note="Bar = price. Colour = cost. Grey = gross margin.">
+        <Figure title="Target cost and price per product" note="Each bar represents price. Coloured segments represent cost; grey represents gross margin.">
           <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-[12px] mb-5">
             {costKeys.map((k, i) => (
               <span key={k} className="inline-flex items-center gap-1.5">
@@ -209,11 +212,11 @@ export default function Roadmap() {
       <Block
         id="cost-down"
         tag="Cost-down"
-        title="Cost-down"
-        intro={<p>Consumables per test, bench to volume. The P&L uses ₹400 per cartridge. These cuts are upside.</p>}
+        title="Cost Reduction"
+        intro={<p>Consumables per test, from current bench cost to the target at volume. The financial model assumes ₹400 per cartridge; these reductions are not included.</p>}
       >
         <div className="grid gap-6">
-          <Figure title="Consumables per test: bench today → target" note="₹193 → ₹60. 69% lower.">
+          <Figure title="Consumables per test: bench today → target" note="From ₹193 to ₹60, a reduction of 69%.">
             <Axis labels={[[0, "₹0"], [25, "₹50"], [50, "₹100"], [75, "₹150"], [100, "₹200"]]} />
             <div className="grid gap-2">
               {testCostSteps.map((s) => {
@@ -236,7 +239,7 @@ export default function Roadmap() {
             </div>
           </Figure>
 
-          <Figure title="Cost reduction levers" note="Reduction in unit cost. Levers overlap; cuts do not add.">
+          <Figure title="Cost reduction levers" note="Reduction in unit cost by stage. Levers overlap; reductions are not additive.">
             <Axis labels={[[0, "0%"], [33.33, "10%"], [66.67, "20%"], [100, "30%"]]} />
             <div className="grid gap-2">
               {levers.map((l) => (
@@ -255,7 +258,7 @@ export default function Roadmap() {
         </div>
       </Block>
 
-      <Block id="beyond-water" tag="Beyond water" title="Food and air">
+      <Block id="beyond-water" tag="Beyond water" title="Food and Air Applications">
         <div className="grid md:grid-cols-2 gap-4">
           {surfaces.slice(1).map((s) => (
             <div key={s.name} className="border hair bg-[var(--po-paper)] p-5">
@@ -268,18 +271,18 @@ export default function Roadmap() {
           ))}
         </div>
         <div className="mt-6">
-          <Callout tone="accent">Food is the largest revenue opportunity. Salt R&D starts in Stage 2.</Callout>
+          <Callout tone="accent">Food represents the largest long-term revenue opportunity. Salt R&D begins in Stage 2.</Callout>
         </div>
         <p className="mt-6 text-[13.5px] muted">
           <Link to="/plastic" className="ulink">Overview</Link>
         </p>
       </Block>
 
-      <Block id="read-next" tag="More">
+      <Block id="read-next" tag="Further reading">
         <NextLinks
           items={[
-            { to: "/plastic/science", title: "Science", body: "Method and validation." },
-            { to: "/plastic/market", title: "Go-to-market", body: "Customer, value, timing, risks." },
+            { to: "/plastic/science", title: "Technical Approach", body: "Method, validation and standards." },
+            { to: "/plastic/market", title: "Go-to-Market Strategy", body: "Customers, value proposition, regulation and risk." },
           ]}
         />
       </Block>

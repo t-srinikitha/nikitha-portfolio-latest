@@ -2,21 +2,21 @@ import { fundingPath, market, objective, pathToMarket, risks, unknowns, whyNow, 
 import { Block, Callout, NextLinks, PageHead, Src } from "../ui";
 
 const segments = [
-  { name: "Packaged drinking-water plants", size: `${market.licensedPlants.toLocaleString("en-IN")}+ BIS-licensed in India`, when: "First" },
-  { name: "Beverage bottling plants", size: "Same RO and filtration exposure", when: "First" },
-  { name: "Testing labs", size: "Screening before Raman/FTIR", when: "Next" },
-  { name: "Water utilities", size: "After inline monitoring", when: "Later" },
+  { name: "Packaged drinking water plants", size: `${market.licensedPlants.toLocaleString("en-IN")}+ BIS-licensed in India`, when: "Phase 1" },
+  { name: "Beverage bottling plants", size: "Same RO and filtration exposure", when: "Phase 1" },
+  { name: "Testing laboratories", size: "Screening prior to Raman/FTIR", when: "Phase 2" },
+  { name: "Water utilities", size: "Following inline monitoring", when: "Phase 3" },
 ];
 
 export default function Market() {
   return (
     <>
       <PageHead
-        kicker="PlasticOptics · Go-to-market"
-        title="Go-to-market"
+        kicker="PlasticOptics · Go-to-Market"
+        title="Go-to-Market Strategy"
         lede={
           <p>
-            Customer, value, timing, path to revenue and key risks.
+            Target customers, value proposition, regulatory context, market entry plan and principal risks.
           </p>
         }
       />
@@ -27,7 +27,7 @@ export default function Market() {
             <tr>
               <th>Segment</th>
               <th>Detail</th>
-              <th className="r">When</th>
+              <th className="r">Stage</th>
             </tr>
           </thead>
           <tbody>
@@ -36,7 +36,7 @@ export default function Market() {
                 <td className="font-medium">{s.name}</td>
                 <td className="ink2">{s.size}</td>
                 <td className="r">
-                  <span className={`mono text-[11px] px-1.5 py-0.5 ${s.when === "First" ? "bg-[var(--po-ink)] text-[var(--po-bg)]" : "bg-[var(--po-chip)]"}`}>
+                  <span className={`mono text-[11px] px-1.5 py-0.5 ${s.when === "Phase 1" ? "bg-[var(--po-ink)] text-[var(--po-bg)]" : "bg-[var(--po-chip)]"}`}>
                     {s.when}
                   </span>
                 </td>
@@ -47,12 +47,12 @@ export default function Market() {
         <div className="mt-6 grid sm:grid-cols-2 gap-4 text-[14px]">
           <div>
             <div className="mono text-[10.5px] uppercase tracking-wide muted">User</div>
-            <p className="mt-1">Plant QC team. No spectroscopy training.</p>
+            <p className="mt-1">Plant quality-control staff. No spectroscopy training is required.</p>
           </div>
           <div>
             <div className="mono text-[10.5px] uppercase tracking-wide muted">First pilot</div>
             <p className="mt-1">
-              {objective.pilot} Packaged water made from air. <Src id="uravu" />
+              {objective.pilot} Producer of packaged drinking water from air. <Src id="uravu" />
             </p>
           </div>
         </div>
@@ -61,31 +61,31 @@ export default function Market() {
       <Block
         id="value"
         tag="Why a plant pays"
-        title="Value to the plant"
+        title="Value Proposition"
         intro={
           <p>
-            Annual cost of daily testing. 360 tests a year.
+            Annual cost of daily testing at 360 tests per year, under each approach.
           </p>
         }
       >
         <div className="grid md:grid-cols-2 gap-4">
           <div className="border hair bg-[var(--po-paper)] p-5">
-            <div className="mono text-[10.5px] uppercase tracking-wide muted">External lab · FTIR / Raman</div>
+            <div className="mono text-[10.5px] uppercase tracking-wide muted">External laboratory · FTIR / Raman</div>
             <div className="num text-[28px] mt-2">₹10.8–18 L</div>
             <div className="text-[13px] muted">a year · 360 tests × ₹3,000–5,000</div>
             <ul className="mt-4 text-[13.5px] grid gap-1.5 ink2">
-              <li>72 hours+ to result</li>
-              <li>Samples shipped to external labs</li>
-              <li>Batch ships before the result</li>
+              <li>Results in 72 hours or more</li>
+              <li>Samples shipped to external laboratories</li>
+              <li>Results arrive after the batch has shipped</li>
             </ul>
           </div>
           <div className="border-2 border-[var(--po-ink)] bg-[var(--po-paper)] p-5">
-            <div className="mono text-[10.5px] uppercase tracking-wide muted">PlasticOptics · on site</div>
+            <div className="mono text-[10.5px] uppercase tracking-wide muted">PlasticOptics · On site</div>
             <div className="num text-[28px] mt-2">₹6.6–11.7 L</div>
             <div className="text-[13px] muted">year one · ₹3–4.5 L device + 360 × ₹1,000–2,000</div>
             <ul className="mt-4 text-[13.5px] grid gap-1.5 ink2">
-              <li>20–30 minutes to result</li>
-              <li>Run on site by the QC team</li>
+              <li>Results in 20–30 minutes</li>
+              <li>Performed on site by quality-control staff</li>
               <li>
                 <span className="num">₹3.6–7.2 L</span> a year after year one
               </li>
@@ -93,15 +93,15 @@ export default function Market() {
           </div>
         </div>
         <p className="mt-5 text-[13.5px] muted max-w-[66ch]">
-          Core value: the result arrives before the batch ships.
+          Results are available before the batch leaves the plant.
         </p>
       </Block>
 
       <Block
         id="why-now"
         tag="Why now"
-        title="Regulation"
-        intro={<p>Regulators are setting the first methods and requirements.</p>}
+        title="Regulatory Context"
+        intro={<p>Regulators have begun to establish methods and requirements for microplastic measurement.</p>}
       >
         <ol className="border-l hair ml-1.5">
           {whyNow.map((w) => (
@@ -124,13 +124,13 @@ export default function Market() {
         </ol>
         <div className="mt-8">
           <Callout>
-            All current methods rely on spectroscopy. Routine monitoring needs a fast on-site screen. Spectroscopy remains
-            for confirmation.
+            All current methods rely on spectroscopy. Routine monitoring will require a rapid on-site screening method,
+            with spectroscopy retained for confirmation.
           </Callout>
         </div>
       </Block>
 
-      <Block id="path" tag="Path to market" title="Four steps">
+      <Block id="path" tag="Market entry" title="Market Entry Plan">
         <ol className="grid md:grid-cols-2 gap-px bg-[var(--po-line)] border hair">
           {pathToMarket.map((p, i) => (
             <li key={p.step} className="bg-[var(--po-paper)] p-5">
@@ -148,16 +148,16 @@ export default function Market() {
       <Block
         id="what-must-be-true"
         tag="What has to be true"
-        title="Key risks"
-        intro={<p>Each risk has a test and a stage. Stage 0 addresses technical and cost risk for ₹23.8 lakh.</p>}
+        title="Principal Risks"
+        intro={<p>Each risk is paired with a validation test and a stage. Stage 0 addresses technical and cost risk.</p>}
       >
         <div className="overflow-x-auto -mx-6 md:mx-0 px-6 md:px-0">
           <table className="po-table min-w-[560px]">
             <thead>
               <tr>
                 <th>Risk</th>
-                <th>Test</th>
-                <th className="r">When</th>
+                <th>Validation</th>
+                <th className="r">Stage</th>
               </tr>
             </thead>
             <tbody>
@@ -173,7 +173,7 @@ export default function Market() {
         </div>
       </Block>
 
-      <Block id="funding" tag="Funding" title="Funding path">
+      <Block id="funding" tag="Funding" title="Funding Plan">
         <ol className="grid sm:grid-cols-4 gap-px bg-[var(--po-line)] border hair">
           {fundingPath.map((f) => (
             <li key={f.label} className="bg-[var(--po-paper)] p-4">
@@ -185,7 +185,7 @@ export default function Market() {
         </ol>
       </Block>
 
-      <Block id="unknowns" tag="Open questions" title="Open questions">
+      <Block id="unknowns" tag="Open questions" title="Open Questions">
         <ul className="grid gap-3">
           {unknowns.map((u) => (
             <li key={u} className="grid grid-cols-[18px_1fr] gap-2 text-[15px]">
@@ -196,11 +196,11 @@ export default function Market() {
         </ul>
       </Block>
 
-      <Block id="read-next" tag="More">
+      <Block id="read-next" tag="Further reading">
         <NextLinks
           items={[
-            { to: "/plastic/numbers", title: "Numbers", body: "P&L and break-even model." },
-            { to: "/plastic/roadmap", title: "Roadmap", body: "Detection to removal." },
+            { to: "/plastic/numbers", title: "Financial Model", body: "Financial model and break-even analysis." },
+            { to: "/plastic/roadmap", title: "Product Roadmap", body: "Development path from detection to removal." },
           ]}
         />
       </Block>
