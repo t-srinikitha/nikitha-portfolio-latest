@@ -36,15 +36,15 @@ export default function Overview() {
     <>
       <PageHead
         kicker="PlasticOptics · Overview"
-        title="Microplastics in drinking water, counted at the plant in 30 minutes."
+        title="Microplastics, counted at the plant."
         lede={
           <>
             <p>
-              <span className="text-[var(--po-ink)]">The goal:</span> {goal.charAt(0).toLowerCase() + goal.slice(1)}
+              <span className="text-[var(--po-ink)]">Goal:</span> {goal}
             </p>
             <p className="mt-3">
-              The first product is a benchtop device and a single-use test cartridge that let a bottling plant's own
-              quality-control team count microplastics in every batch, instead of waiting three days for a lab.
+              First product: a benchtop device and a single-use cartridge. Plant QC teams test every batch in 20–30
+              minutes.
             </p>
           </>
         }
@@ -54,7 +54,7 @@ export default function Overview() {
         <KeyNumbers inline />
       </div>
 
-      <Block id="where-to-start" tag="Where to start" title="Water first. The method extends to food and air.">
+      <Block id="where-to-start" tag="Where to start" title="Water first">
         <div className="grid md:grid-cols-3 gap-px bg-[var(--po-line)] border hair">
           {surfaces.map((s, i) => (
             <div key={s.name} className="bg-[var(--po-paper)] p-5">
@@ -76,7 +76,7 @@ export default function Overview() {
         <p className="mt-6 ink2 max-w-[62ch]">{whereToStart}</p>
       </Block>
 
-      <Block id="who-pays" tag="Who pays and why" title={whoPays.who} intro={<p>{whoPays.why}</p>}>
+      <Block id="who-pays" tag="Customer" title={whoPays.who} intro={<p>{whoPays.why}</p>}>
         <p className="font-medium">{today.method}</p>
         <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
           {today.facts.map((f) => (
@@ -90,14 +90,14 @@ export default function Overview() {
         </div>
       </Block>
 
-      <Block id="objective" tag="Objective" title="A benchtop device any QC team can run." intro={<p>{objective.text}</p>}>
+      <Block id="objective" tag="Product" title="Benchtop device" intro={<p>{objective.text}</p>}>
         <dl className="grid md:grid-cols-3 gap-px bg-[var(--po-line)] border hair text-[14px]">
           <div className="bg-[var(--po-paper)] p-5">
             <dt className="mono text-[10.5px] uppercase tracking-wide muted">How</dt>
             <dd className="mt-1.5">{objective.how}</dd>
             <dd className="mt-3">
               <Link to="/plastic/science" className="ulink text-[13px] muted">
-                How the method works
+                Method
               </Link>
             </dd>
           </div>
@@ -112,7 +112,7 @@ export default function Overview() {
         </dl>
       </Block>
 
-      <Block id="stages" tag="Tech & business stages" title="Three stages, from proof to revenue.">
+      <Block id="stages" tag="Stages" title="Three stages">
         <ol className="border-t hair">
           {stages.map((s) => (
             <li key={s.n} className="grid grid-cols-[44px_1fr] md:grid-cols-[56px_1fr_170px] gap-x-4 gap-y-2 py-5 border-b hair">
@@ -134,19 +134,18 @@ export default function Overview() {
           ))}
         </ol>
         <p className="mt-5 text-[13.5px] muted">
-          After Stage 2 the plan moves from detection to removal.{" "}
+          After Stage 2: removal.{" "}
           <Link to="/plastic/roadmap" className="ulink">
-            See the full roadmap
+            Roadmap
           </Link>
-          .
         </p>
       </Block>
 
       <Block
         id="unit-economics"
         tag="Unit economics"
-        title="A device once. A cartridge every test."
-        intro={<p>The cartridge is used up in every test, so a plant testing batch after batch keeps buying them.</p>}
+        title="Device and cartridge"
+        intro={<p>One device per plant. One cartridge per test.</p>}
       >
         <div className="grid md:grid-cols-2 gap-4">
           <div className="border hair bg-[var(--po-paper)]">
@@ -200,16 +199,13 @@ export default function Overview() {
         </div>
 
         <p className="mt-4 text-[13px] muted max-w-[68ch]">
-          ₹400 is the planning cost of a finished cartridge. Only ₹193 of it is consumables at the lab bench today; the rest
-          is an allowance for the housing, assembly, quality checks and delivery a lab bench doesn't need. At volume, the
-          consumables fall to about ₹60 a test (<Link to="/plastic/roadmap#cost-down" className="ulink">see how</Link>), so
-          ₹400 is a conservative number to plan on.
+          ₹400 is the planning cost per cartridge. Bench consumables are ₹193 today. Volume brings consumables to ₹60 (<Link to="/plastic/roadmap#cost-down" className="ulink">cost-down</Link>).
         </p>
 
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-2">
-          <Stat v={ue.incumbent.v} k={`${ue.incumbent.label}. Our device price is 2–3% of it.`} />
-          <Stat v={ue.labPerTest} k="What companies spend per lab test today, with a 72-hour wait." />
-          <Stat v="₹1,000–2,000" k="Our cartridge per test, with a result in 20–30 minutes." accent />
+          <Stat v={ue.incumbent.v} k={`${ue.incumbent.label}. PlasticOptics device: 2–3% of this.`} />
+          <Stat v={ue.labPerTest} k="Lab cost per test. 72-hour wait." />
+          <Stat v="₹1,000–2,000" k="PlasticOptics cartridge per test. 20–30 minutes." accent />
         </div>
         <p className="mt-5 text-[13px] muted">{ue.caveat}</p>
       </Block>
@@ -217,46 +213,40 @@ export default function Overview() {
       <Block
         id="break-even"
         tag="Break-even"
-        title="35 active plants cover ₹1.5 Cr a year of operating costs."
+        title="Break-even at 35 plants"
         intro={
           <p>
-            Operations break even in Year {baseSummary.opBreakeven} with ~{baseSummary.plantsToCover} active plants buying
-            cartridges. That is about {share}% of India's {market.licensedPlants.toLocaleString("en-IN")}+ licensed packaged
-            drinking-water plants. <Src id="bis" />
+            Operating break-even in Year {baseSummary.opBreakeven} at {baseSummary.plantsToCover} active plants. That is {share}%
+            of India's {market.licensedPlants.toLocaleString("en-IN")}+ licensed packaged-water plants. <Src id="bis" />
           </p>
         }
       >
         <PnlTable rows={base} />
         <p className="mt-3 text-[12.5px] muted max-w-[70ch]">
-          Assumes a ₹3 L device, a ₹1,600 cartridge and about one test a day per plant (360 a year). Pilot plants in Year 2
-          buy cartridges; their pilot units are paid for by the Stage 1 raise. Year 1 (Stage 0 and prototypes) has no
-          revenue and is funded by the Stage 0 and Stage 1 raises.
+          Assumptions: ₹3 L device. ₹1,600 cartridge. 360 tests per plant a year. Stage 1 funds the pilot units. Year 1 has
+          no revenue.
         </p>
         <div className="mt-6 grid md:grid-cols-2 gap-4 text-[14px]">
           <Callout>
-            <b>Read it this way.</b> Each active plant brings ₹{baseSummary.cartGrossPlant.toFixed(2)} L of cartridge gross
-            profit a year (₹1,200 × 360). ₹{baseSummary.opex} L ÷ ₹{baseSummary.cartGrossPlant.toFixed(2)} L ≈{" "}
-            {baseSummary.plantsToCover} plants to cover R&D, G&A and sales.
+            <b>Per plant:</b> ₹{baseSummary.cartGrossPlant.toFixed(2)} L cartridge gross profit a year (₹1,200 × 360). ₹{baseSummary.opex} L ÷ ₹{baseSummary.cartGrossPlant.toFixed(2)} L = {baseSummary.plantsToCover} plants.
           </Callout>
           <Callout tone="accent">
-            <b>What break-even doesn't mean.</b> The cumulative deficit bottoms at −₹{(-baseSummary.trough / 100).toFixed(2)}{" "}
-            Cr in Year {baseSummary.troughYear}, and 35 plants only hold it flat. Paying it back takes the 50+ plants of the
-            stretch goal.
+            <b>Cumulative:</b> deficit peaks at −₹{(-baseSummary.trough / 100).toFixed(2)} Cr in Year {baseSummary.troughYear}.
+            35 plants hold it flat. Payback needs 50+ plants.
           </Callout>
         </div>
         <Link to="/plastic/numbers" className="mt-6 inline-flex items-center gap-2 btn btn-ghost">
-          Change the assumptions in the model <ArrowRight className="h-4 w-4" />
+          Open the model <ArrowRight className="h-4 w-4" />
         </Link>
       </Block>
 
       <Block
         id="investment"
         tag="The ask"
-        title={<>₹{budgetTotal.toFixed(1)} lakh: the full Stage 0 budget.</>}
+        title={<>₹{budgetTotal.toFixed(1)} lakh</>}
         intro={
           <p>
-            We are asking for the whole ₹{budgetTotal.toFixed(1)} lakh: the entire Stage 0 budget, covering about six
-            months of work toward the milestones below. Here is every rupee.
+            The full Stage 0 budget. Six months.
           </p>
         }
       >
@@ -278,7 +268,7 @@ export default function Overview() {
         </ul>
       </Block>
 
-      <Block id="stage-0" tag="Stage 0 · done means" title="What ₹23.8 lakh buys.">
+      <Block id="stage-0" tag="Stage 0" title="Milestones">
         <ol className="grid gap-3">
           {stage0Done.map((d, i) => (
             <li key={d} className="grid grid-cols-[28px_1fr] gap-3 text-[15px]">
@@ -290,7 +280,7 @@ export default function Overview() {
         <p className="mt-6 text-[14px] ink2">{afterStage0}</p>
       </Block>
 
-      <Block id="team" tag="Team" title="Founder and research collaborators.">
+      <Block id="team" tag="Team" title="Team">
         <div className="grid sm:grid-cols-[112px_1fr] gap-6 items-start">
           <img src="/Profile.jpeg" alt={founder.name} className="w-28 h-28 object-cover grayscale border hair" />
           <div>
@@ -298,7 +288,7 @@ export default function Overview() {
             <div className="mono text-[11.5px] muted">Founder</div>
             <p className="mt-2 ink2 max-w-[60ch]">{founder.bio}</p>
             <a href="/climate" className="mt-3 inline-block ulink text-[13.5px] muted">
-              Full climate and sustainability track record
+              Climate and sustainability work
             </a>
           </div>
         </div>
@@ -317,16 +307,16 @@ export default function Overview() {
             </a>
           ))}
         </div>
-        <p className="mt-3 text-[12.5px] muted">Research collaborators on Stage 0.</p>
+        <p className="mt-3 text-[12.5px] muted">Research collaborators, Stage 0.</p>
       </Block>
 
-      <Block id="read-next" tag="Go deeper">
+      <Block id="read-next" tag="More">
         <NextLinks
           items={[
-            { to: "/plastic/numbers", title: "Numbers", body: "The break-even model with every assumption exposed. Change them and watch the plan move." },
-            { to: "/plastic/market", title: "Go-to-market", body: "Who buys first, why now, what a plant saves, and what has to be true." },
-            { to: "/plastic/roadmap", title: "Roadmap", body: "From batch detection to continuous monitoring to removal at plant scale." },
-            { to: "/plastic/science", title: "Science", body: "Differential staining, AI counting, and how we check ourselves against Raman." },
+            { to: "/plastic/numbers", title: "Numbers", body: "P&L and break-even model." },
+            { to: "/plastic/market", title: "Go-to-market", body: "Customer, value, timing, risks." },
+            { to: "/plastic/roadmap", title: "Roadmap", body: "Detection to removal." },
+            { to: "/plastic/science", title: "Science", body: "Method and validation." },
           ]}
         />
       </Block>

@@ -150,7 +150,7 @@ export function PlasticLayout({ children }: { children: React.ReactNode }) {
             </div>
             <div className="mt-5 flex flex-wrap items-center gap-3">
               <a href={`mailto:${EMAIL}?subject=PlasticOptics`} className="btn">
-                Write to me
+                Contact
               </a>
               <Status />
             </div>
@@ -164,7 +164,7 @@ export function PlasticLayout({ children }: { children: React.ReactNode }) {
           <div className="sticky top-0 h-screen flex flex-col justify-between py-10 pl-8 pr-6">
             <div>
               <Wordmark />
-              <p className="mt-3 text-[12.5px] muted leading-snug max-w-[18ch]">Counting microplastics in drinking water, at the plant.</p>
+              <p className="mt-3 text-[12.5px] muted leading-snug max-w-[18ch]">Microplastics detection for drinking water.</p>
               <div className="mt-10">
                 <NavItems />
               </div>
@@ -172,7 +172,7 @@ export function PlasticLayout({ children }: { children: React.ReactNode }) {
             <div className="grid gap-4">
               <Status />
               <a href={`mailto:${EMAIL}?subject=PlasticOptics`} className="btn w-fit">
-                Write to me
+                Contact
               </a>
               <a href="/" className="text-[12.5px] muted hover:text-[var(--po-ink)] inline-flex items-center gap-1">
                 srinikitha.com <ArrowUpRight className="h-3 w-3" />

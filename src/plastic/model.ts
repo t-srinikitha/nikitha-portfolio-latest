@@ -146,8 +146,8 @@ export const PNL_ROWS: { label: string; key: keyof Row; kind: "count" | "money" 
 ];
 
 export const PRESETS: { id: string; label: string; note: string; inputs: Inputs }[] = [
-  { id: "base", label: "V2 base case", note: "The plan as written: 35 plants by Year 4, no new plants after that.", inputs: BASE },
-  { id: "growth", label: "Keep selling", note: "Same economics, with 15 new paying plants every year after Year 4: 50 plants in Year 5.", inputs: { ...BASE, growth: 15 } },
-  { id: "cheap", label: "Cheaper cartridge", note: "Cartridge sells at ₹1,000, the bottom of the range.", inputs: { ...BASE, cartridgePrice: 1000 } },
-  { id: "fewer", label: "Fewer tests", note: "Plants test every other day: 180 tests a year.", inputs: { ...BASE, testsPerYear: 180 } },
+  { id: "base", label: "Base case", note: "V2 plan. 35 plants by Year 4. No growth after.", inputs: BASE },
+  { id: "growth", label: "Growth", note: "15 new plants a year from Year 5.", inputs: { ...BASE, growth: 15 } },
+  { id: "cheap", label: "Low price", note: "Cartridge at ₹1,000.", inputs: { ...BASE, cartridgePrice: 1000 } },
+  { id: "fewer", label: "Low usage", note: "180 tests a year.", inputs: { ...BASE, testsPerYear: 180 } },
 ];

@@ -12,7 +12,7 @@ function useTitle() {
   const { pathname } = useLocation();
   useEffect(() => {
     const page = PAGES.find((p) => p.path === pathname.replace(/\/$/, ""));
-    document.title = page && page.label !== "Overview" ? `${page.label} · PlasticOptics` : "PlasticOptics · Microplastics counted at the plant";
+    document.title = page && page.label !== "Overview" ? `${page.label} · PlasticOptics` : "PlasticOptics";
   }, [pathname]);
 }
 

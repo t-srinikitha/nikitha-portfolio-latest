@@ -2,20 +2,20 @@ import { stage0Done } from "../data";
 import { Block, Callout, NextLinks, PageHead, Src } from "../ui";
 
 const steps = [
-  { n: "01", t: "Sample", b: "Water is drawn from the batch or the line, in the plant." },
-  { n: "02", t: "Filter", b: "The sample passes through a membrane in the cartridge, which traps the particles." },
-  { n: "03", t: "Stain", b: "Differential staining dyes in the cartridge mark plastic particles differently from natural ones." },
-  { n: "04", t: "Image and count", b: "A microscope with optical filters images the membrane. AI software finds and counts the stained particles." },
+  { n: "01", t: "Sample", b: "Water drawn from the batch or line." },
+  { n: "02", t: "Filter", b: "A cartridge membrane traps particles." },
+  { n: "03", t: "Stain", b: "Dyes mark plastic particles apart from natural ones." },
+  { n: "04", t: "Image and count", b: "Microscope and optical filters image the membrane. AI counts stained particles." },
 ];
 
 const compare = [
   ["Time to result", "72 hours+", "20–30 minutes"],
-  ["Where", "External university or private lab", "On site, at the plant"],
-  ["Who runs it", "Spectroscopy specialist", "The plant's QC team"],
+  ["Where", "External lab", "On site"],
+  ["Who runs it", "Spectroscopy specialist", "Plant QC team"],
   ["Cost per test", "₹3,000–5,000", "₹1,000–2,000 cartridge"],
   ["Equipment to buy", "~₹1.5 Cr: Raman spectrometer + lab equipment", "₹3–4.5 L device"],
   ["Tells you", "Polymer identity and count", "Microplastic count"],
-  ["Role", "Reference and confirmation", "Routine screening, every batch"],
+  ["Role", "Reference and confirmation", "Routine screening"],
 ];
 
 function Membrane() {
@@ -55,17 +55,16 @@ export default function Science() {
     <>
       <PageHead
         kicker="PlasticOptics · Science"
-        title="Differential staining, counted by AI."
+        title="Science"
         lede={
           <p>
-            Spectroscopy identifies every particle chemically, which is why it is slow and expensive. PlasticOptics asks a
-            narrower question, how many plastic particles are in this water, and answers it with dyes, optics and software
-            cheap enough to sit in every plant.
+            Spectroscopy identifies each particle chemically. It is slow and expensive. PlasticOptics counts plastic
+            particles with dyes, optics and software. Low cost. On site.
           </p>
         }
       />
 
-      <Block id="method" tag="Method" title="Four steps inside one cartridge and one benchtop device.">
+      <Block id="method" tag="Method" title="Method">
         <div className="grid md:grid-cols-[1fr_240px] gap-8 items-center">
           <ol className="grid gap-5">
             {steps.map((s) => (
@@ -80,12 +79,12 @@ export default function Science() {
           </ol>
           <figure className="flex flex-col items-center gap-2">
             <Membrane />
-            <figcaption className="text-[12px] muted text-center">Illustration: stained plastics glow, natural particles don't.</figcaption>
+            <figcaption className="text-[12px] muted text-center">Illustration. Stained plastics fluoresce.</figcaption>
           </figure>
         </div>
       </Block>
 
-      <Block id="compare" tag="Versus spectroscopy" title="A screen for every batch. Spectroscopy for confirmation.">
+      <Block id="compare" tag="Comparison" title="Versus spectroscopy">
         <div className="overflow-x-auto -mx-6 md:mx-0 px-6 md:px-0">
           <table className="po-table min-w-[520px]">
             <thead>
@@ -110,9 +109,9 @@ export default function Science() {
 
       <Block
         id="validation"
-        tag="Validation · Stage 0"
-        title="We check ourselves against Raman on the same samples."
-        intro={<p>Stage 0 is designed to prove or kill the method quickly, with Prof. Sarit S. Agasti (JNCASR) and Prof. Suryasarathi Bose (IISc) as research collaborators, and paid Raman/FTIR reference testing.</p>}
+        tag="Stage 0"
+        title="Validation"
+        intro={<p>Same samples, two methods: ours and Raman/FTIR. Research collaborators: Prof. Sarit S. Agasti (JNCASR) and Prof. Suryasarathi Bose (IISc).</p>}
       >
         <ol className="grid gap-3">
           {stage0Done.map((d, i) => (
@@ -124,9 +123,9 @@ export default function Science() {
         </ol>
         <div className="mt-8 grid sm:grid-cols-3 gap-px bg-[var(--po-line)] border hair">
           {[
-            ["Iron", "Iron particles in source water must not be counted as plastic."],
-            ["Organics", "Natural organic matter can also bind dyes. Differential staining has to separate it from plastic."],
-            ["Turbidity", "Suspended solids load the membrane and can hide particles."],
+            ["Iron", "Iron particles must not count as plastic."],
+            ["Organics", "Organic matter can bind dyes. Staining must separate it."],
+            ["Turbidity", "Suspended solids can hide particles."],
           ].map(([t, b]) => (
             <div key={t} className="bg-[var(--po-paper)] p-4">
               <div className="font-medium">{t}</div>
@@ -138,9 +137,9 @@ export default function Science() {
 
       <Block
         id="standards"
-        tag="Standards"
-        title="The size ranges regulators measure."
-        intro={<p>Results have to map onto the size classes official monitoring uses, so plants can compare them.</p>}
+        tag="Regulation"
+        title="Standards"
+        intro={<p>Results must map to official size classes.</p>}
       >
         <table className="po-table">
           <thead>
@@ -169,22 +168,21 @@ export default function Science() {
         </table>
       </Block>
 
-      <Block id="removal" tag="Removal · later" title="The chemistry that could remove them.">
+      <Block id="removal" tag="Removal" title="Removal chemistry">
         <p className="ink2 max-w-[62ch]">
-          Metal-phenolic networks, including tamarind and iron, bind microplastics so they can be separated, but only at
-          millilitre volumes today. The hardest step in the whole plan is scaling that binding chemistry from millilitres to
-          cubic metres per hour, dosed and verified by our own monitors.
+          Metal-phenolic networks (tamarind, iron) bind microplastics. Proven at millilitre scale only. Scaling to cubic
+          metres per hour is the hardest step in the plan.
         </p>
         <div className="mt-6">
-          <Callout tone="accent">Detection first is not a detour: removal can only be dosed, proven and sold against a measurement.</Callout>
+          <Callout tone="accent">Removal requires measurement. Detection comes first.</Callout>
         </div>
       </Block>
 
-      <Block id="read-next" tag="Go deeper">
+      <Block id="read-next" tag="More">
         <NextLinks
           items={[
-            { to: "/plastic/roadmap", title: "Roadmap", body: "From the benchtop device to inline monitoring and plant-scale removal." },
-            { to: "/plastic/numbers", title: "Numbers", body: "The break-even model, with every assumption exposed." },
+            { to: "/plastic/roadmap", title: "Roadmap", body: "Detection to removal." },
+            { to: "/plastic/numbers", title: "Numbers", body: "P&L and break-even model." },
           ]}
         />
       </Block>

@@ -88,18 +88,16 @@ export default function Roadmap() {
     <>
       <PageHead
         kicker="PlasticOptics · Roadmap"
-        title="Measure first. Then remove."
+        title="Roadmap"
         lede={
           <p>
-            The goal is fast, industrial-scale removal of microplastics from drinking water. That needs detection fast
-            enough to run continuously at a plant, and removal chemistry that works at plant volumes at a cost per cubic
-            metre plants will pay. Neither exists today. Detection comes first because the chemistry exists now, and
-            because removal can only be dosed, proven and sold against a measurement.
+            Goal: industrial-scale removal of microplastics from drinking water. It needs continuous detection and
+            plant-scale removal chemistry. Neither exists today. Detection comes first. Removal depends on measurement.
           </p>
         }
       />
 
-      <Block id="arc" tag="The long arc" title="Seven stages. Each one funds the next.">
+      <Block id="arc" tag="Stages" title="Stages 0–6">
         <div className="grid gap-4">
           <Band label="DETECT · BATCH" color="var(--po-detect)">
             <div className="grid md:grid-cols-3 gap-3">
@@ -112,8 +110,7 @@ export default function Roadmap() {
             <ArcCard {...longArc[0]} n={String(longArc[0].n)} />
           </Band>
           <p className="text-[12.5px] muted px-1">
-            ↓ The inline monitor becomes the control system for removal: it measures incoming water, sets the dose and
-            verifies the output.
+            ↓ The inline monitor controls removal. It measures, doses and verifies.
           </p>
           <Band label="REMOVE" color="var(--po-accent)">
             <div className="grid md:grid-cols-2 gap-3">
@@ -124,11 +121,11 @@ export default function Roadmap() {
           </Band>
           <ArcCard {...longArc[3]} n={String(longArc[3].n)} />
         </div>
-        <p className="mt-4 text-[12.5px] muted">Dashed outlines mark stages that need new technology.</p>
+        <p className="mt-4 text-[12.5px] muted">Dashed outline: new technology required.</p>
       </Block>
 
-      <Block id="capital" tag="Capital" title="Capital required by stage.">
-        <Figure title="Estimated capital, ₹" note="Log scale. Stages 3–5 are early estimates.">
+      <Block id="capital" tag="Capital" title="Capital by stage">
+        <Figure title="Estimated capital, ₹" note="Log scale. Stages 3–5 are estimates.">
           <Axis labels={[[0, "₹1 L"], [25, "₹10 L"], [50, "₹1 Cr"], [75, "₹10 Cr"], [100, "₹100 Cr"]]} />
           <div className="grid gap-2">
             {capitalByStage.map((c) => {
@@ -155,15 +152,14 @@ export default function Roadmap() {
       <Block
         id="long-range-economics"
         tag="Long-range economics"
-        title="Monitoring and removal, at target costs."
+        title="Target unit economics"
         intro={
           <p>
-            Targets at production volume for the products after the benchtop device. Prices come from what the product is
-            worth to the plant. All of these will be tested with buyers before each stage.
+            Targets at production volume. Prices set by value to the plant. Validated with buyers before each stage.
           </p>
         }
       >
-        <Figure title="Target cost and price per product" note="Each bar is the price. Coloured segments are cost; grey is gross margin.">
+        <Figure title="Target cost and price per product" note="Bar = price. Colour = cost. Grey = gross margin.">
           <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-[12px] mb-5">
             {costKeys.map((k, i) => (
               <span key={k} className="inline-flex items-center gap-1.5">
@@ -213,11 +209,11 @@ export default function Roadmap() {
       <Block
         id="cost-down"
         tag="Cost-down"
-        title="How the cost of a test falls."
-        intro={<p>Consumables per test on the lab bench today, and the target at production volume. The operating model plans on ₹400 per finished cartridge, so these cuts are upside, not assumptions.</p>}
+        title="Cost-down"
+        intro={<p>Consumables per test, bench to volume. The P&L uses ₹400 per cartridge. These cuts are upside.</p>}
       >
         <div className="grid gap-6">
-          <Figure title="Consumables per test: bench today → target" note="₹193 → ₹60, a 69% cut.">
+          <Figure title="Consumables per test: bench today → target" note="₹193 → ₹60. 69% lower.">
             <Axis labels={[[0, "₹0"], [25, "₹50"], [50, "₹100"], [75, "₹150"], [100, "₹200"]]} />
             <div className="grid gap-2">
               {testCostSteps.map((s) => {
@@ -240,7 +236,7 @@ export default function Roadmap() {
             </div>
           </Figure>
 
-          <Figure title="Cost reduction levers" note="Cut to unit cost in the stages each lever applies to. Levers overlap, so cuts don't add.">
+          <Figure title="Cost reduction levers" note="Reduction in unit cost. Levers overlap; cuts do not add.">
             <Axis labels={[[0, "0%"], [33.33, "10%"], [66.67, "20%"], [100, "30%"]]} />
             <div className="grid gap-2">
               {levers.map((l) => (
@@ -259,7 +255,7 @@ export default function Roadmap() {
         </div>
       </Block>
 
-      <Block id="beyond-water" tag="Beyond water" title="Food and air reuse the same detection core.">
+      <Block id="beyond-water" tag="Beyond water" title="Food and air">
         <div className="grid md:grid-cols-2 gap-4">
           {surfaces.slice(1).map((s) => (
             <div key={s.name} className="border hair bg-[var(--po-paper)] p-5">
@@ -272,18 +268,18 @@ export default function Roadmap() {
           ))}
         </div>
         <div className="mt-6">
-          <Callout tone="accent">Food is likely the largest revenue opportunity, across both detection and removal. R&D on salt starts in Stage 2.</Callout>
+          <Callout tone="accent">Food is the largest revenue opportunity. Salt R&D starts in Stage 2.</Callout>
         </div>
         <p className="mt-6 text-[13.5px] muted">
-          Back to the <Link to="/plastic" className="ulink">overview</Link>.
+          <Link to="/plastic" className="ulink">Overview</Link>
         </p>
       </Block>
 
-      <Block id="read-next" tag="Go deeper">
+      <Block id="read-next" tag="More">
         <NextLinks
           items={[
-            { to: "/plastic/science", title: "Science", body: "How differential staining and AI counting work, and how we check against Raman." },
-            { to: "/plastic/market", title: "Go-to-market", body: "Who buys first, why now, and what has to be true." },
+            { to: "/plastic/science", title: "Science", body: "Method and validation." },
+            { to: "/plastic/market", title: "Go-to-market", body: "Customer, value, timing, risks." },
           ]}
         />
       </Block>
