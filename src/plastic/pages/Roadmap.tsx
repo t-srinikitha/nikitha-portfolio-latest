@@ -91,8 +91,9 @@ export default function Roadmap() {
         title="Product Roadmap"
         lede={
           <p>
-            The long-term objective is industrial-scale removal of microplastics from drinking water. This requires
-            continuous detection and removal chemistry that operates at plant volumes. Neither is available today.
+            The long-term objective is industrial-scale removal of microplastics from water, food and air, beginning with
+            drinking water. This requires continuous detection and removal chemistry that operates at plant volumes.
+            Neither is available today.
             Detection is developed first, as removal must be dosed and verified against measurement.
           </p>
         }

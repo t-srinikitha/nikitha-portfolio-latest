@@ -164,7 +164,7 @@ export function PlasticLayout({ children }: { children: React.ReactNode }) {
           <div className="sticky top-0 h-screen flex flex-col justify-between py-10 pl-8 pr-6">
             <div>
               <Wordmark />
-              <p className="mt-3 text-[12.5px] muted leading-snug max-w-[18ch]">Microplastic detection for drinking water</p>
+              <p className="mt-3 text-[12.5px] muted leading-snug max-w-[18ch]">Microplastic detection and removal for water, food and air</p>
               <div className="mt-10">
                 <NavItems />
               </div>

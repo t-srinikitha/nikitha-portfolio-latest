@@ -36,15 +36,15 @@ export default function Overview() {
     <>
       <PageHead
         kicker="PlasticOptics · Overview"
-        title="Rapid Microplastic Quantification for Drinking Water"
+        title="Microplastic Detection and Removal for Water, Food and Air"
         lede={
           <>
             <p>
               <span className="text-[var(--po-ink)]">Objective:</span> {goal}
             </p>
             <p className="mt-3">
-              The first product is a benchtop analyser with single-use test cartridges. It enables quality-control teams
-              at bottling plants to test every production batch within 20–30 minutes.
+              The first product addresses drinking water: a benchtop analyser with single-use test cartridges. It enables
+              quality-control teams at bottling plants to test every production batch within 20–30 minutes.
             </p>
           </>
         }
