@@ -214,7 +214,7 @@ export default function Roadmap() {
         id="cost-down"
         tag="Cost-down"
         title="How the cost of a test falls."
-        intro={<p>Consumables per test on the lab bench today, and the target at production volume.</p>}
+        intro={<p>Consumables per test on the lab bench today, and the target at production volume. The operating model plans on ₹400 per finished cartridge, so these cuts are upside, not assumptions.</p>}
       >
         <div className="grid gap-6">
           <Figure title="Consumables per test: bench today → target" note="₹193 → ₹60, a 69% cut.">

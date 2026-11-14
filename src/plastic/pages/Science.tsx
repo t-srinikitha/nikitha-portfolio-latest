@@ -13,7 +13,7 @@ const compare = [
   ["Where", "External university or private lab", "On site, at the plant"],
   ["Who runs it", "Spectroscopy specialist", "The plant's QC team"],
   ["Cost per test", "₹3,000–5,000", "₹1,000–2,000 cartridge"],
-  ["Instrument", "~₹1.5 Cr", "₹3–4.5 L"],
+  ["Equipment to buy", "~₹1.5 Cr: Raman spectrometer + lab equipment", "₹3–4.5 L device"],
   ["Tells you", "Polymer identity and count", "Microplastic count"],
   ["Role", "Reference and confirmation", "Routine screening, every batch"],
 ];
@@ -112,7 +112,7 @@ export default function Science() {
         id="validation"
         tag="Validation · Stage 0"
         title="We check ourselves against Raman on the same samples."
-        intro={<p>Stage 0 is designed to prove or kill the method quickly, with professors as research collaborators and paid Raman/FTIR reference testing.</p>}
+        intro={<p>Stage 0 is designed to prove or kill the method quickly, with Prof. Sarit S. Agasti (JNCASR) and Prof. Suryasarathi Bose (IISc) as research collaborators, and paid Raman/FTIR reference testing.</p>}
       >
         <ol className="grid gap-3">
           {stage0Done.map((d, i) => (

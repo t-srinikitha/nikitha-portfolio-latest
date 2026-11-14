@@ -3,6 +3,7 @@ import { RotateCcw } from "lucide-react";
 import { BASE, PRESETS, project, summarise, type Inputs, type Row } from "../model";
 import { market } from "../data";
 import { Block, Callout, PageHead, Src, Stat, inr } from "../ui";
+import { PnlTable } from "../PnlTable";
 
 type Field = {
   key: keyof Inputs;
@@ -12,7 +13,6 @@ type Field = {
   step: number;
   fmt: (v: number) => string;
   note?: string;
-  implied?: boolean;
 };
 
 const FIELDS: { group: string; fields: Field[] }[] = [
@@ -26,15 +26,22 @@ const FIELDS: { group: string; fields: Field[] }[] = [
   {
     group: "Cartridge",
     fields: [
-      { key: "cartridgePrice", label: "Cartridge price", min: 600, max: 3000, step: 50, fmt: inr, note: "V2 range ₹1,000–2,000", implied: true },
-      { key: "cartridgeCost", label: "Cartridge cost", min: 50, max: 1000, step: 10, fmt: inr, note: "V2: ₹400" },
-      { key: "testsPerYear", label: "Tests per plant per year", min: 50, max: 730, step: 10, fmt: (v) => `${v}`, note: "360 ≈ one test a day", implied: true },
+      { key: "cartridgePrice", label: "Cartridge price", min: 600, max: 3000, step: 50, fmt: inr, note: "Planning price ₹1,600, inside the ₹1,000–2,000 range" },
+      { key: "cartridgeCost", label: "Cartridge cost", min: 50, max: 1000, step: 10, fmt: inr, note: "₹400 planning cost; bench consumables are ₹193 today" },
+      { key: "testsPerYear", label: "Tests per plant per year", min: 50, max: 730, step: 10, fmt: (v) => `${v}`, note: "360 ≈ one test a day" },
     ],
   },
   {
-    group: "Company",
+    group: "Operating costs, a year",
     fields: [
-      { key: "fixedLakh", label: "Fixed costs per year", min: 50, max: 400, step: 10, fmt: (v) => `₹${v} L`, note: "V2: ₹1.5 Cr" },
+      { key: "rdLakh", label: "R&D", min: 0, max: 300, step: 5, fmt: (v) => `₹${v} L`, note: "Scientists, lab, prototypes, validation" },
+      { key: "gaLakh", label: "G&A", min: 0, max: 200, step: 5, fmt: (v) => `₹${v} L`, note: "Founder, finance, legal, patents, office" },
+      { key: "salesLakh", label: "Sales & field service", min: 0, max: 200, step: 5, fmt: (v) => `₹${v} L`, note: "Sales hire, installation, service visits" },
+    ],
+  },
+  {
+    group: "Plants",
+    fields: [
       { key: "pilotsY2", label: "Pilot plants, Year 2", min: 0, max: 30, step: 1, fmt: (v) => `${v}`, note: "Buy cartridges, not devices" },
       { key: "payingY3", label: "New paying plants, Year 3", min: 0, max: 50, step: 1, fmt: (v) => `${v}` },
       { key: "payingY4", label: "New paying plants, Year 4", min: 0, max: 50, step: 1, fmt: (v) => `${v}` },
@@ -137,7 +144,7 @@ export default function Numbers() {
 
   const sens = [1000, 1600, 2000].map((p) => ({
     p,
-    cells: [180, 360, 720].map((t) => Math.ceil(inputs.fixedLakh / (((p - inputs.cartridgeCost) * t) / 1e5))),
+    cells: [180, 360, 720].map((t) => Math.ceil(s.opex / (((p - inputs.cartridgeCost) * t) / 1e5))),
   }));
 
   return (
@@ -186,7 +193,7 @@ export default function Numbers() {
         </div>
         <p className="mt-3 text-[13px] muted min-h-[1.5em]">{PRESETS.find((p) => p.id === preset)?.note ?? "Custom case."}</p>
 
-        <div className="mt-6 grid md:grid-cols-3 gap-px bg-[var(--po-line)] border hair">
+        <div className="mt-6 grid md:grid-cols-2 gap-px bg-[var(--po-line)] border hair">
           {FIELDS.map((g) => (
             <fieldset key={g.group} className="bg-[var(--po-paper)] p-5 grid gap-5 content-start">
               <legend className="sr-only">{g.group}</legend>
@@ -194,10 +201,7 @@ export default function Numbers() {
               {g.fields.map((f) => (
                 <label key={f.key} className="grid gap-1.5">
                   <span className="flex items-baseline justify-between gap-2 text-[13px]">
-                    <span>
-                      {f.label}
-                      {f.implied && <sup className="text-[var(--po-accent)] ml-0.5">*</sup>}
-                    </span>
+                    <span>{f.label}</span>
                     <span className="num text-[13px]">{f.fmt(inputs[f.key])}</span>
                   </span>
                   <input
@@ -216,19 +220,19 @@ export default function Numbers() {
           ))}
         </div>
         <p className="mt-4 text-[12.5px] muted max-w-[70ch]">
-          <span className="text-[var(--po-accent)]">*</span> V2 gives ₹4.32 L of cartridge margin per plant per year but
-          not its split. ₹1,600 a cartridge × 360 tests reproduces it exactly; pilots will tell us the real split.
+          The V2 plan budgets ₹1.5 Cr a year of operating costs; the split across R&D, G&A and sales is a planning
+          estimate. Cost of goods is not an operating cost here: it is already netted out in gross profit.
         </p>
       </Block>
 
       <Block id="results" tag="Results" title="What these assumptions imply.">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-          <Stat v={`₹${s.cartMarginPlant.toFixed(2)} L`} k="Cartridge margin per plant per year" />
-          <Stat v={Number.isFinite(s.plantsToCoverFixed) ? `${s.plantsToCoverFixed} plants` : "never"} k="Active plants to cover fixed costs" accent />
+          <Stat v={`₹${s.cartGrossPlant.toFixed(2)} L`} k="Cartridge gross profit per plant per year" />
+          <Stat v={Number.isFinite(s.plantsToCover) ? `${s.plantsToCover} plants` : "never"} k={`Active plants to cover ₹${s.opex} L of operating costs`} accent />
           <Stat v={s.opBreakeven ? `Year ${s.opBreakeven}` : "Not by Year 8"} k="First year of operating profit" />
           <Stat v={`₹${(-s.trough / 100).toFixed(2)} Cr`} k={`Deepest cumulative deficit${s.troughYear ? ` (Year ${s.troughYear})` : ""}`} />
           <Stat v={s.payback ? `Year ${s.payback}` : "Not by Year 8"} k="Cumulative turns positive" />
-          <Stat v={`${((s.plantsToCoverFixed / plants) * 100).toFixed(1)}%`} k={`of ${plants.toLocaleString("en-IN")}+ licensed plants needed to break even`} />
+          <Stat v={Number.isFinite(s.plantsToCover) ? `${((s.plantsToCover / plants) * 100).toFixed(1)}%` : "–"} k={`of ${plants.toLocaleString("en-IN")}+ licensed plants needed to break even`} />
         </div>
 
         <div className="mt-8 border hair bg-[var(--po-paper)] p-4 md:p-6">
@@ -246,49 +250,69 @@ export default function Numbers() {
           <Chart rows={rows} />
         </div>
 
-        <div className="mt-6 overflow-x-auto -mx-6 md:mx-0 px-6 md:px-0">
-          <table className="po-table min-w-[680px]">
+        <div className="mt-6">
+          <PnlTable rows={rows} />
+        </div>
+        <p className="mt-3 text-[12.5px] muted">
+          Pilot plants buy cartridges; their pilot units are funded by the Stage 1 raise. Plants added in a year buy cartridges for the full year. No churn. Year 1 has no revenue and is funded by the Stage 0 and Stage 1 raises.
+        </p>
+      </Block>
+
+      <Block
+        id="use-of-funds"
+        tag="Use of funds"
+        title="The raises pay for more than operating losses."
+        intro={
+          <p>
+            The P&L above shows operating losses only. The three raises also pay for building the product, the pilots and
+            the manufacturing base: things that are not yearly operating costs.
+          </p>
+        }
+      >
+        <div className="overflow-x-auto -mx-6 md:mx-0 px-6 md:px-0">
+          <table className="po-table min-w-[560px]">
             <thead>
               <tr>
-                <th>₹ lakh</th>
-                {rows.map((r) => (
-                  <th key={r.year} className="r">
-                    Y{r.year}
-                  </th>
-                ))}
+                <th>Raise</th>
+                <th>When</th>
+                <th>Pays for</th>
+                <th className="r">Amount</th>
               </tr>
             </thead>
             <tbody>
-              {(
-                [
-                  ["New paying plants", "newPaying", false],
-                  ["New pilot plants", "newPilot", false],
-                  ["Active plants", "active", false],
-                  ["Device margin", "device", true],
-                  ["Cartridge margin", "cartridge", true],
-                  ["Total margin", "total", true],
-                  ["Fixed costs", "fixed", true],
-                  ["Operating profit", "operating", true],
-                  ["Cumulative", "cumulative", true],
-                ] as const
-              ).map(([label, key, money]) => (
-                <tr key={key} className={key === "operating" || key === "cumulative" ? "em" : ""}>
-                  <td className="whitespace-nowrap">{label}</td>
-                  {rows.map((r) => {
-                    const v = r[key] as number;
-                    return (
-                      <td key={r.year} className={`r ${key === "operating" && v > 0 ? "bg-[var(--po-lime)]" : ""} ${money && v < 0 ? "muted" : ""}`}>
-                        {money ? v.toFixed(1) : v}
-                      </td>
-                    );
-                  })}
-                </tr>
-              ))}
+              <tr>
+                <td className="font-medium whitespace-nowrap">Stage 0 · the ask</td>
+                <td className="whitespace-nowrap ink2">Now → ~6 months</td>
+                <td className="ink2">Reagents, research collaboration, lab, optics, Raman/FTIR reference tests, stipend</td>
+                <td className="r">₹23.8 L</td>
+              </tr>
+              <tr>
+                <td className="font-medium whitespace-nowrap">Stage 1</td>
+                <td className="whitespace-nowrap ink2">Months 6 → 24</td>
+                <td className="ink2">Core team, 3–4 prototype rounds, 10 pilot units, patent filing, and the Year 2 operating loss</td>
+                <td className="r">₹2 Cr</td>
+              </tr>
+              <tr>
+                <td className="font-medium whitespace-nowrap">Stage 2</td>
+                <td className="whitespace-nowrap ink2">Years 2 → 4</td>
+                <td className="ink2">
+                  Contract manufacturing, tooling, method validation, inventory, first sales hire, field service, the Year 3
+                  operating loss, and the start of removal and food R&D
+                </td>
+                <td className="r">₹10 Cr</td>
+              </tr>
+              <tr className="em">
+                <td>Total</td>
+                <td />
+                <td className="ink2 !font-normal">Deepest operating deficit in the model: ₹{(-s.trough / 100).toFixed(2)} Cr</td>
+                <td className="r">₹12.24 Cr</td>
+              </tr>
             </tbody>
           </table>
         </div>
-        <p className="mt-3 text-[12.5px] muted">
-          Pilot plants buy cartridges but not devices. Plants added in a year buy cartridges for the full year. No churn.
+        <p className="mt-4 text-[13px] muted max-w-[68ch]">
+          An itemised use of funds for Stages 1 and 2 comes after Stage 0, once cartridge cost, testing frequency and price
+          are measured rather than estimated.
         </p>
       </Block>
 
@@ -298,7 +322,7 @@ export default function Numbers() {
         title="Cartridge price and testing frequency decide everything."
         intro={
           <p>
-            Active plants needed to cover ₹{inputs.fixedLakh} L of fixed costs, at a cartridge cost of{" "}
+            Active plants needed to cover ₹{s.opex} L of operating costs, at a cartridge cost of{" "}
             {inr(inputs.cartridgeCost)}. The device sale barely matters; the cartridge is the business.
           </p>
         }

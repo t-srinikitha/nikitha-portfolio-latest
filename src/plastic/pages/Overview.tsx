@@ -9,15 +9,21 @@ import {
   objective,
   stages,
   unitEconomics as ue,
-  v2Projection,
   budget,
   stage0Done,
   afterStage0,
   founder,
   market,
+  collaborators,
 } from "../data";
 import { Block, Callout, NextLinks, PageHead, Src, Stat, inr } from "../ui";
 import { KeyNumbers } from "../PlasticLayout";
+import { PnlTable } from "../PnlTable";
+import { BASE, project, summarise } from "../model";
+import { ArrowUpRight } from "lucide-react";
+
+const base = project(BASE, 6);
+const baseSummary = summarise(BASE, base);
 
 const deviceCost = ue.deviceCost.reduce((s, c) => s + c.v, 0);
 
@@ -174,10 +180,12 @@ export default function Overview() {
             </div>
             <table className="po-table mt-3">
               <tbody>
-                <tr>
-                  <td className="!pl-5">Test cartridge with differential staining dyes</td>
-                  <td className="r !pr-5">{inr(ue.cartridgeCost)}</td>
-                </tr>
+                {ue.cartridgeBreakdown.map((c) => (
+                  <tr key={c.item}>
+                    <td className="!pl-5">{c.item}</td>
+                    <td className="r !pr-5">{inr(c.v)}</td>
+                  </tr>
+                ))}
                 <tr className="em">
                   <td className="!pl-5">Cost per cartridge</td>
                   <td className="r !pr-5">{inr(ue.cartridgeCost)}</td>
@@ -191,6 +199,13 @@ export default function Overview() {
           </div>
         </div>
 
+        <p className="mt-4 text-[13px] muted max-w-[68ch]">
+          ₹400 is the planning cost of a finished cartridge. Only ₹193 of it is consumables at the lab bench today; the rest
+          is an allowance for the housing, assembly, quality checks and delivery a lab bench doesn't need. At volume, the
+          consumables fall to about ₹60 a test (<Link to="/plastic/roadmap#cost-down" className="ulink">see how</Link>), so
+          ₹400 is a conservative number to plan on.
+        </p>
+
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-2">
           <Stat v={ue.incumbent.v} k={`${ue.incumbent.label}. Our device price is 2–3% of it.`} />
           <Stat v={ue.labPerTest} k="What companies spend per lab test today, with a 72-hour wait." />
@@ -202,65 +217,31 @@ export default function Overview() {
       <Block
         id="break-even"
         tag="Break-even"
-        title="35 active plants cover ₹1.5 Cr a year in fixed costs."
+        title="35 active plants cover ₹1.5 Cr a year of operating costs."
         intro={
           <p>
-            Assuming the costs above, operations break even in Year 4 with ~35 active plants buying cartridges. That is
-            about {share}% of India's {market.licensedPlants.toLocaleString("en-IN")}+ licensed packaged drinking-water
-            plants. <Src id="bis" />
+            Operations break even in Year {baseSummary.opBreakeven} with ~{baseSummary.plantsToCover} active plants buying
+            cartridges. That is about {share}% of India's {market.licensedPlants.toLocaleString("en-IN")}+ licensed packaged
+            drinking-water plants. <Src id="bis" />
           </p>
         }
       >
-        <div className="overflow-x-auto -mx-6 md:mx-0 px-6 md:px-0">
-          <table className="po-table min-w-[620px]">
-            <thead>
-              <tr>
-                <th>₹ lakh</th>
-                {v2Projection.map((r) => (
-                  <th key={r.year} className="r">
-                    Year {r.year}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {(
-                [
-                  ["New paying plants", "newPaying", false],
-                  ["New pilot plants", "newPilot", false],
-                  ["Active plants", "active", false],
-                  ["Device margin", "device", true],
-                  ["Cartridge margin", "cartridge", true],
-                  ["Total margin", "total", true],
-                  ["Fixed costs", "fixed", true],
-                  ["Operating profit", "operating", true],
-                  ["Cumulative", "cumulative", true],
-                ] as const
-              ).map(([label, key, money]) => (
-                <tr key={key} className={key === "operating" ? "em" : ""}>
-                  <td className="whitespace-nowrap">{label}</td>
-                  {v2Projection.map((r) => {
-                    const v = r[key] as number;
-                    const pos = key === "operating" && v > 0;
-                    return (
-                      <td key={r.year} className={`r ${pos ? "bg-[var(--po-lime)]" : ""} ${money && v < 0 ? "muted" : ""}`}>
-                        {money ? v.toFixed(1) : v}
-                      </td>
-                    );
-                  })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <PnlTable rows={base} />
+        <p className="mt-3 text-[12.5px] muted max-w-[70ch]">
+          Assumes a ₹3 L device, a ₹1,600 cartridge and about one test a day per plant (360 a year). Pilot plants in Year 2
+          buy cartridges; their pilot units are paid for by the Stage 1 raise. Year 1 (Stage 0 and prototypes) has no
+          revenue and is funded by the Stage 0 and Stage 1 raises.
+        </p>
         <div className="mt-6 grid md:grid-cols-2 gap-4 text-[14px]">
           <Callout>
-            <b>Read it this way.</b> Each active plant brings ₹4.32 L of cartridge margin a year. ₹150 L ÷ ₹4.32 L ≈ 35
-            plants to cover fixed costs.
+            <b>Read it this way.</b> Each active plant brings ₹{baseSummary.cartGrossPlant.toFixed(2)} L of cartridge gross
+            profit a year (₹1,200 × 360). ₹{baseSummary.opex} L ÷ ₹{baseSummary.cartGrossPlant.toFixed(2)} L ≈{" "}
+            {baseSummary.plantsToCover} plants to cover R&D, G&A and sales.
           </Callout>
           <Callout tone="accent">
-            <b>What the table doesn't show.</b> The cumulative deficit bottoms at −₹1.56 Cr in Year 3, and 35 plants only
-            hold it flat. Paying it back takes growth beyond 35.
+            <b>What break-even doesn't mean.</b> The cumulative deficit bottoms at −₹{(-baseSummary.trough / 100).toFixed(2)}{" "}
+            Cr in Year {baseSummary.troughYear}, and 35 plants only hold it flat. Paying it back takes the 50+ plants of the
+            stretch goal.
           </Callout>
         </div>
         <Link to="/plastic/numbers" className="mt-6 inline-flex items-center gap-2 btn btn-ghost">
@@ -270,9 +251,14 @@ export default function Overview() {
 
       <Block
         id="investment"
-        tag="Investment"
-        title={<>₹{budgetTotal.toFixed(1)} lakh to prove the technology.</>}
-        intro={<p>Stage 0 runs for about six months. Here is every rupee.</p>}
+        tag="The ask"
+        title={<>₹{budgetTotal.toFixed(1)} lakh: the full Stage 0 budget.</>}
+        intro={
+          <p>
+            We are asking for the whole ₹{budgetTotal.toFixed(1)} lakh: the entire Stage 0 budget, covering about six
+            months of work toward the milestones below. Here is every rupee.
+          </p>
+        }
       >
         <ul className="grid gap-2.5">
           {budget.map((b) => (
@@ -304,16 +290,34 @@ export default function Overview() {
         <p className="mt-6 text-[14px] ink2">{afterStage0}</p>
       </Block>
 
-      <Block id="founder" tag="Founder" title={founder.name}>
+      <Block id="team" tag="Team" title="Founder and research collaborators.">
         <div className="grid sm:grid-cols-[112px_1fr] gap-6 items-start">
           <img src="/Profile.jpeg" alt={founder.name} className="w-28 h-28 object-cover grayscale border hair" />
           <div>
-            <p className="ink2 max-w-[60ch]">{founder.bio}</p>
+            <h3 className="font-medium">{founder.name}</h3>
+            <div className="mono text-[11.5px] muted">Founder</div>
+            <p className="mt-2 ink2 max-w-[60ch]">{founder.bio}</p>
             <a href="/climate" className="mt-3 inline-block ulink text-[13.5px] muted">
               Full climate and sustainability track record
             </a>
           </div>
         </div>
+        <div className="mt-8 grid md:grid-cols-2 gap-px bg-[var(--po-line)] border hair">
+          {collaborators.map((c) => (
+            <a key={c.name} href={c.url} target="_blank" rel="noopener noreferrer" className="group bg-[var(--po-paper)] p-5 hover:bg-white transition-colors">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <h3 className="font-medium">{c.name}</h3>
+                  <div className="mono text-[11.5px] muted mt-0.5">{c.org}</div>
+                </div>
+                <ArrowUpRight className="h-4 w-4 muted shrink-0" />
+              </div>
+              <div className="mt-3 text-[13px]">{c.role}</div>
+              <p className="mt-1 text-[13px] ink2 leading-relaxed">{c.work}</p>
+            </a>
+          ))}
+        </div>
+        <p className="mt-3 text-[12.5px] muted">Research collaborators on Stage 0.</p>
       </Block>
 
       <Block id="read-next" tag="Go deeper">

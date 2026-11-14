@@ -40,7 +40,7 @@ function Status() {
         <span className="absolute inline-flex h-full w-full rounded-full bg-[var(--po-accent)] opacity-60 animate-ping" />
         <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--po-accent)]" />
       </span>
-      Stage 0 · raising ₹23.8 L
+      Asking ₹23.8 L · Stage 0
     </span>
   );
 }

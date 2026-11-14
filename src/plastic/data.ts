@@ -16,7 +16,7 @@ export const PAGES = [
 
 // Right-rail facts, shown on every page.
 export const KEY_NUMBERS: { k: string; v: string; note?: string }[] = [
-  { k: "Raising now", v: "₹23.8 L", note: "Stage 0 · ~6 months" },
+  { k: "The ask", v: "₹23.8 L", note: "the full Stage 0 budget · ~6 months" },
   { k: "Time to result", v: "20–30 min", note: "vs 72 hrs+ at a lab" },
   { k: "Device", v: "₹1.6 L → ₹3–4.5 L", note: "cost → price" },
   { k: "Cartridge", v: "₹400 → ₹1–2 K", note: "cost → price, one per test" },
@@ -101,7 +101,7 @@ export const stages = [
     name: "Revenue and surface expansion",
     when: "Years 2 → 4",
     objective:
-      "~50+ customers reordering test cartridges. Removal work starts. Detection R&D starts on food items such as salt.",
+      "35+ plants reordering test cartridges by Year 4, enough to cover operating costs; 50+ is the stretch goal. Removal work starts. Detection R&D starts on food items such as salt.",
     spend:
       "Contract manufacturing, tooling, method validation, first sales hire, field service, inventory",
     funding: "₹10 Cr",
@@ -109,26 +109,23 @@ export const stages = [
 ];
 
 export const unitEconomics = {
-  incumbent: { label: "Current market option (lab instrument)", v: "~₹1.5 Cr" },
+  incumbent: { label: "Today's option: a Raman spectrometer plus the lab equipment to run it", v: "~₹1.5 Cr" },
   deviceCost: [
     { item: "Microscope, optical filters, container, software", v: 120000 },
     { item: "Assembly, calibration, installation, shipping", v: 40000 },
   ],
   devicePrice: "₹3–4.5 L",
   cartridgeCost: 400,
+  // ₹400 is the planning cost per finished cartridge. Bench consumables today are ₹193
+  // (Master Plan); the rest is an allowance for what a lab bench doesn't need.
+  cartridgeBreakdown: [
+    { item: "Consumables at the lab bench today: membrane, dyes, glassware", v: 193 },
+    { item: "Allowance for housing, assembly, quality checks, delivery", v: 207 },
+  ],
   cartridgePrice: "₹1,000–2,000",
   labPerTest: "₹3,000–5,000",
   caveat: "These numbers will change with more research and more conversations with potential customers.",
 };
-
-// V2 break-even table, ₹ lakh. ₹1.5 Cr fixed costs a year.
-export const v2Projection = [
-  { year: 2, newPaying: 0, newPilot: 10, active: 10, device: 0.0, cartridge: 43.2, total: 43.2, fixed: 150, operating: -106.8, cumulative: -106.8 },
-  { year: 3, newPaying: 10, newPilot: 0, active: 20, device: 14.0, cartridge: 86.4, total: 100.4, fixed: 150, operating: -49.6, cumulative: -156.4 },
-  { year: 4, newPaying: 15, newPilot: 0, active: 35, device: 21.0, cartridge: 151.2, total: 172.2, fixed: 150, operating: 22.2, cumulative: -134.2 },
-  { year: 5, newPaying: 0, newPilot: 0, active: 35, device: 0.0, cartridge: 151.2, total: 151.2, fixed: 150, operating: 1.2, cumulative: -133.0 },
-  { year: 6, newPaying: 0, newPilot: 0, active: 35, device: 0.0, cartridge: 151.2, total: 151.2, fixed: 150, operating: 1.2, cumulative: -131.8 },
-];
 
 export const budget = [
   { item: "My stipend", v: 4.5 },
@@ -241,7 +238,7 @@ export const pathToMarket = [
   {
     step: "Manufacture and serve",
     stage: "Stage 2 · Years 2–4 · ₹10 Cr",
-    body: "Contract manufacturing, tooling, method validation, first sales hire, field service, inventory. Target ~50+ plants reordering cartridges.",
+    body: "Contract manufacturing, tooling, method validation, first sales hire, field service, inventory. Target: 35+ plants reordering cartridges by Year 4 (operating break-even), 50+ as the stretch goal.",
   },
 ];
 
@@ -268,7 +265,7 @@ export const risks = [
   },
   {
     risk: "Plants test often enough",
-    test: "Testing frequency supports ~₹4.3 L cartridge margin per plant per year (about one test a day).",
+    test: "Plants test about once a day (360 a year), which gives ₹4.32 L of cartridge gross profit per plant a year.",
     when: "Stage 1 pilots",
   },
   {
@@ -282,11 +279,12 @@ export const unknowns = [
   "The final cartridge cost and price. Every number here will move after Stage 0 and real customer conversations.",
   "How often plants will actually test, which sets cartridge revenue per plant.",
   "How long a plant takes from pilot to purchase order.",
+  "How ₹1.5 Cr a year of operating costs splits across R&D, G&A and sales once the team is hired.",
   "Whether Indian regulation (BIS/FSSAI) moves toward a microplastics limit, and when.",
 ];
 
 export const fundingPath = [
-  { label: "Stage 0", v: "₹23.8 L", how: "Grants and early backers" },
+  { label: "Stage 0 · the ask", v: "₹23.8 L", how: "The full Stage 0 budget, asked for now" },
   { label: "After Stage 0", v: "—", how: "BIRAC BIG or NIDHI-PRAYAS, plus incubation" },
   { label: "Stage 1", v: "₹2 Cr", how: "Pre-seed + grants" },
   { label: "Stage 2", v: "₹10 Cr", how: "Manufacturing, sales and field service" },
@@ -386,4 +384,23 @@ export const levers = [
   { name: "Design for volume manufacturing", stages: "1–3", low: 5, high: 8, how: "Injection-moulded housings, fewer parts" },
   { name: "Indian sourcing and assembly", stages: "1–3", low: 5, high: 8, how: "Local optics and electronics, no import duty" },
   { name: "Fewer confirmation tests", stages: "1–3", low: 3, high: 5, how: "Fewer samples sent for Raman or FTIR once the model is trusted" },
+];
+
+/* ───────────────────────── Research collaborators ───────────────────────── */
+
+export const collaborators = [
+  {
+    name: "Prof. Sarit S. Agasti",
+    role: "Associate Professor, New Chemistry Unit",
+    org: "JNCASR, Bengaluru",
+    work: "Chemistry for imaging and sensing, including super-resolution microscopy methods.",
+    url: "https://www.jncasr.ac.in/faculty/sagasti",
+  },
+  {
+    name: "Prof. Suryasarathi Bose",
+    role: "Professor, Department of Materials Engineering",
+    org: "IISc, Bengaluru",
+    work: "Polymer materials for water. His group developed a hydrogel that removes microplastics from water (2024).",
+    url: "https://iisc.ac.in/events/novel-hydrogel-removes-microplastics-from-water/",
+  },
 ];
