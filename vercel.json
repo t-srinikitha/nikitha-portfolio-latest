@@ -8,6 +8,14 @@
   ],
   "rewrites": [
     {
+      "source": "/plastic",
+      "destination": "/plastic.html"
+    },
+    {
+      "source": "/plastic/:path*",
+      "destination": "/plastic.html"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "/api/$1"
     },

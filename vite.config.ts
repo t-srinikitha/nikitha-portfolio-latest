@@ -9,6 +9,15 @@ export default defineConfig({
     port: 8080,
   },
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      // /plastic gets its own HTML entry so link previews show PlasticOptics meta tags.
+      input: {
+        main: path.resolve(__dirname, "index.html"),
+        plastic: path.resolve(__dirname, "plastic.html"),
+      },
+    },
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

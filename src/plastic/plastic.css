@@ -1,0 +1,81 @@
+/* PlasticOptics microsite. Light only, print-friendly. Scoped under .po */
+.po {
+  --po-bg: #f5f4ef;
+  --po-paper: #fbfaf7;
+  --po-ink: #17171a;
+  --po-ink-2: #44434a;
+  --po-muted: #7a786f;
+  --po-line: #e2e0d7;
+  --po-line-2: #cfccc1;
+  --po-chip: #ebe9e1;
+  --po-accent: #d9481f; /* Nile Red emission */
+  --po-accent-soft: #f6dfd5;
+  --po-detect: #2f56c8; /* excitation blue */
+  --po-detect-soft: #dfe6f8;
+  --po-lime: #dfff00;
+
+  --po-serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --po-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --po-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  background: var(--po-bg);
+  color: var(--po-ink);
+  font-family: var(--po-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01", "cv11";
+  color-scheme: light;
+}
+.po h1, .po h2, .po h3, .po h4, .po h5, .po h6, .po button, .po input { font-family: var(--po-sans); }
+.po ::selection { background: var(--po-lime); color: #000; }
+.po .serif { font-family: var(--po-serif); font-weight: 400; letter-spacing: -0.012em; }
+.po .mono { font-family: var(--po-mono); font-feature-settings: normal; }
+.po .num { font-family: var(--po-mono); font-variant-numeric: tabular-nums; }
+.po .muted { color: var(--po-muted); }
+.po .ink2 { color: var(--po-ink-2); }
+.po .hair { border-color: var(--po-line); }
+.po .chip {
+  display: inline-block;
+  font-family: var(--po-mono);
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--po-chip);
+  color: var(--po-ink-2);
+  padding: 5px 7px 4px;
+  border-radius: 2px;
+}
+.po .ulink {
+  text-decoration: underline;
+  text-decoration-color: var(--po-line-2);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 0.15s;
+}
+.po .ulink:hover { text-decoration-color: currentColor; }
+.po .btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 14px; padding: 8px 14px; border-radius: 4px;
+  background: var(--po-ink); color: var(--po-bg);
+  transition: opacity 0.15s;
+}
+.po .btn:hover { opacity: 0.85; }
+.po .btn-ghost { background: var(--po-chip); color: var(--po-ink); }
+.po table.po-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.po table.po-table th {
+  font-family: var(--po-mono); font-weight: 400; font-size: 11px; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--po-muted); text-align: left; padding: 8px 10px;
+  border-bottom: 1px solid var(--po-line-2); vertical-align: bottom;
+}
+.po table.po-table td { padding: 9px 10px; border-bottom: 1px solid var(--po-line); vertical-align: top; }
+.po table.po-table td.r, .po table.po-table th.r { text-align: right; white-space: nowrap; font-family: var(--po-mono); font-variant-numeric: tabular-nums; }
+.po table.po-table tr.em td { font-weight: 600; }
+.po input[type="range"] { accent-color: var(--po-ink); width: 100%; }
+.po :focus-visible { outline: 2px solid var(--po-accent); outline-offset: 2px; }
+
+@media print {
+  .po .no-print { display: none !important; }
+  .po { background: #fff; }
+}
