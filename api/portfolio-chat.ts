@@ -66,7 +66,7 @@ Question: ${question}
 Respond with ONLY the category name.`;
 
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
     const result = await model.generateContent(classificationPrompt);
     const response = await result.response;
     const text = response.text();
@@ -294,7 +294,7 @@ async function generateResponse(
 
   try {
     const model = genAI.getGenerativeModel({
-      model: 'gemini-1.5-pro',
+      model: 'gemini-2.5-flash-lite',
       systemInstruction: SYSTEM_PROMPT,
       generationConfig: {
         temperature: 0.7,
