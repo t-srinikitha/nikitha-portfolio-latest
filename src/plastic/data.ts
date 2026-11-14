@@ -56,7 +56,7 @@ export const whereToStart =
 
 export const whoPays = {
   who: "Water and Beverage Bottling Plants",
-  why: "Bottling plants rely on reverse osmosis. RO membranes themselves release microplastics, and source water also contains them. Plants currently cannot quantify microplastic levels in finished product, and RO is their only means of removal.",
+  why: "Bottling plants rely on reverse osmosis, which removes up to 99% of microplastics from source water. After an unknown number of operating cycles, RO membranes may begin to release microplastics into the product. Plants currently cannot quantify microplastic levels in finished product, and therefore cannot determine when membrane performance has declined.",
 };
 
 export const today = {
