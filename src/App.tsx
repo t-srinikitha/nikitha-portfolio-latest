@@ -5,6 +5,7 @@ import  MinimalPortfolio from "./pages/MinimalPortfolio";
 import  ProjectsPage  from "./pages/ProjectsPage";
 import ClimatePage from "./pages/ClimatePage";
 import WorkWithMe from "./pages/WorkWithMe";
+import PlasticOptics from "./pages/PlasticOptics";
 import { Toaster } from "./components/ui/sonner";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/climate" element={<ClimatePage />} />
             <Route path="/work-with-me" element={<WorkWithMe />} />
+            <Route path="/plastic" element={<PlasticOptics />} />
           </Routes>
         </Layout>
         <Toaster />
