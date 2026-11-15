@@ -1,5 +1,5 @@
 // Sections shared by the Overview and Business Model pages.
-import { comparables, market, missionCapital } from "./data";
+import { comparables, market, missionCapital, stages } from "./data";
 import { BASE, SCENARIOS, crore, project, summarise } from "./model";
 import { Src, Stat } from "./ui";
 
@@ -38,7 +38,7 @@ const withUsd = (n: number) => (
   </>
 );
 
-export function MarketSize() {
+export function MarketSize({ notes = true }: { notes?: boolean }) {
   const z = sizing;
   return (
     <div className="grid gap-8">
@@ -72,7 +72,7 @@ export function MarketSize() {
             </tbody>
           </table>
         </div>
-        <p className="mt-3 text-[13.5px] muted max-w-[70ch]">
+        <p className={notes ? "mt-3 text-[13.5px] muted max-w-[70ch]" : "hidden"}>
           India has {market.licensedPlants.toLocaleString("en-IN")}+ licensed packaged drinking water plants <Src id="bis" />.
           Each plant is counted at one ₹5 lakh analyser and ₹{base.cartRevPlant.toFixed(1)} lakh of cartridges a year. India
           bottles about 25 billion litres a year <Src id="indiaVolume" /> and the world about{" "}
@@ -122,7 +122,7 @@ export function MarketSize() {
             </tbody>
           </table>
         </div>
-        <p className="mt-3 text-[13.5px] muted max-w-[70ch]">
+        <p className={notes ? "mt-3 text-[13.5px] muted max-w-[70ch]" : "hidden"}>
           These are existing markets that microplastic testing of food and air would sell into. Published estimates of
           food testing spend in India differ by more than ten times and are not used here. India operates 1,524 air
           quality monitoring stations <Src id="airStations" />. The share of these markets available to PlasticOptics
@@ -232,22 +232,25 @@ export function MissionCapital() {
       <table className="po-table text-[14px]">
         <thead>
           <tr>
-            <th>Programme</th>
-            <th>Scope</th>
+            <th>Stage</th>
+            <th>Work</th>
             <th className="r">₹ crore</th>
           </tr>
         </thead>
         <tbody>
           {missionCapital.map((m) => (
             <tr key={m.programme}>
-              <td className="font-medium sm:whitespace-nowrap pr-4">{m.programme}</td>
-              <td className="ink2">{m.scope}</td>
+              <td className="num whitespace-nowrap">{m.stage}</td>
+              <td>
+                <span className="font-medium">{m.programme}</span>
+                <span className="block ink2">{m.scope}</span>
+              </td>
               <td className="r">{m.low === m.high ? m.low : `${m.low}–${m.high}`}</td>
             </tr>
           ))}
           <tr className="em">
-            <td>Total</td>
             <td />
+            <td>Total</td>
             <td className="r">
               {missionTotal.low}–{missionTotal.high}
             </td>
@@ -259,6 +262,34 @@ export function MissionCapital() {
         included.
       </p>
     </div>
+  );
+}
+
+/** The single sequence of stages. `detail` adds the work and the completion test. */
+export function StageList({ detail }: { detail?: boolean }) {
+  return (
+    <ol className="border-t hair">
+      {stages.map((x) => (
+        <li key={x.n} className="grid grid-cols-[44px_1fr] md:grid-cols-[56px_1fr] gap-x-4 py-5 border-b hair">
+          <div className={`num text-[28px] leading-none ${x.current ? "text-[var(--po-accent)]" : ""}`}>{x.n}</div>
+          <div>
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <h3 className="font-medium text-[16px]">{x.name}</h3>
+              <span className="mono text-[12px] muted">{x.when}</span>
+              {x.current && <span className="chip !bg-[var(--po-lime)] !text-black">Current</span>}
+            </div>
+            <p className="mt-1.5 text-[14.5px] max-w-[62ch]">{x.objective}</p>
+            {detail && x.work && <p className="mt-1 text-[13.5px] muted max-w-[62ch]">{x.work}</p>}
+            {detail && x.gate && (
+              <p className="mt-2 text-[13.5px] max-w-[62ch]">
+                <span className="muted">Complete when: </span>
+                {x.gate}
+              </p>
+            )}
+          </div>
+        </li>
+      ))}
+    </ol>
   );
 }
 

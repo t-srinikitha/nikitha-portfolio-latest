@@ -35,7 +35,7 @@ const assumptions = [
   { a: "Tests per plant", v: `${BASE.testsPerMonth} a month`, t: "Pilots in Stage 1" },
   { a: "Cartridge COGS", v: inr(BASE.cartridgeCost), t: "Stage 0" },
   { a: "Analyser COGS", v: inr(deviceCost), t: "Prototypes in Stage 1" },
-  { a: "Plants", v: "10 pilots, 35 by Year 4, then 25 a year", t: "Stages 1 and 2" },
+  { a: "Plants", v: "10 pilots in Year 2, 60 plants by Year 5", t: "Stages 1 and 2" },
   { a: "Operating costs", v: "₹1.5 crore a year", t: "Stage 1" },
 ];
 
@@ -213,14 +213,14 @@ export default function Numbers() {
         intro={
           <p>
             The objective is industrial-scale detection and removal of microplastics in water, food and air. The table
-            is a back-of-the-envelope estimate of the capital this requires, by programme.
+            is a back-of-the-envelope estimate of the capital this requires, by stage.
           </p>
         }
       >
         <MissionCapital />
         <p className="mt-2 text-[13.5px] muted max-w-[70ch]">
           The first line is the business case above. The other lines are estimates that will be revised as each
-          programme is defined. Each programme begins only after the previous one has met its objective.
+          stage is defined.
         </p>
 
         <h3 className="mt-10 font-medium">Capital raised by comparable companies</h3>
@@ -229,8 +229,8 @@ export default function Numbers() {
         </div>
         <Conclusion>
           The full objective requires an estimated ₹{missionTotal.low}–{missionTotal.high} crore ({missionUsd}) over
-          about ten years. Two-thirds of this is plant-scale removal, which is committed only after the removal pilot
-          succeeds. Companies in the United Kingdom, the United States and Germany have each raised US$4–10 million to
+          about ten years. Two-thirds of this is Stage 6, which is committed only after removal and in-line analysis
+          have been demonstrated. Companies in the United Kingdom, the United States and Germany have each raised US$4–10 million to
           bring one microplastic product to early commercial scale.
         </Conclusion>
       </Block>

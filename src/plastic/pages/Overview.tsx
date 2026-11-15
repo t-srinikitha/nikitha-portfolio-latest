@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import {
   goal,
   surfaces,
@@ -7,21 +7,16 @@ import {
   whoPays,
   today,
   objective,
-  stages,
-  unitEconomics as ue,
   budget,
   stage0Done,
   afterStage0,
   founder,
-  market,
   status,
   collaborators,
 } from "../data";
-import { Block, Callout, Conclusion, PageHead, Src, Stat, inr } from "../ui";
-import { BASE, crore } from "../model";
-import { BreakEvenStats, BreakEvenTable, MarketSize, MissionCapital, base as s, missionTotal, missionUsd, sizing } from "../sections";
+import { Block, Callout, Conclusion, PageHead, Stat } from "../ui";
+import { BreakEvenStats, MarketSize, MissionCapital, StageList, base as s, missionTotal, missionUsd, sizing } from "../sections";
 
-const deviceCost = ue.deviceCost.reduce((a, c) => a + c.v, 0);
 
 const comparison = [
   {
@@ -46,7 +41,6 @@ const comparison = [
 
 export default function Overview() {
   const budgetTotal = budget.reduce((a, b) => a + b.v, 0);
-  const brandShare = s.plantsAtBreakeven ? Math.round((s.plantsAtBreakeven / market.nationalBrandPlants) * 100) : null;
 
   return (
     <>
@@ -82,6 +76,34 @@ export default function Overview() {
           ))}
         </div>
         <Conclusion>{whereToStart}</Conclusion>
+      </Block>
+
+      <Block
+        id="stages"
+        title="Development Stages"
+        intro={<p>The company's plan is a single sequence of seven stages. Stage 0 is the current stage.</p>}
+      >
+        <StageList />
+        <Conclusion>
+          Stages 0 to 2 build the first business, a benchtop analyser for bottling plants. Stages 3 to 6 extend detection
+          to food, add removal and in-line analysis, and take both to scale. The{" "}
+          <Link to="/plastic/roadmap" className="ulink">
+            R&D Roadmap
+          </Link>{" "}
+          describes each stage.
+        </Conclusion>
+      </Block>
+
+      <Block id="stage-0" title="Stage 0 Milestones" intro={<p>Stage 0 is complete when the following are true.</p>}>
+        <ol className="grid gap-3">
+          {stage0Done.map((d, i) => (
+            <li key={d} className="grid grid-cols-[28px_1fr] gap-3 text-[15.5px]">
+              <span className="num text-[13px] muted pt-0.5">0{i + 1}</span>
+              <span>{d}</span>
+            </li>
+          ))}
+        </ol>
+        <Conclusion>{afterStage0}</Conclusion>
       </Block>
 
       <Block id="customer" toc="Customer" title={`Customer: ${whoPays.who}`} intro={<p>{whoPays.why}</p>}>
@@ -153,82 +175,16 @@ export default function Overview() {
         </Conclusion>
       </Block>
 
-      <Block id="unit-economics" title="Unit Economics">
-        <div className="grid md:grid-cols-2 gap-4">
-          <div className="border hair bg-[var(--po-paper)]">
-            <h3 className="px-5 pt-5 font-medium">Benchtop analyser</h3>
-            <table className="po-table mt-3">
-              <tbody>
-                {ue.deviceCost.map((c) => (
-                  <tr key={c.item}>
-                    <td className="!pl-5">{c.item}</td>
-                    <td className="r !pr-5">{inr(c.v)}</td>
-                  </tr>
-                ))}
-                <tr className="em">
-                  <td className="!pl-5">COGS</td>
-                  <td className="r !pr-5">{inr(deviceCost)}</td>
-                </tr>
-                <tr className="em">
-                  <td className="!pl-5 !border-b-0">Market price</td>
-                  <td className="r !pr-5 !border-b-0 text-[var(--po-accent)]">{ue.devicePrice}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div className="border hair bg-[var(--po-paper)]">
-            <h3 className="px-5 pt-5 font-medium">Test cartridge</h3>
-            <table className="po-table mt-3">
-              <tbody>
-                {ue.cartridgeBreakdown.map((c) => (
-                  <tr key={c.item}>
-                    <td className="!pl-5">{c.item}</td>
-                    <td className="r !pr-5">{inr(c.v)}</td>
-                  </tr>
-                ))}
-                <tr className="em">
-                  <td className="!pl-5">COGS</td>
-                  <td className="r !pr-5">{inr(ue.cartridgeCost)}</td>
-                </tr>
-                <tr className="em">
-                  <td className="!pl-5 !border-b-0">Market price</td>
-                  <td className="r !pr-5 !border-b-0 text-[var(--po-accent)]">{ue.cartridgePrice}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <p className="mt-4 text-[13.5px] muted max-w-[68ch]">
-          The ₹400 cartridge COGS is a planning estimate. Bench consumables currently cost ₹193 per test and are projected
-          to fall to ₹60 at volume (see{" "}
-          <Link to="/plastic/roadmap#cost-down" className="ulink">
-            Cost Reduction
+      <Block id="market-size" title="Market Size" intro={<p>These are back-of-the-envelope estimates.</p>}>
+        <MarketSize notes={false} />
+        <Conclusion>
+          The benchtop analyser for bottling plants in India is a market of ₹{Math.round(sizing.indiaCart)} crore a year
+          in cartridges. Removal, global sales, and food and air testing are each larger markets than the first product.
+          The basis for each figure is set out under{" "}
+          <Link to="/plastic/numbers#market-size" className="ulink">
+            Business Model
           </Link>
-          ). All figures will be refined through Stage 0 and customer interviews.
-        </p>
-        <Conclusion>
-          Gross margin is 68% on each analyser and 60% on each cartridge. A plant on the subscription of{" "}
-          {BASE.testsPerMonth} cartridges a month pays ₹{s.cartRevPlant.toFixed(1)} lakh a year, of which ₹
-          {s.cartGrossPlant.toFixed(2)} lakh is gross profit.
-        </Conclusion>
-      </Block>
-
-      <Block
-        id="market-size"
-        title="Market Size"
-        intro={
-          <p>
-            These are back-of-the-envelope estimates. The bottled water figures are built from plant counts, volumes and
-            PlasticOptics prices. The food and air figures are existing testing markets.
-          </p>
-        }
-      >
-        <MarketSize />
-        <Conclusion>
-          The bottling-plant analyser in India is a market of ₹{Math.round(sizing.indiaCart)} crore a year in cartridges.
-          About {market.nationalBrandPlants} plants bottle for national brands and are the first buyers; Bisleri alone has
-          128 <Src id="bisleri" />. These plants represent ₹{Math.round(sizing.brandCart)} crore a year. Removal, global
-          sales, and food and air testing are each larger markets than the first product.
+          .
         </Conclusion>
       </Block>
 
@@ -238,81 +194,35 @@ export default function Overview() {
         title="Break-even: Bottling Plant Business"
         intro={
           <p>
-            The first business is the sale of analysers and cartridge subscriptions to bottling plants. This section
-            shows the cash that business requires and the year in which it becomes profitable. It excludes the cost of
-            food, air and removal research.
+            The first business is the sale of benchtop analysers and cartridge subscriptions to bottling plants, in
+            Stages 0 to 2.
           </p>
         }
       >
         <BreakEvenStats />
-        <div className="mt-8">
-          <BreakEvenTable />
-        </div>
         <Conclusion>
-          The bottling-plant business requires about ₹{(s.cashRequired / 100).toFixed(1)} crore and reaches operating profit in Year{" "}
-          {s.breakeven}, when {s.plantsAtBreakeven} plants each pay ₹30,000 a month for cartridges. That is {brandShare}%
-          of the estimated {market.nationalBrandPlants} plants that bottle for national brands.
+          The bottling-plant business requires about ₹{(s.cashRequired / 100).toFixed(1)} crore and becomes profitable in
+          Year {s.breakeven}, with {s.plantsAtBreakeven} plants each paying ₹30,000 a month for cartridges. The year-by-year
+          figures are set out under{" "}
+          <Link to="/plastic/numbers#break-even" className="ulink">
+            Business Model
+          </Link>
+          .
         </Conclusion>
-        <Link to="/plastic/numbers" className="mt-8 inline-flex items-center gap-2 btn btn-ghost">
-          Business Model <ArrowRight className="h-4 w-4" />
-        </Link>
       </Block>
 
       <Block
         id="total-capital"
         toc="Total Capital"
         title="Total Capital for the Full Objective"
-        intro={
-          <p>
-            The objective is industrial-scale detection and removal of microplastics in water, food and air. The table
-            is a back-of-the-envelope estimate of the capital this requires, by programme.
-          </p>
-        }
+        intro={<p>This is a back-of-the-envelope estimate of the capital required to complete all seven stages.</p>}
       >
         <MissionCapital />
         <Conclusion>
           The full objective requires an estimated ₹{missionTotal.low}–{missionTotal.high} crore ({missionUsd}) over
-          about ten years. Two-thirds of this is plant-scale removal, which is committed only after the removal pilot
-          succeeds. The ₹{budgetTotal.toFixed(1)} lakh requested now funds the first step of the first programme.
+          about ten years. Two-thirds of this is Stage 6, which is committed only after removal and in-line analysis
+          have been demonstrated. The ₹{budgetTotal.toFixed(1)} lakh requested now funds Stage 0.
         </Conclusion>
-      </Block>
-
-      <Block id="stages" title="Development Stages">
-        <ol className="border-t hair">
-          {stages.map((x) => (
-            <li key={x.n} className="grid grid-cols-[44px_1fr] md:grid-cols-[56px_1fr] gap-x-4 gap-y-2 py-5 border-b hair">
-              <div className={`num text-[28px] leading-none ${x.current ? "text-[var(--po-accent)]" : ""}`}>{x.n}</div>
-              <div>
-                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                  <h3 className="font-medium text-[16px]">{x.name}</h3>
-                  <span className="mono text-[12px] muted">{x.when}</span>
-                  {x.current && <span className="chip !bg-[var(--po-lime)] !text-black">Current</span>}
-                </div>
-                <p className="mt-1.5 text-[14.5px]">{x.objective}</p>
-                <p className="mt-1 text-[13.5px] muted">{x.spend}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-        <Conclusion>
-          Work on microplastic removal begins in parallel with Stage 2 and continues after it. The{" "}
-          <Link to="/plastic/roadmap" className="ulink">
-            R&D Roadmap
-          </Link>{" "}
-          sets out the removal stages.
-        </Conclusion>
-      </Block>
-
-      <Block id="stage-0" title="Stage 0 Milestones" intro={<p>Stage 0 is complete when the following are true.</p>}>
-        <ol className="grid gap-3">
-          {stage0Done.map((d, i) => (
-            <li key={d} className="grid grid-cols-[28px_1fr] gap-3 text-[15.5px]">
-              <span className="num text-[13px] muted pt-0.5">0{i + 1}</span>
-              <span>{d}</span>
-            </li>
-          ))}
-        </ol>
-        <Conclusion>{afterStage0}</Conclusion>
       </Block>
 
       <Block id="status" title="Current Status" intro={<p>{status.summary}</p>}>

@@ -1,7 +1,7 @@
 // PlasticOptics microsite content.
 // Primary source: "PlasticOptics" Google Doc, V2 tab (stages, unit economics,
-// Stage 0 budget). Long-range material (Stage 3+, removal, cost-down levers)
-// comes from the "Plasticoptics Master Plan". External facts carry sources.
+// Stage 0 budget). Later stages (food, removal, in-line analysis) come from the
+// "Plasticoptics Master Plan". External facts carry sources.
 // Market sizes and total capital are back-of-the-envelope estimates.
 // Money is INR. L = lakh (1e5), Cr = crore (1e7).
 
@@ -23,26 +23,26 @@ export const goal =
 export const surfaces = [
   {
     name: "Drinking water",
-    verdict: "Phase 1",
+    verdict: "Stages 0–2",
     feasibility:
-      "Detection methods for microplastics in water are well established in research. The first product is built for water bottling plants.",
+      "Detection methods for microplastics in water are well established in research. The first product is a benchtop analyser for water bottling plants.",
   },
   {
     name: "Food",
-    verdict: "Phase 2",
+    verdict: "Stage 3",
     feasibility:
-      "Salt and spices are prepared as liquid samples and tested with the same staining and imaging method used for water. Food testing will be developed after the method is validated in water.",
+      "Salt, sugar, milk and other foods are prepared as liquid samples and tested with the same staining and imaging method used for water.",
   },
   {
     name: "Air",
-    verdict: "Phase 3",
+    verdict: "Stage 6",
     feasibility:
       "Airborne particles are collected on a filter, which is then tested with the same method.",
   },
 ];
 
 export const whereToStart =
-  "Drinking water is the first market because detection methods for water are the most established. Food and air follow, using the same detection method. Food represents the largest long-term revenue opportunity.";
+  "Drinking water is the first market because detection methods for water are the most established. Food follows with the same method, and air is addressed last. Food represents the largest long-term revenue opportunity.";
 
 export const whoPays = {
   who: "Water and Beverage Bottling Plants",
@@ -66,30 +66,96 @@ export const objective = {
   pilot: "Uravu Labs, Bengaluru (proposed).",
 };
 
-export const stages = [
+// One sequence of stages. Stages 0–2 are the first business (benchtop analyser
+// for bottling plants). Research for Stages 3 and 4 begins during Stage 2.
+export const stages: {
+  n: number;
+  name: string;
+  when: string;
+  objective: string;
+  work?: string;
+  gate?: string;
+  current?: boolean;
+}[] = [
   {
     n: 0,
     name: "Technology validation",
     when: "Now → ~6 months",
     objective: "Validation of differential staining and AI counting against Raman/FTIR.",
-    spend: "Reagents, collaboration with professors, lab setup, Raman/FTIR reference testing",
+    work: "Reagents, collaboration with professors, lab setup, Raman/FTIR reference testing.",
+    gate: "Counts agree with Raman spectroscopy on the same samples.",
     current: true,
   },
   {
     n: 1,
     name: "Prototype and pilots",
     when: "Months 6 → 24",
-    objective: "Development of a working prototype and pilots at 10 plants.",
-    spend: "Core team, 3–4 prototype rounds, 10 pilot units, patent filing",
+    objective: "Development of a working benchtop analyser and pilots at 10 bottling plants.",
+    work: "Core team, 3–4 prototype rounds, 10 pilot analysers, patent filing.",
+    gate: "Pilot plants test routinely and pay for cartridges.",
   },
   {
     n: 2,
     name: "Commercial launch",
-    when: "Years 2 → 4",
+    when: "Years 3 → 5",
     objective:
-      "Sales to 35 plants by Year 4. Research on microplastic removal and on food testing (salt) begins.",
-    spend:
-      "Contract manufacturing, tooling, method validation, first sales hire, field service, inventory",
+      "Sale of the benchtop analyser and cartridge subscriptions to bottling plants. The target is 60 plants by Year 5, when the business becomes profitable.",
+    work: "Contract manufacturing, method validation, sales and field service.",
+    gate: "The bottling-plant business is profitable.",
+  },
+  {
+    n: 3,
+    name: "Food analyser",
+    when: "Research begins during Stage 2",
+    objective: "Extension of the analyser to salt, sugar, milk and other foods, which are prepared as liquid samples.",
+    gate: "Counts in food agree with reference methods.",
+  },
+  {
+    n: 4,
+    name: "Removal",
+    when: "Research begins during Stage 2",
+    objective:
+      "Removal of microplastics from water at one partner plant. The benchtop analyser verifies each batch.",
+    work: "Metal-phenolic networks (tamarind and iron) bind microplastics at millilitre scale today. The target is cubic metres per hour.",
+    gate: "Consistent removal at a cost acceptable to the plant.",
+  },
+  {
+    n: 5,
+    name: "In-line analysis",
+    when: "After Stage 4",
+    objective:
+      "An analyser installed on the water line that reports counts continuously. It sets the dose for removal and verifies the output.",
+    gate: "A plant runs removal on in-line readings.",
+  },
+  {
+    n: 6,
+    name: "Scale",
+    when: "After Stage 5",
+    objective:
+      "Removal with in-line analysis at bottling and water treatment plants, in India and abroad. Detection is extended to air.",
+  },
+];
+
+export const stageOrder = [
+  {
+    t: "Benchtop analyser first",
+    b: "Detection in water is the most established in research, and bottling plants are an identifiable customer. The analyser provides the measurement on which every later stage depends.",
+  },
+  {
+    t: "Food second",
+    b: "Food uses the same staining and imaging method. Only the preparation of the sample changes.",
+  },
+  {
+    t: "Removal third",
+    b: "Removal can be proven only against measurement. The benchtop analyser verifies each batch during the removal pilot.",
+  },
+  {
+    t: "In-line analysis fourth",
+    b: "Removal at plant scale runs continuously. It requires continuous measurement to set the dose and verify the output.",
+  },
+  {
+    t: "Scale last",
+    b: "Removal and in-line analysis are installed at many plants only after both have been demonstrated at one.",
   },
 ];
 
@@ -250,35 +316,40 @@ export const status = {
 /* ───────────────────────── Capital for the full objective (estimate) ───────────────────────── */
 
 // ₹ crore. The first line comes from the business case in model.ts, rounded.
-// The removal and inline-detection lines follow the Master Plan estimates.
+// The removal and in-line analysis lines follow the Master Plan estimates.
 export const missionCapital = [
   {
-    programme: "Bottling-plant analyser",
-    scope: "Validation, product development and operating losses until the business is profitable.",
+    stage: "0–2",
+    programme: "Benchtop analyser",
+    scope: "Validation, product development and operating losses until the bottling-plant business is profitable.",
     low: 5,
     high: 5,
   },
   {
-    programme: "Detection in food and air",
-    scope: "Sample preparation, validation against reference methods, and a product variant for each.",
+    stage: "3",
+    programme: "Food analyser",
+    scope: "Sample preparation and validation for salt, sugar, milk and other foods.",
     low: 5,
     high: 10,
   },
   {
-    programme: "Continuous detection",
-    scope: "An inline monitor that stains and images water in flow. This requires a new instrument.",
-    low: 5,
-    high: 10,
-  },
-  {
-    programme: "Removal pilot",
+    stage: "4",
+    programme: "Removal",
     scope: "Removal chemistry scaled from millilitres to cubic metres per hour at one partner plant.",
     low: 10,
     high: 20,
   },
   {
-    programme: "Plant-scale removal",
-    scope: "Full-scale removal units, their manufacture, and installation at bottling and treatment plants.",
+    stage: "5",
+    programme: "In-line analysis",
+    scope: "An analyser that stains and images water in flow. This requires a new instrument.",
+    low: 5,
+    high: 10,
+  },
+  {
+    stage: "6",
+    programme: "Scale",
+    scope: "Full-scale removal units, their manufacture and installation, and extension of detection to air.",
     low: 50,
     high: 100,
   },
@@ -325,14 +396,9 @@ export const pathToMarket = [
     body: "Three to four prototype iterations. Ten pilot plants purchasing cartridges. Patent filing. Measurement of testing frequency and price acceptance.",
   },
   {
-    step: "Convert",
-    stage: "Year 3–4",
-    body: "Pilot plants serve as references. Ten paying plants in Year 3 and fifteen in Year 4. Each sale comprises one device and recurring cartridges.",
-  },
-  {
-    step: "Scale",
-    stage: "Stage 2 · Years 2–4",
-    body: "Contract manufacturing, tooling, method validation, sales and field service. Target of 35 plants by Year 4, followed by 25 new plants each year.",
+    step: "Sell",
+    stage: "Stage 2 · Years 3–5",
+    body: "Pilot plants serve as references. Each sale comprises one analyser and a cartridge subscription. The target is 60 plants by Year 5, when the business becomes profitable.",
   },
 ];
 
@@ -367,93 +433,6 @@ export const risks = [
     test: "India has no microplastic limit for drinking water. Pilots must convert to paid contracts on quality and brand value.",
     when: "Stage 1–2",
   },
-];
-
-export const unknowns = [
-  "Final cartridge cost and price.",
-  "Testing frequency per plant.",
-  "Length of the sales cycle from pilot to purchase order.",
-  "Number of plants that bottle for national brands, and who approves the purchase at each.",
-  "Operating costs once the analyser is on sale, assumed at ₹1.5 crore a year.",
-  "Timing of any BIS or FSSAI microplastic limit.",
-];
-
-/* ───────────────────────── Roadmap (Master Plan, long range) ───────────────────────── */
-
-export type Track = "detect" | "remove" | "scale";
-
-export const longArc: {
-  n: number;
-  name: string;
-  track: Track;
-  body: string;
-  gate?: string;
-  newTech?: boolean;
-}[] = [
-  {
-    n: 3,
-    name: "Continuous detection",
-    track: "detect",
-    body: "An inline monitor installed on the water line, reporting counts within minutes. Staining and imaging occur in flow. Benchtop data trains the model.",
-    gate: "A plant acts on monitor readings.",
-    newTech: true,
-  },
-  {
-    n: 4,
-    name: "Removal pilot",
-    track: "remove",
-    body: "Metal-phenolic networks (tamarind and iron) bind microplastics at millilitre scale. Target: cubic metres per hour at one partner plant.",
-    gate: "Consistent removal at a cost acceptable to the plant.",
-    newTech: true,
-  },
-  {
-    n: 5,
-    name: "Plant-scale removal",
-    track: "remove",
-    body: "Full-scale removal at bottling and treatment plants. The monitor measures inflow, sets dosage and verifies output. Revenue per cubic metre treated.",
-    gate: "A plant certifies its water as microplastic-free.",
-    newTech: true,
-  },
-  {
-    n: 6,
-    name: "Scale",
-    track: "scale",
-    body: "Expansion across India, followed by the EU and US. Municipal treatment once cost per cubic metre declines.",
-  },
-];
-
-export const costKeys = ["Chemistry", "Filter media", "Hardware", "Making it", "Delivery, installation, service"];
-
-// Long-range targets at production volume (Master Plan), ₹.
-export const longRangeProducts = [
-  { name: "Inline monitor", stage: "Stage 3", cost: [0, 0, 600000, 150000, 250000], price: 3500000 },
-  { name: "Monitor consumables, per month", stage: "Stage 3", cost: [3000, 6000, 0, 2000, 4000], price: 50000 },
-  { name: "Removal at pilot, per m³", stage: "Stage 4", cost: [60, 15, 30, 30, 15], price: 200 },
-  { name: "Removal at full scale, per m³", stage: "Stage 5", cost: [24, 6, 12, 12, 6], price: 200 },
-];
-
-// Consumables per test at the bench today vs target at volume (Master Plan), ₹, scale 0–200.
-export const testCostSteps: { label: string; kind: "total" | "cut" | "add"; from: number; to: number; detail: string }[] = [
-  { label: "Bench today", kind: "total", from: 0, to: 193, detail: "Filter ₹120, reagents ₹43, glassware and water ₹30" },
-  { label: "Buy membranes direct", kind: "cut", from: 135, to: 193, detail: "Filter ₹120 → ₹62" },
-  { label: "13 mm filters, not 25 mm", kind: "cut", from: 100, to: 135, detail: "About 70% less membrane · ₹62 → ₹27" },
-  { label: "Bulk dye, machine dosing", kind: "cut", from: 66, to: 100, detail: "Reagents ₹43 → ₹9" },
-  { label: "Automated handling", kind: "cut", from: 45, to: 66, detail: "Glassware and handling ₹30 → ₹9" },
-  { label: "Channel and logistics", kind: "add", from: 45, to: 60, detail: "Delivery to customer +₹15" },
-  { label: "Target", kind: "total", from: 0, to: 60, detail: "Chemistry ₹9, filter ₹27, making ₹9, delivery ₹15" },
-];
-
-export const levers = [
-  { name: "Cheaper, reusable binding chemistry", stages: "4, 5", low: 20, high: 28, how: "Plant polyphenols in place of tannic acid; metal recovery" },
-  { name: "Direct membrane sourcing", stages: "1–3", low: 20, high: 25, how: "Direct procurement, then in-house membrane casting" },
-  { name: "Dose to demand", stages: "5", low: 10, high: 20, how: "Dosage set by the inline monitor" },
-  { name: "13 mm filters, not 25 mm", stages: "1–3", low: 10, high: 15, how: "About 70% less membrane area" },
-  { name: "Dose into existing plant tanks", stages: "5", low: 10, high: 14, how: "Use of existing coagulation stage" },
-  { name: "Standard removal modules", stages: "4, 5", low: 5, high: 10, how: "Standardised skids built in volume" },
-  { name: "Bulk dye, machine dosing", stages: "1–3", low: 5, high: 8, how: "Dye by the gram, dosed by the microlitre" },
-  { name: "Design for volume manufacturing", stages: "1–3", low: 5, high: 8, how: "Injection-moulded housings, fewer parts" },
-  { name: "Indian sourcing and assembly", stages: "1–3", low: 5, high: 8, how: "Local optics and electronics, no import duty" },
-  { name: "Fewer confirmation tests", stages: "1–3", low: 3, high: 5, how: "Reduced Raman/FTIR confirmation" },
 ];
 
 /* ───────────────────────── Research collaborators ───────────────────────── */

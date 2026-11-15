@@ -1,12 +1,12 @@
-import { market, objective, pathToMarket, risks, unknowns, whyNow, whoPays } from "../data";
+import { market, objective, pathToMarket, risks, whyNow, whoPays } from "../data";
 import { Block, Callout, Conclusion, PageHead, Src } from "../ui";
 
 const segments = [
-  { name: "Plants bottling for national brands", size: `About ${market.nationalBrandPlants} plants (estimate). First buyers.`, when: "Phase 1" },
-  { name: "Other packaged drinking water plants", size: `${market.licensedPlants.toLocaleString("en-IN")}+ BIS-licensed in India in total`, when: "Phase 1" },
-  { name: "Beverage bottling plants", size: "Same RO and filtration exposure", when: "Phase 1" },
-  { name: "Testing laboratories", size: "Screening prior to Raman/FTIR", when: "Phase 2" },
-  { name: "Water utilities", size: "Following inline monitoring", when: "Phase 3" },
+  { name: "Plants bottling for national brands", size: `About ${market.nationalBrandPlants} plants (estimate). First buyers.`, when: "Stage 2" },
+  { name: "Other packaged drinking water plants", size: `${market.licensedPlants.toLocaleString("en-IN")}+ BIS-licensed in India in total`, when: "Stage 2" },
+  { name: "Beverage bottling plants", size: "Same RO and filtration exposure", when: "Stage 2" },
+  { name: "Food producers and testing laboratories", size: "Salt, sugar, milk and other foods", when: "Stage 3" },
+  { name: "Water utilities", size: "Removal with in-line analysis", when: "Stage 6" },
 ];
 
 export default function Market() {
@@ -18,7 +18,7 @@ export default function Market() {
           <p>
             PlasticOptics will sell first to the plants that bottle for India's national brands, and then to the rest of
             India's {market.licensedPlants.toLocaleString("en-IN")}+ licensed packaged drinking water plants. The plan is
-            ten pilot plants in Stage 1, then 35 paying plants by Year 4.
+            ten pilot plants in Stage 1, then 60 plants by Year 5.
           </p>
         }
       />
@@ -37,11 +37,7 @@ export default function Market() {
               <tr key={s.name}>
                 <td className="font-medium">{s.name}</td>
                 <td className="ink2">{s.size}</td>
-                <td className="r">
-                  <span className={`mono text-[11px] px-1.5 py-0.5 ${s.when === "Phase 1" ? "bg-[var(--po-ink)] text-[var(--po-bg)]" : "bg-[var(--po-chip)]"}`}>
-                    {s.when}
-                  </span>
-                </td>
+                <td className="r">{s.when}</td>
               </tr>
             ))}
           </tbody>
@@ -134,7 +130,7 @@ export default function Market() {
       </Block>
 
       <Block id="path" title="Market Entry Plan">
-        <ol className="grid md:grid-cols-2 gap-px bg-[var(--po-line)] border hair">
+        <ol className="grid md:grid-cols-3 gap-px bg-[var(--po-line)] border hair">
           {pathToMarket.map((p, i) => (
             <li key={p.step} className="bg-[var(--po-paper)] p-5">
               <div className="flex items-baseline gap-3">
@@ -174,17 +170,6 @@ export default function Market() {
             </tbody>
           </table>
         </div>
-      </Block>
-
-      <Block id="unknowns" title="Open Questions">
-        <ul className="grid gap-3">
-          {unknowns.map((u) => (
-            <li key={u} className="grid grid-cols-[18px_1fr] gap-2 text-[15px]">
-              <span className="text-[var(--po-accent)]">?</span>
-              <span>{u}</span>
-            </li>
-          ))}
-        </ul>
       </Block>
     </>
   );

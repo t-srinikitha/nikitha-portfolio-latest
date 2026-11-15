@@ -128,12 +128,12 @@ export function summarise(i: Inputs, rows: Row[]) {
 
 /** Downside cases for the same business. */
 export const SCENARIOS: { id: string; label: string; change: string; inputs: Inputs }[] = [
-  { id: "base", label: "Base case", change: "30 tests a month; 35 plants by Year 4, then 25 a year", inputs: BASE },
+  { id: "base", label: "Base case", change: "30 tests a month; 60 plants by Year 5", inputs: BASE },
   { id: "usage", label: "Half the testing", change: "15 tests a month per plant", inputs: { ...BASE, testsPerMonth: 15 } },
   {
     id: "sales",
     label: "Half the sales",
-    change: "5 pilots, 18 plants by Year 4, then 12 a year",
+    change: "Half as many plants each year",
     inputs: { ...BASE, pilotsY2: 5, payingY3: 5, payingY4: 8, growth: 12 },
   },
   { id: "price", label: "Lower cartridge price", change: "₹800 per cartridge", inputs: { ...BASE, cartridgePrice: 800 } },
