@@ -1,387 +1,265 @@
-import { useEffect, useMemo, useState } from "react";
-import { RotateCcw } from "lucide-react";
-import { BASE, CAPITAL_TOTAL, HORIZON, PRESETS, project, summarise, type Inputs, type Row } from "../model";
-import { market } from "../data";
-import { Block, Callout, PageHead, Src, Stat, inr } from "../ui";
-import { PnlTable } from "../PnlTable";
+import { market, unitEconomics as ue } from "../data";
+import { BASE, crore, project } from "../model";
+import {
+  BreakEvenStats,
+  BreakEvenTable,
+  Comparables,
+  MarketSize,
+  MissionCapital,
+  ScenarioTable,
+  base as s,
+  missionTotal,
+  missionUsd,
+  sizing,
+} from "../sections";
+import { Block, Conclusion, PageHead, Src, inr } from "../ui";
 
-type Field = {
-  key: keyof Inputs;
-  label: string;
-  min: number;
-  max: number;
-  step: number;
-  fmt: (v: number) => string;
-  note?: string;
+const deviceCost = ue.deviceCost.reduce((a, c) => a + c.v, 0);
+const monthlyPrice = BASE.testsPerMonth * BASE.cartridgePrice;
+const monthlyCost = BASE.testsPerMonth * BASE.cartridgeCost;
+const pct = (price: number, cost: number) => `${Math.round(((price - cost) / price) * 100)}%`;
+const L2 = (rupees: number) => (rupees / 1e5).toFixed(2);
+
+const yearOne = {
+  revenue: BASE.devicePrice + monthlyPrice * 12,
+  cogs: deviceCost + monthlyCost * 12,
 };
+const later = { revenue: monthlyPrice * 12, cogs: monthlyCost * 12 };
+const labPerYear = 5000 * BASE.testsPerMonth * 12;
 
-const FIELDS: { group: string; fields: Field[] }[] = [
-  {
-    group: "Analyser",
-    fields: [
-      { key: "devicePrice", label: "Analyser price", min: 200000, max: 800000, step: 10000, fmt: inr, note: "Base case ₹5 lakh" },
-      { key: "deviceCost", label: "Analyser COGS", min: 80000, max: 300000, step: 5000, fmt: inr, note: "₹1.2 lakh components; ₹0.4 lakh assembly" },
-    ],
-  },
-  {
-    group: "Cartridge",
-    fields: [
-      { key: "cartridgePrice", label: "Cartridge price", min: 500, max: 2500, step: 50, fmt: inr, note: "Base case ₹1,000" },
-      { key: "cartridgeCost", label: "Cartridge COGS", min: 50, max: 1000, step: 10, fmt: inr, note: "Base case ₹400; current bench consumables ₹193" },
-      { key: "testsPerYear", label: "Tests per plant per year", min: 50, max: 730, step: 10, fmt: (v) => `${v}`, note: "Base case 360, approximately one per day" },
-    ],
-  },
-  {
-    group: "Operating costs (per year)",
-    fields: [
-      { key: "rdLakh", label: "R&D", min: 0, max: 300, step: 5, fmt: (v) => `₹${v} L`, note: "Research staff, laboratory, prototypes" },
-      { key: "gaLakh", label: "G&A", min: 0, max: 200, step: 5, fmt: (v) => `₹${v} L`, note: "Finance, legal, patents, premises" },
-      { key: "salesLakh", label: "Sales & field service", min: 0, max: 200, step: 5, fmt: (v) => `₹${v} L`, note: "Sales, installation and service" },
-    ],
-  },
-  {
-    group: "Plants",
-    fields: [
-      { key: "pilotsY2", label: "Pilot plants, Year 2", min: 0, max: 30, step: 1, fmt: (v) => `${v}`, note: "Cartridge purchases only" },
-      { key: "payingY3", label: "New paying plants, Year 3", min: 0, max: 50, step: 1, fmt: (v) => `${v}` },
-      { key: "payingY4", label: "New paying plants, Year 4", min: 0, max: 50, step: 1, fmt: (v) => `${v}` },
-      { key: "growth", label: "New paying plants per year, Year 5+", min: 0, max: 50, step: 1, fmt: (v) => `${v}`, note: "Base case 25" },
-    ],
-  },
+const cashPositive = project(BASE).find((r) => r.cumulative > 0)?.year ?? null;
+
+const assumptions = [
+  { a: "Analyser price", v: ue.devicePrice, t: "Customer interviews in Stage 0; pilots in Stage 1" },
+  { a: "Cartridge price", v: ue.cartridgePrice, t: "Customer interviews in Stage 0; pilots in Stage 1" },
+  { a: "Tests per plant", v: `${BASE.testsPerMonth} a month`, t: "Pilots in Stage 1" },
+  { a: "Cartridge COGS", v: inr(BASE.cartridgeCost), t: "Stage 0" },
+  { a: "Analyser COGS", v: inr(deviceCost), t: "Prototypes in Stage 1" },
+  { a: "Plants", v: "10 pilots, 35 by Year 4, then 25 a year", t: "Stages 1 and 2" },
+  { a: "Operating costs", v: "₹1.5 crore a year", t: "Stage 1" },
 ];
 
-function useNarrow() {
-  const [narrow, setNarrow] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 639px)");
-    const on = () => setNarrow(mq.matches);
-    on();
-    mq.addEventListener("change", on);
-    return () => mq.removeEventListener("change", on);
-  }, []);
-  return narrow;
-}
-
-function Chart({ rows }: { rows: Row[] }) {
-  const narrow = useNarrow();
-  const W = narrow ? 360 : 640;
-  const H = narrow ? 240 : 260;
-  const padL = 40;
-  const padR = 12;
-  const padT = 16;
-  const padB = 34;
-  const vals = rows.flatMap((r) => [r.operating, r.cumulative, 0]);
-  let lo = Math.min(...vals);
-  let hi = Math.max(...vals);
-  const span = hi - lo || 1;
-  lo -= span * 0.08;
-  hi += span * 0.08;
-  const y = (v: number) => padT + ((hi - v) / (hi - lo)) * (H - padT - padB);
-  const step = (W - padL - padR) / rows.length;
-  const x = (i: number) => padL + step * i + step / 2;
-  const bw = Math.min(34, step * 0.5);
-  const niceStep = (() => {
-    const raw = (hi - lo) / 4;
-    const p = Math.pow(10, Math.floor(Math.log10(raw)));
-    return [1, 2, 2.5, 5, 10].map((m) => m * p).find((s) => s >= raw) ?? raw;
-  })();
-  const ticks: number[] = [];
-  for (let t = Math.ceil(lo / niceStep) * niceStep; t <= hi; t += niceStep) ticks.push(Math.round(t));
-  const line = rows.map((r, i) => `${i ? "L" : "M"}${x(i)},${y(r.cumulative)}`).join(" ");
-
-  return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label="Operating profit bars and cumulative line by year, ₹ lakh">
-      {ticks.map((t) => (
-        <g key={t}>
-          <line x1={padL} x2={W - padR} y1={y(t)} y2={y(t)} stroke={t === 0 ? "var(--po-ink)" : "var(--po-line)"} strokeWidth={t === 0 ? 1 : 1} />
-          <text x={padL - 8} y={y(t) + 3.5} textAnchor="end" fontSize="10.5" fill="var(--po-muted)" fontFamily="var(--po-mono)">
-            {t}
-          </text>
-        </g>
-      ))}
-      {rows.map((r, i) => (
-        <g key={r.year}>
-          <rect
-            x={x(i) - bw / 2}
-            width={bw}
-            y={Math.min(y(0), y(r.operating))}
-            height={Math.max(1, Math.abs(y(0) - y(r.operating)))}
-            fill={r.operating > 0 ? "var(--po-ink)" : "var(--po-line-2)"}
-          >
-            <title>{`Year ${r.year}: operating ${r.operating.toFixed(1)}, cumulative ${r.cumulative.toFixed(1)} (₹ lakh)`}</title>
-          </rect>
-          <text x={x(i)} y={H - padB + 16} textAnchor="middle" fontSize="11" fill="var(--po-ink-2)" fontFamily="var(--po-mono)">
-            Y{r.year}
-          </text>
-          <text x={x(i)} y={H - padB + 29} textAnchor="middle" fontSize="9.5" fill="var(--po-muted)" fontFamily="var(--po-mono)">
-            {r.active}
-          </text>
-        </g>
-      ))}
-      <path d={line} fill="none" stroke="var(--po-accent)" strokeWidth="2" />
-      {rows.map((r, i) => (
-        <circle key={r.year} cx={x(i)} cy={y(r.cumulative)} r="3.2" fill="var(--po-paper)" stroke="var(--po-accent)" strokeWidth="2" />
-      ))}
-    </svg>
-  );
-}
-
 export default function Numbers() {
-  const [inputs, setInputs] = useState<Inputs>(BASE);
-  const [preset, setPreset] = useState("base");
-  const rows = useMemo(() => project(inputs, HORIZON), [inputs]);
-  const s = useMemo(() => summarise(inputs, rows), [inputs, rows]);
-
-  const set = (k: keyof Inputs, v: number) => {
-    setInputs((p) => ({ ...p, [k]: v }));
-    setPreset("");
-  };
-
-  const cartRevPlant = (inputs.cartridgePrice * inputs.testsPerYear) / 1e5;
-  const plants = market.licensedPlants;
-  const poolCart = (cartRevPlant * plants) / 100; // Cr
-  const poolDevice = ((inputs.devicePrice / 1e5) * plants) / 100; // Cr
-
-  const sens = [800, 1000, 1500, 2000].map((p) => ({
-    p,
-    cells: [180, 360, 720].map((t) => Math.ceil(s.opex / (((p - inputs.cartridgeCost) * t) / 1e5))),
-  }));
+  const brandShare = s.plantsAtBreakeven ? Math.round((s.plantsAtBreakeven / market.nationalBrandPlants) * 100) : null;
 
   return (
     <>
       <PageHead
-        title="Financial Model"
+        title="Business Model"
         lede={
           <p>
-            Profit and loss projection to Year {HORIZON}, with operating break-even and investment breakeven. All inputs
-            are adjustable.
+            PlasticOptics sells a benchtop analyser to bottling plants, followed by a monthly subscription of test
+            cartridges. This page sets out the economics of one plant, the size of the market, the cash the first
+            business requires, and the capital required for the full objective.
           </p>
         }
       />
 
-      <Block id="assumptions" title="Model Inputs">
-        <div className="flex flex-wrap gap-2">
-          {PRESETS.map((p) => (
-            <button
-              key={p.id}
-              type="button"
-              onClick={() => {
-                setInputs(p.inputs);
-                setPreset(p.id);
-              }}
-              aria-pressed={preset === p.id}
-              className={`text-[13px] px-3 py-1.5 border rounded transition-colors ${
-                preset === p.id ? "bg-[var(--po-ink)] text-[var(--po-bg)] border-[var(--po-ink)]" : "hair hover:bg-[var(--po-paper)]"
-              }`}
-            >
-              {p.label}
-            </button>
-          ))}
-          {preset !== "base" && (
-            <button
-              type="button"
-              onClick={() => {
-                setInputs(BASE);
-                setPreset("base");
-              }}
-              className="text-[13px] px-3 py-1.5 inline-flex items-center gap-1.5 muted hover:text-[var(--po-ink)]"
-            >
-              <RotateCcw className="h-3.5 w-3.5" /> Reset
-            </button>
-          )}
-        </div>
-        <p className="mt-3 text-[13px] muted min-h-[1.5em]">{PRESETS.find((p) => p.id === preset)?.note ?? "Custom inputs."}</p>
-
-        <div className="mt-6 grid md:grid-cols-2 gap-px bg-[var(--po-line)] border hair">
-          {FIELDS.map((g) => (
-            <fieldset key={g.group} className="bg-[var(--po-paper)] p-5 grid gap-5 content-start">
-              <legend className="sr-only">{g.group}</legend>
-              <div className="mono text-[10.5px] uppercase tracking-wide muted">{g.group}</div>
-              {g.fields.map((f) => (
-                <label key={f.key} className="grid gap-1.5">
-                  <span className="flex items-baseline justify-between gap-2 text-[13px]">
-                    <span>{f.label}</span>
-                    <span className="num text-[13px]">{f.fmt(inputs[f.key])}</span>
-                  </span>
-                  <input
-                    type="range"
-                    min={f.min}
-                    max={f.max}
-                    step={f.step}
-                    value={inputs[f.key]}
-                    onChange={(e) => set(f.key, Number(e.target.value))}
-                    aria-label={f.label}
-                  />
-                  {f.note && <span className="text-[11.5px] muted leading-snug">{f.note}</span>}
-                </label>
-              ))}
-            </fieldset>
-          ))}
-        </div>
-        <p className="mt-4 text-[12.5px] muted max-w-[70ch]">
-          Total operating costs of ₹1.5 crore per year follow the V2 plan, and the allocation across R&D, G&A and sales
-          is an estimate. Operating costs are held constant; in practice, sales and field-service costs rise with the
-          number of plants, which would delay both break-even points.
-        </p>
-      </Block>
-
-      <Block id="results" title="Model Outputs">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-          <Stat v={`₹${s.cartGrossPlant.toFixed(2)} L`} k="Cartridge gross profit per plant per year" />
-          <Stat v={Number.isFinite(s.plantsToCover) ? `${s.plantsToCover} plants` : "never"} k={`Plants needed for cartridge gross profit alone to cover ₹${s.opex} lakh of operating costs`} accent />
-          <Stat v={s.opBreakeven ? `Year ${s.opBreakeven}` : `Not by Year ${HORIZON}`} k={s.opBreakeven ? `Operating break-even, ${s.plantsAtOpBreakeven} plants` : "Operating break-even"} />
-          <Stat v={`₹${(-s.trough / 100).toFixed(2)} Cr`} k={`Peak cumulative operating deficit${s.troughYear ? ` (Year ${s.troughYear})` : ""}`} />
-          <Stat v={s.investBreakeven ? `Year ${s.investBreakeven}` : `Not by Year ${HORIZON}`} k={`Investment breakeven: recovery of ₹${(CAPITAL_TOTAL / 100).toFixed(2)} Cr${s.plantsAtInvest ? `, ${s.plantsAtInvest} plants` : ""}`} />
-          <Stat v={Number.isFinite(s.plantsToCover) ? `${((s.plantsToCover / plants) * 100).toFixed(1)}%` : "–"} k={`Of ${plants.toLocaleString("en-IN")}+ licensed plants, on cartridge gross profit alone`} />
-        </div>
-
-        <div className="mt-8 border hair bg-[var(--po-paper)] p-4 md:p-6">
-          <div className="flex flex-wrap items-baseline justify-between gap-2 mb-4">
-            <div className="font-medium text-[14.5px]">Operating profit and cumulative, ₹ lakh. Active plants below each year.</div>
-            <div className="flex gap-4 text-[12px] muted">
-              <span className="inline-flex items-center gap-1.5">
-                <i className="inline-block h-2.5 w-2.5 bg-[var(--po-ink)]" /> Operating profit
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <i className="inline-block h-0.5 w-4 bg-[var(--po-accent)]" /> Cumulative
-              </span>
-            </div>
+      <Block id="revenue-model" title="Revenue Model">
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="border hair bg-[var(--po-paper)]">
+            <h3 className="px-5 pt-5 font-medium">Benchtop analyser, one-time sale</h3>
+            <table className="po-table mt-3">
+              <tbody>
+                <tr>
+                  <td className="!pl-5">Market price</td>
+                  <td className="r !pr-5">{ue.devicePrice}</td>
+                </tr>
+                <tr>
+                  <td className="!pl-5">COGS</td>
+                  <td className="r !pr-5">{inr(deviceCost)}</td>
+                </tr>
+                <tr className="em">
+                  <td className="!pl-5 !border-b-0">Gross profit</td>
+                  <td className="r !pr-5 !border-b-0 text-[var(--po-accent)]">
+                    {inr(BASE.devicePrice - deviceCost)} ({pct(BASE.devicePrice, deviceCost)})
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <Chart rows={rows} />
+          <div className="border hair bg-[var(--po-paper)]">
+            <h3 className="px-5 pt-5 font-medium">Cartridge subscription, {BASE.testsPerMonth} tests a month</h3>
+            <table className="po-table mt-3">
+              <tbody>
+                <tr>
+                  <td className="!pl-5">Market price, per month</td>
+                  <td className="r !pr-5">{inr(monthlyPrice)}</td>
+                </tr>
+                <tr>
+                  <td className="!pl-5">COGS, per month</td>
+                  <td className="r !pr-5">{inr(monthlyCost)}</td>
+                </tr>
+                <tr className="em">
+                  <td className="!pl-5 !border-b-0">Gross profit, per month</td>
+                  <td className="r !pr-5 !border-b-0 text-[var(--po-accent)]">
+                    {inr(monthlyPrice - monthlyCost)} ({pct(monthlyPrice, monthlyCost)})
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+        <Conclusion>
+          The analyser is sold once, and the subscription continues for as long as the plant tests. A cartridge is
+          priced at {ue.cartridgePrice} and a laboratory test costs {ue.labPerTest}.
+        </Conclusion>
+      </Block>
 
-        <div className="mt-6">
-          <PnlTable rows={rows} />
-        </div>
-        <p className="mt-3 text-[12.5px] muted">
-          Pilot units are funded from the Stage 1 raise. Plants added in a year purchase cartridges for the full year. No
-          churn is assumed. No revenue is assumed in Year 1.
-        </p>
+      <Block id="one-plant" title="Economics of One Plant">
+        <table className="po-table max-w-[560px] text-[14px]">
+          <thead>
+            <tr>
+              <th>₹ lakh</th>
+              <th className="r">Year 1</th>
+              <th className="r !whitespace-normal">Each later year</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Revenue</td>
+              <td className="r">{L2(yearOne.revenue)}</td>
+              <td className="r">{L2(later.revenue)}</td>
+            </tr>
+            <tr>
+              <td>COGS</td>
+              <td className="r">{L2(yearOne.cogs)}</td>
+              <td className="r">{L2(later.cogs)}</td>
+            </tr>
+            <tr className="em">
+              <td>Gross profit</td>
+              <td className="r">{L2(yearOne.revenue - yearOne.cogs)}</td>
+              <td className="r">{L2(later.revenue - later.cogs)}</td>
+            </tr>
+            <tr>
+              <td className="ink2">Cost to the plant of the same tests at a laboratory</td>
+              <td className="r">{L2(labPerYear)}</td>
+              <td className="r">{L2(labPerYear)}</td>
+            </tr>
+          </tbody>
+        </table>
+        <Conclusion>
+          One plant generates ₹{L2(yearOne.revenue - yearOne.cogs)} lakh of gross profit in its first year and ₹
+          {L2(later.revenue - later.cogs)} lakh in each later year. The plant pays less than half of what the same tests
+          cost at a laboratory. Operating costs of ₹{(BASE.opexLakh / 100).toFixed(1)} crore a year are covered by the
+          cartridge gross profit of {s.plantsToCover} plants.
+        </Conclusion>
       </Block>
 
       <Block
-        id="use-of-funds"
-       
-        title="Use of Funds"
+        id="market-size"
+        title="Market Size"
         intro={
           <p>
-            Capital raised funds the operating losses before break-even, as well as product development, pilots and
-            manufacturing. Investment breakeven is measured against the total.
+            These are back-of-the-envelope estimates. The bottled water figures are built from plant counts, volumes and
+            PlasticOptics prices. The food and air figures are existing testing markets.
           </p>
         }
       >
+        <MarketSize />
+        <Conclusion>
+          The bottling-plant analyser in India is a market of ₹{Math.round(sizing.indiaCart)} crore a year in cartridges.
+          About {market.nationalBrandPlants} plants bottle for national brands and are the first buyers; Bisleri alone has
+          128 <Src id="bisleri" />. These plants represent ₹{Math.round(sizing.brandCart)} crore a year in cartridges and ₹
+          {Math.round(sizing.brandDevice)} crore in analysers. The count of {market.nationalBrandPlants} is an estimate
+          and will be confirmed in customer interviews. Removal, global sales, and food and air testing are each larger
+          markets than the first product.
+        </Conclusion>
+      </Block>
+
+      <Block
+        id="break-even"
+        toc="Break-even"
+        title="Break-even: Bottling Plant Business"
+        intro={
+          <p>
+            This is the cash required by the first business, and the year in which it becomes profitable. It excludes
+            the cost of food, air and removal research.
+          </p>
+        }
+      >
+        <BreakEvenStats />
+        <div className="mt-8">
+          <BreakEvenTable lastYear={8} />
+        </div>
+        <Conclusion>
+          The bottling-plant business requires about ₹{(s.cashRequired / 100).toFixed(1)} crore and reaches operating profit in Year{" "}
+          {s.breakeven}, with {s.plantsAtBreakeven} plants. That is {brandShare}% of the estimated{" "}
+          {market.nationalBrandPlants} plants that bottle for national brands.
+          {cashPositive && (
+            <>
+              {" "}
+              Cumulative cash turns positive in Year {cashPositive} if operating costs remain at ₹
+              {(BASE.opexLakh / 100).toFixed(1)} crore a year. Sales and service costs will rise as plants are added, so
+              Year {cashPositive} is the earliest case.
+            </>
+          )}
+        </Conclusion>
+
+        <h3 className="mt-12 font-medium">Downside cases</h3>
+        <div className="mt-3">
+          <ScenarioTable />
+        </div>
+        <Conclusion>
+          In each case the business reaches operating profit by Year 7 and requires between ₹5.1 crore and ₹7.2 crore.
+          Slower sales and higher operating costs increase the cash required the most.
+        </Conclusion>
+      </Block>
+
+      <Block
+        id="total-capital"
+        toc="Total Capital"
+        title="Total Capital for the Full Objective"
+        intro={
+          <p>
+            The objective is industrial-scale detection and removal of microplastics in water, food and air. The table
+            is a back-of-the-envelope estimate of the capital this requires, by programme.
+          </p>
+        }
+      >
+        <MissionCapital />
+        <p className="mt-2 text-[13.5px] muted max-w-[70ch]">
+          The first line is the business case above. The other lines are estimates that will be revised as each
+          programme is defined. Each programme begins only after the previous one has met its objective.
+        </p>
+
+        <h3 className="mt-10 font-medium">Capital raised by comparable companies</h3>
+        <div className="mt-3">
+          <Comparables />
+        </div>
+        <Conclusion>
+          The full objective requires an estimated ₹{missionTotal.low}–{missionTotal.high} crore ({missionUsd}) over
+          about ten years. Two-thirds of this is plant-scale removal, which is committed only after the removal pilot
+          succeeds. Companies in the United Kingdom, the United States and Germany have each raised US$4–10 million to
+          bring one microplastic product to early commercial scale.
+        </Conclusion>
+      </Block>
+
+      <Block id="assumptions" title="Assumptions to be Tested">
         <div className="overflow-x-auto -mx-6 md:mx-0 px-6 md:px-0">
-          <table className="po-table min-w-[560px]">
+          <table className="po-table text-[14px] min-w-[520px]">
             <thead>
               <tr>
-                <th>Raise</th>
-                <th>When</th>
-                <th>Pays for</th>
-                <th className="r">Amount</th>
+                <th>Assumption</th>
+                <th>Value used</th>
+                <th>Tested in</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="font-medium whitespace-nowrap">Stage 0 (current request)</td>
-                <td className="whitespace-nowrap ink2">Now → ~6 months</td>
-                <td className="ink2">Research collaboration, optics, lab, reagents, AI token costs, Raman/FTIR reference tests</td>
-                <td className="r">₹23.3 L</td>
-              </tr>
-              <tr>
-                <td className="font-medium whitespace-nowrap">Stage 1</td>
-                <td className="whitespace-nowrap ink2">Months 6 → 24</td>
-                <td className="ink2">Core team, 3–4 prototype rounds, 10 pilot units, patent filing, and the Year 2 operating loss</td>
-                <td className="r">₹2 Cr</td>
-              </tr>
-              <tr>
-                <td className="font-medium whitespace-nowrap">Stage 2</td>
-                <td className="whitespace-nowrap ink2">Years 2 → 4</td>
-                <td className="ink2">
-                  Contract manufacturing, tooling, method validation, inventory, first sales hire, field service, the Year 3
-                  operating loss, and the start of removal and food R&D
-                </td>
-                <td className="r">₹10 Cr</td>
-              </tr>
-              <tr className="em">
-                <td>Total</td>
-                <td />
-                <td className="ink2 !font-normal">Peak operating deficit in the model: ₹{(-s.trough / 100).toFixed(2)} Cr</td>
-                <td className="r">₹{(CAPITAL_TOTAL / 100).toFixed(2)} Cr</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p className="mt-4 text-[13px] muted max-w-[68ch]">
-          Itemised budgets for Stages 1 and 2 will be prepared on completion of Stage 0.
-        </p>
-      </Block>
-
-      <Block
-        id="sensitivity"
-       
-        title="Sensitivity Analysis"
-        intro={
-          <p>
-            Active plants whose cartridge gross profit alone covers ₹{s.opex} lakh of annual operating costs, at a cartridge
-            COGS of {inr(inputs.cartridgeCost)}.
-          </p>
-        }
-      >
-        <div className="overflow-x-auto">
-          <table className="po-table max-w-[520px]">
-            <thead>
-              <tr>
-                <th>Cartridge price ↓ · tests per year →</th>
-                <th className="r">180</th>
-                <th className="r">360</th>
-                <th className="r">720</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sens.map((row) => (
-                <tr key={row.p}>
-                  <td className="num">{inr(row.p)}</td>
-                  {row.cells.map((c, i) => (
-                    <td key={i} className={`r ${row.p === inputs.cartridgePrice && [180, 360, 720][i] === inputs.testsPerYear ? "bg-[var(--po-lime)] font-semibold" : ""}`}>
-                      {Number.isFinite(c) && c > 0 ? c : "—"}
-                    </td>
-                  ))}
+              {assumptions.map((x) => (
+                <tr key={x.a}>
+                  <td className="font-medium whitespace-nowrap pr-4">{x.a}</td>
+                  <td className="num">{x.v}</td>
+                  <td className="ink2">{x.t}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <div className={`mt-6 ${Number.isFinite(sens[0].cells[0]) && sens[0].cells[0] > 0 ? "" : "hidden"}`}>
-          <Callout>
-            In the most conservative case (₹800 cartridge; 180 tests per year), {sens[0].cells[0]} plants are required,
-            equivalent to {((sens[0].cells[0] / plants) * 100).toFixed(1)}% of licensed plants. Stage 1 pilots will measure
-            both price acceptance and testing frequency.
-          </Callout>
-        </div>
-      </Block>
-
-      <Block
-        id="market-size"
-       
-        title="Market Size"
-        intro={
-          <p>
-            India has {plants.toLocaleString("en-IN")}+ BIS-licensed packaged drinking water manufacturers <Src id="bis" />.
-            The packaged water market was valued at ₹{market.packagedWaterMarketCr.toLocaleString("en-IN")} crore in 2025 and
-            is projected to reach ₹{market.packagedWaterMarket2032Cr.toLocaleString("en-IN")} crore by 2032{" "}
-            <Src id="ibef" />. Beverage plants represent additional demand.
-          </p>
-        }
-      >
-        <div className="grid sm:grid-cols-3 gap-2">
-          <Stat v={`₹${cartRevPlant.toFixed(2)} L`} k={`Cartridge revenue per plant per year (${inr(inputs.cartridgePrice)} × ${inputs.testsPerYear})`} />
-          <Stat v={`₹${Math.round(poolCart).toLocaleString("en-IN")} Cr`} k="Annual cartridge revenue potential across licensed plants" accent />
-          <Stat v={`₹${Math.round(poolDevice).toLocaleString("en-IN")} Cr`} k="One-time analyser revenue potential across licensed plants" />
-        </div>
-        <p className="mt-5 text-[13px] muted max-w-[68ch]">
-          These figures represent a ceiling at current pricing assumptions, not a forecast. They exclude beverage plants,
-          laboratories, utilities, food and removal products.
-        </p>
+        <Conclusion>
+          Every figure on this page is an estimate. Stage 0 tests the cartridge cost, and the pilots in Stage 1 test price
+          and usage.
+        </Conclusion>
       </Block>
     </>
   );

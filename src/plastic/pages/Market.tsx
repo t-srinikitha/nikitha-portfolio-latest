@@ -1,8 +1,9 @@
-import { fundingPath, market, objective, pathToMarket, risks, unknowns, whyNow, whoPays } from "../data";
+import { market, objective, pathToMarket, risks, unknowns, whyNow, whoPays } from "../data";
 import { Block, Callout, Conclusion, PageHead, Src } from "../ui";
 
 const segments = [
-  { name: "Packaged drinking water plants", size: `${market.licensedPlants.toLocaleString("en-IN")}+ BIS-licensed in India`, when: "Phase 1" },
+  { name: "Plants bottling for national brands", size: `About ${market.nationalBrandPlants} plants (estimate). First buyers.`, when: "Phase 1" },
+  { name: "Other packaged drinking water plants", size: `${market.licensedPlants.toLocaleString("en-IN")}+ BIS-licensed in India in total`, when: "Phase 1" },
   { name: "Beverage bottling plants", size: "Same RO and filtration exposure", when: "Phase 1" },
   { name: "Testing laboratories", size: "Screening prior to Raman/FTIR", when: "Phase 2" },
   { name: "Water utilities", size: "Following inline monitoring", when: "Phase 3" },
@@ -15,8 +16,9 @@ export default function Market() {
         title="Go-to-Market Strategy"
         lede={
           <p>
-            PlasticOptics will sell first to India's {market.licensedPlants.toLocaleString("en-IN")}+ licensed packaged
-            drinking water plants: ten pilot plants in Stage 1, then 35 paying plants by Year 4.
+            PlasticOptics will sell first to the plants that bottle for India's national brands, and then to the rest of
+            India's {market.licensedPlants.toLocaleString("en-IN")}+ licensed packaged drinking water plants. The plan is
+            ten pilot plants in Stage 1, then 35 paying plants by Year 4.
           </p>
         }
       />
@@ -172,18 +174,6 @@ export default function Market() {
             </tbody>
           </table>
         </div>
-      </Block>
-
-      <Block id="funding" title="Funding Plan">
-        <ol className="grid sm:grid-cols-4 gap-px bg-[var(--po-line)] border hair">
-          {fundingPath.map((f) => (
-            <li key={f.label} className="bg-[var(--po-paper)] p-4">
-              <div className="text-[13px] muted">{f.label}</div>
-              <div className="num text-[20px] mt-1">{f.v}</div>
-              <div className="text-[13px] ink2 mt-1 leading-snug">{f.how}</div>
-            </li>
-          ))}
-        </ol>
       </Block>
 
       <Block id="unknowns" title="Open Questions">

@@ -1,5 +1,4 @@
 import {
-  capitalByStage,
   costKeys,
   levers,
   longArc,
@@ -19,12 +18,11 @@ const TRACK_COLOR: Record<Track | "now", string> = {
 };
 const COST_COLORS = ["#2a78d6", "#1baf7a", "#eda100", "#e87ba4", "#6250d6"];
 
-function ArcCard({ n, name, body, gate, capital, track, newTech, current, when }: {
+function ArcCard({ n, name, body, gate, track, newTech, current, when }: {
   n: string;
   name: string;
   body: string;
   gate?: string;
-  capital: string;
   track: Track;
   newTech?: boolean;
   current?: boolean;
@@ -45,18 +43,12 @@ function ArcCard({ n, name, body, gate, capital, track, newTech, current, when }
       </div>
       {when && <div className="mono text-[11.5px] muted">{when}</div>}
       <p className="text-[13.5px] ink2 leading-relaxed">{body}</p>
-      <dl className="mt-auto pt-2 grid gap-1.5 text-[13px]">
-        {gate && (
-          <div>
-            <dt className="mono text-[10px] uppercase tracking-wide muted">Gate to next stage</dt>
-            <dd>{gate}</dd>
-          </div>
-        )}
-        <div>
-          <dt className="mono text-[10px] uppercase tracking-wide muted">Capital</dt>
-          <dd className="num">{capital}</dd>
-        </div>
-      </dl>
+      {gate && (
+        <dl className="mt-auto pt-2 text-[13px]">
+          <dt className="text-[12.5px] muted">Objective before the next stage</dt>
+          <dd>{gate}</dd>
+        </dl>
+      )}
     </article>
   );
 }
@@ -78,7 +70,6 @@ export default function Roadmap() {
     n: String(s.n),
     name: s.name,
     body: s.objective,
-    capital: s.funding,
     when: s.when,
     current: s.current,
   }));
@@ -123,31 +114,6 @@ export default function Roadmap() {
           <ArcCard {...longArc[3]} n={String(longArc[3].n)} />
         </div>
         <p className="mt-4 text-[12.5px] muted">Dashed outlines indicate stages that require new technology.</p>
-      </Block>
-
-      <Block id="capital" title="Capital Requirements">
-        <Figure title="Estimated capital, ₹" note="Logarithmic scale. Figures for Stages 3–5 are preliminary estimates.">
-          <Axis labels={[[0, "₹1 L"], [25, "₹10 L"], [50, "₹1 Cr"], [75, "₹10 Cr"], [100, "₹100 Cr"]]} />
-          <div className="grid gap-2">
-            {capitalByStage.map((c) => {
-              const a = logPos(c.range[0]);
-              const b = logPos(c.range[1]);
-              return (
-                <RangeRow key={c.n} sub={`Stage ${c.n}`} label={c.name} value={c.label}>
-                  <Gridlines ticks={[0, 25, 50, 75, 100]} />
-                  <div
-                    className="absolute top-1 bottom-1 min-w-[6px] rounded-[2px]"
-                    style={{ left: `${a}%`, width: `${Math.max(b - a, 0.8)}%`, background: TRACK_COLOR[c.track] }}
-                    title={`Stage ${c.n} · ${c.label}`}
-                  />
-                </RangeRow>
-              );
-            })}
-            <RangeRow sub="Stage 6" label="Scale" value="Revenue">
-              <span className="absolute inset-0 flex items-center text-[12px] muted">Revenue plus growth capital</span>
-            </RangeRow>
-          </div>
-        </Figure>
       </Block>
 
       <Block

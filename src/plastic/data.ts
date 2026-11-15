@@ -1,7 +1,8 @@
 // PlasticOptics microsite content.
 // Primary source: "PlasticOptics" Google Doc, V2 tab (stages, unit economics,
-// break-even, Stage 0 budget). Long-range material (Stage 3+, removal, cost-down
-// levers) comes from the "Plasticoptics Master Plan". External facts carry sources.
+// Stage 0 budget). Long-range material (Stage 3+, removal, cost-down levers)
+// comes from the "Plasticoptics Master Plan". External facts carry sources.
+// Market sizes and total capital are back-of-the-envelope estimates.
 // Money is INR. L = lakh (1e5), Cr = crore (1e7).
 
 export const EMAIL = "t.srinikitha@gmail.com";
@@ -10,7 +11,7 @@ export const PAGES = [
   { path: "/plastic", label: "Overview" },
   { path: "/plastic/science", label: "Technology" },
   { path: "/plastic/market", label: "Go-To-Market" },
-  { path: "/plastic/numbers", label: "Financial Modeling" },
+  { path: "/plastic/numbers", label: "Business Model" },
   { path: "/plastic/roadmap", label: "R&D Roadmap" },
 ];
 
@@ -61,7 +62,7 @@ export const objective = {
   text: "A benchtop analyser operated by plant quality-control staff without specialist training. Microplastic counts are reported within 20–30 minutes, enabling testing of every production batch.",
   how: "Differential staining with AI-based particle counting.",
   revenue:
-    "A one-time sale of the analyser, followed by recurring sales of test cartridges.",
+    "A one-time sale of the analyser at ₹5 lakh, followed by a subscription of 30 test cartridges a month at ₹30,000.",
   pilot: "Uravu Labs, Bengaluru (proposed).",
 };
 
@@ -72,7 +73,6 @@ export const stages = [
     when: "Now → ~6 months",
     objective: "Validation of differential staining and AI counting against Raman/FTIR.",
     spend: "Reagents, collaboration with professors, lab setup, Raman/FTIR reference testing",
-    funding: "₹23.3 L",
     current: true,
   },
   {
@@ -81,7 +81,6 @@ export const stages = [
     when: "Months 6 → 24",
     objective: "Development of a working prototype and pilots at 10 plants.",
     spend: "Core team, 3–4 prototype rounds, 10 pilot units, patent filing",
-    funding: "₹2 Cr · pre-seed + grants",
   },
   {
     n: 2,
@@ -91,7 +90,6 @@ export const stages = [
       "Sales to 35 plants by Year 4. Research on microplastic removal and on food testing (salt) begins.",
     spend:
       "Contract manufacturing, tooling, method validation, first sales hire, field service, inventory",
-    funding: "₹10 Cr",
   },
 ];
 
@@ -115,7 +113,7 @@ export const unitEconomics = {
 };
 
 export const budget = [
-  { item: "Research collaboration", v: 8 },
+  { item: "Research collaboration", v: 8.5 },
   { item: "Optical equipment", v: 4 },
   { item: "Lab space and equipment", v: 3 },
   { item: "Analytical balance", v: 2.8 },
@@ -170,6 +168,54 @@ export const SOURCES = {
     label: "Business Standard, FSSAI launches project on microplastics in food (Aug 2024)",
     url: "https://business-standard.com/amp/health/fssai-launches-project-to-tackle-microplastic-contamination-in-food-124081800288_1.html",
   },
+  bisleri: {
+    label: "Business Today, Bisleri has 128 plants (Sept 2023)",
+    url: "https://businesstoday.in/interactive/photo-essay/bisleris-thirst-for-dominance-how-jayanti-chauhan-is-propelling-the-brand-to-greater-heights-110-28-09-2023",
+  },
+  indiaVolume: {
+    label: "Research and Markets, India packaged water: 24.92 billion litres in 2024",
+    url: "https://www.researchandmarkets.com/report/india-packaged-water-market",
+  },
+  unu: {
+    label: "UNU-INWEH, Global Bottled Water Industry (2023): 350 billion litres, US$270 billion",
+    url: "https://unu.edu/inweh/collection/global-bottled-water-industry-review-impacts-and-trends",
+  },
+  mpDetection: {
+    label: "MarketsandMarkets, microplastic detection market: US$4.76 billion in 2024",
+    url: "https://www.marketsandmarkets.com/Market-Reports/microplastic-detection-market-17417476.html",
+  },
+  foodTesting: {
+    label: "Fortune Business Insights, food safety testing market: US$24.24 billion in 2024",
+    url: "https://www.fortunebusinessinsights.com/food-safety-testing-market-108286",
+  },
+  fssaiLabs: {
+    label: "FSSAI, notified food testing laboratories (206 as of January 2024)",
+    url: "https://fssai.gov.in/cms/food-laboratories.php",
+  },
+  airIndia: {
+    label: "IMARC, India air quality monitoring market: US$170 million in 2024",
+    url: "https://www.imarcgroup.com/india-air-quality-monitoring-market",
+  },
+  airGlobal: {
+    label: "IMARC, air quality monitoring market: US$5.2 billion in 2024",
+    url: "https://imarcgroup.com/air-quality-monitoring-market-statistics",
+  },
+  airStations: {
+    label: "CREA, Tracing the Hazy Air 2025: 1,524 monitoring stations in India",
+    url: "https://energyandcleanair.org/publication/tracing-the-hazy-air-2025-progress-report-on-national-clean-air-programme-ncap/",
+  },
+  matter: {
+    label: "Tech.eu, Matter raises $10M (Aug 2023)",
+    url: "https://tech.eu/2023/08/11/matter-10m-microplastics-filtration-technology/",
+  },
+  polygone: {
+    label: "Business Wire, PolyGone Systems raises $4M seed (Feb 2026)",
+    url: "https://www.businesswire.com/news/home/20260218402495/en/PolyGone-Systems-Raises-$4M-Seed-Round-to-Scale-Microplastic-Monitoring-and-Removal",
+  },
+  klar2o: {
+    label: "Startbase, Klar2O raises €4.5M Series A (Sept 2025)",
+    url: "https://www.startbase.com/news/45-mio-e-series-a-fuer-klar2o/",
+  },
   uravu: {
     label: "Mongabay India, Uravu Labs air-to-water (Aug 2024)",
     url: "https://india.mongabay.com/2024/08/innovative-air-to-water-tech-using-liquid-desiccant-makes-affordable-renewable-water/",
@@ -180,7 +226,69 @@ export const market = {
   licensedPlants: 6200, // BIS licences for packaged drinking water, IS 14543 (">6,200", Sept 2022)
   packagedWaterMarketCr: 32040, // IBEF, 2025
   packagedWaterMarket2032Cr: 57850,
+  nationalBrandPlants: 500, // estimate: plants bottling for national brands; Bisleri alone has 128
+  indiaVolumeBnL: 24.92, // 2024
+  globalVolumeBnL: 350, // 2021
+  removalPerM3: 200, // target price of removal, ₹ per cubic metre (20 paise per litre)
+  usd: 85, // ₹ per US$, for conversion
 };
+
+/* ───────────────────────── Current status ───────────────────────── */
+
+export const status = {
+  summary: "PlasticOptics is at the idea stage. The method has not yet been tested in the laboratory.",
+  inPlace: [
+    "Access to a Raman spectrometer for reference testing.",
+    "Most of the materials required for the Stage 0 experiments.",
+    "Initial discussions with bottling plants and brands.",
+    "Agreement from Prof. Sarit S. Agasti (JNCASR) and Prof. Suryasarathi Bose (IISc) to collaborate.",
+  ],
+  conclusion:
+    "The funding requested pays for the experiments that establish whether the method works, and for a first prototype.",
+};
+
+/* ───────────────────────── Capital for the full objective (estimate) ───────────────────────── */
+
+// ₹ crore. The first line comes from the business case in model.ts, rounded.
+// The removal and inline-detection lines follow the Master Plan estimates.
+export const missionCapital = [
+  {
+    programme: "Bottling-plant analyser",
+    scope: "Validation, product development and operating losses until the business is profitable.",
+    low: 5,
+    high: 5,
+  },
+  {
+    programme: "Detection in food and air",
+    scope: "Sample preparation, validation against reference methods, and a product variant for each.",
+    low: 5,
+    high: 10,
+  },
+  {
+    programme: "Continuous detection",
+    scope: "An inline monitor that stains and images water in flow. This requires a new instrument.",
+    low: 5,
+    high: 10,
+  },
+  {
+    programme: "Removal pilot",
+    scope: "Removal chemistry scaled from millilitres to cubic metres per hour at one partner plant.",
+    low: 10,
+    high: 20,
+  },
+  {
+    programme: "Plant-scale removal",
+    scope: "Full-scale removal units, their manufacture, and installation at bottling and treatment plants.",
+    low: 50,
+    high: 100,
+  },
+];
+
+export const comparables = [
+  { name: "Matter", where: "United Kingdom", raised: "US$10 million", round: "Series A, 2023", what: "Microplastic filtration for washing machines and wastewater.", src: "matter" as const },
+  { name: "PolyGone Systems", where: "United States", raised: "US$4 million", round: "Seed, 2026", what: "Microplastic monitoring and removal. The round followed about US$2.3 million in grants.", src: "polygone" as const },
+  { name: "Klar2O", where: "Germany", raised: "€4.5 million", round: "Series A, 2025", what: "Removal of microplastics and PFAS from drinking water.", src: "klar2o" as const },
+];
 
 export const whyNow = [
   {
@@ -208,12 +316,12 @@ export const whyNow = [
 export const pathToMarket = [
   {
     step: "Validate",
-    stage: "Stage 0 · ~6 months · ₹23.3 L",
+    stage: "Stage 0 · ~6 months",
     body: "Demonstrate agreement with Raman. Confirm performance with iron, organic matter and turbidity. Establish cartridge cost. Secure one pilot.",
   },
   {
     step: "Pilot",
-    stage: "Stage 1 · months 6–24 · ₹2 Cr",
+    stage: "Stage 1 · months 6–24",
     body: "Three to four prototype iterations. Ten pilot plants purchasing cartridges. Patent filing. Measurement of testing frequency and price acceptance.",
   },
   {
@@ -223,7 +331,7 @@ export const pathToMarket = [
   },
   {
     step: "Scale",
-    stage: "Stage 2 · Years 2–4 · ₹10 Cr",
+    stage: "Stage 2 · Years 2–4",
     body: "Contract manufacturing, tooling, method validation, sales and field service. Target of 35 plants by Year 4, followed by 25 new plants each year.",
   },
 ];
@@ -265,15 +373,9 @@ export const unknowns = [
   "Final cartridge cost and price.",
   "Testing frequency per plant.",
   "Length of the sales cycle from pilot to purchase order.",
-  "Allocation of ₹1.5 crore of annual operating costs across R&D, G&A and sales.",
+  "Number of plants that bottle for national brands, and who approves the purchase at each.",
+  "Operating costs once the analyser is on sale, assumed at ₹1.5 crore a year.",
   "Timing of any BIS or FSSAI microplastic limit.",
-];
-
-export const fundingPath = [
-  { label: "Stage 0 · current request", v: "₹23.3 L", how: "Full Stage 0 budget" },
-  { label: "After Stage 0", v: "—", how: "BIRAC BIG or NIDHI-PRAYAS; incubation" },
-  { label: "Stage 1", v: "₹2 Cr", how: "Pre-seed and grants" },
-  { label: "Stage 2", v: "₹10 Cr", how: "Manufacturing, sales and field service" },
 ];
 
 /* ───────────────────────── Roadmap (Master Plan, long range) ───────────────────────── */
@@ -286,8 +388,6 @@ export const longArc: {
   track: Track;
   body: string;
   gate?: string;
-  capital: string;
-  range?: [number, number]; // lakh
   newTech?: boolean;
 }[] = [
   {
@@ -296,8 +396,6 @@ export const longArc: {
     track: "detect",
     body: "An inline monitor installed on the water line, reporting counts within minutes. Staining and imaging occur in flow. Benchtop data trains the model.",
     gate: "A plant acts on monitor readings.",
-    capital: "est. ₹5–10 Cr",
-    range: [500, 1000],
     newTech: true,
   },
   {
@@ -306,8 +404,6 @@ export const longArc: {
     track: "remove",
     body: "Metal-phenolic networks (tamarind and iron) bind microplastics at millilitre scale. Target: cubic metres per hour at one partner plant.",
     gate: "Consistent removal at a cost acceptable to the plant.",
-    capital: "est. ₹10–20 Cr",
-    range: [1000, 2000],
     newTech: true,
   },
   {
@@ -316,8 +412,6 @@ export const longArc: {
     track: "remove",
     body: "Full-scale removal at bottling and treatment plants. The monitor measures inflow, sets dosage and verifies output. Revenue per cubic metre treated.",
     gate: "A plant certifies its water as microplastic-free.",
-    capital: "est. ₹50–100 Cr",
-    range: [5000, 10000],
     newTech: true,
   },
   {
@@ -325,17 +419,7 @@ export const longArc: {
     name: "Scale",
     track: "scale",
     body: "Expansion across India, followed by the EU and US. Municipal treatment once cost per cubic metre declines.",
-    capital: "Revenue + growth capital",
   },
-];
-
-export const capitalByStage: { n: number; name: string; range: [number, number]; label: string; track: Track | "now" }[] = [
-  { n: 0, name: "Technology validation", range: [23.3, 23.3], label: "₹23.3 L", track: "now" },
-  { n: 1, name: "Prototype and pilots", range: [200, 200], label: "₹2 Cr", track: "detect" },
-  { n: 2, name: "Commercial launch", range: [1000, 1000], label: "₹10 Cr", track: "detect" },
-  { n: 3, name: "Continuous detection", range: [500, 1000], label: "₹5–10 Cr", track: "detect" },
-  { n: 4, name: "Removal pilot", range: [1000, 2000], label: "₹10–20 Cr", track: "remove" },
-  { n: 5, name: "Plant-scale removal", range: [5000, 10000], label: "₹50–100 Cr", track: "remove" },
 ];
 
 export const costKeys = ["Chemistry", "Filter media", "Hardware", "Making it", "Delivery, installation, service"];

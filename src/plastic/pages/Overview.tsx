@@ -14,15 +14,14 @@ import {
   afterStage0,
   founder,
   market,
+  status,
   collaborators,
 } from "../data";
 import { Block, Callout, Conclusion, PageHead, Src, Stat, inr } from "../ui";
-import { BASE, CAPITAL_TOTAL, project, summarise } from "../model";
+import { BASE, crore } from "../model";
+import { BreakEvenStats, BreakEvenTable, MarketSize, MissionCapital, base as s, missionTotal, missionUsd, sizing } from "../sections";
 
-const rows = project(BASE);
-const s = summarise(BASE, rows);
 const deviceCost = ue.deviceCost.reduce((a, c) => a + c.v, 0);
-const cr = (lakh: number) => `₹${(lakh / 100).toFixed(2)} Cr`;
 
 const comparison = [
   {
@@ -47,7 +46,7 @@ const comparison = [
 
 export default function Overview() {
   const budgetTotal = budget.reduce((a, b) => a + b.v, 0);
-  const investShare = s.plantsAtInvest ? ((s.plantsAtInvest / market.licensedPlants) * 100).toFixed(1) : null;
+  const brandShare = s.plantsAtBreakeven ? Math.round((s.plantsAtBreakeven / market.nationalBrandPlants) * 100) : null;
 
   return (
     <>
@@ -208,15 +207,80 @@ export default function Overview() {
           ). All figures will be refined through Stage 0 and customer interviews.
         </p>
         <Conclusion>
-          Gross margin is 68% on each analyser and 60% on each cartridge. Each active plant generates ₹
-          {s.cartGrossPlant.toFixed(2)} lakh of cartridge gross profit per year at 360 tests.
+          Gross margin is 68% on each analyser and 60% on each cartridge. A plant on the subscription of{" "}
+          {BASE.testsPerMonth} cartridges a month pays ₹{s.cartRevPlant.toFixed(1)} lakh a year, of which ₹
+          {s.cartGrossPlant.toFixed(2)} lakh is gross profit.
+        </Conclusion>
+      </Block>
+
+      <Block
+        id="market-size"
+        title="Market Size"
+        intro={
+          <p>
+            These are back-of-the-envelope estimates. The bottled water figures are built from plant counts, volumes and
+            PlasticOptics prices. The food and air figures are existing testing markets.
+          </p>
+        }
+      >
+        <MarketSize />
+        <Conclusion>
+          The bottling-plant analyser in India is a market of ₹{Math.round(sizing.indiaCart)} crore a year in cartridges.
+          About {market.nationalBrandPlants} plants bottle for national brands and are the first buyers; Bisleri alone has
+          128 <Src id="bisleri" />. These plants represent ₹{Math.round(sizing.brandCart)} crore a year. Removal, global
+          sales, and food and air testing are each larger markets than the first product.
+        </Conclusion>
+      </Block>
+
+      <Block
+        id="break-even"
+        toc="Break-even"
+        title="Break-even: Bottling Plant Business"
+        intro={
+          <p>
+            The first business is the sale of analysers and cartridge subscriptions to bottling plants. This section
+            shows the cash that business requires and the year in which it becomes profitable. It excludes the cost of
+            food, air and removal research.
+          </p>
+        }
+      >
+        <BreakEvenStats />
+        <div className="mt-8">
+          <BreakEvenTable />
+        </div>
+        <Conclusion>
+          The bottling-plant business requires about ₹{(s.cashRequired / 100).toFixed(1)} crore and reaches operating profit in Year{" "}
+          {s.breakeven}, when {s.plantsAtBreakeven} plants each pay ₹30,000 a month for cartridges. That is {brandShare}%
+          of the estimated {market.nationalBrandPlants} plants that bottle for national brands.
+        </Conclusion>
+        <Link to="/plastic/numbers" className="mt-8 inline-flex items-center gap-2 btn btn-ghost">
+          Business Model <ArrowRight className="h-4 w-4" />
+        </Link>
+      </Block>
+
+      <Block
+        id="total-capital"
+        toc="Total Capital"
+        title="Total Capital for the Full Objective"
+        intro={
+          <p>
+            The objective is industrial-scale detection and removal of microplastics in water, food and air. The table
+            is a back-of-the-envelope estimate of the capital this requires, by programme.
+          </p>
+        }
+      >
+        <MissionCapital />
+        <Conclusion>
+          The full objective requires an estimated ₹{missionTotal.low}–{missionTotal.high} crore ({missionUsd}) over
+          about ten years. Two-thirds of this is plant-scale removal, which is committed only after the removal pilot
+          succeeds. The ₹{budgetTotal.toFixed(1)} lakh requested now funds the first step of the first programme.
         </Conclusion>
       </Block>
 
       <Block id="stages" title="Development Stages">
         <ol className="border-t hair">
           {stages.map((x) => (
-            <li key={x.n} className="grid grid-cols-[44px_1fr] md:grid-cols-[56px_1fr_150px] gap-x-4 gap-y-2 py-5 border-b hair">
+            <li key={x.n} className="grid grid-cols-[44px_1fr] md:grid-cols-[56px_1fr] gap-x-4 gap-y-2 py-5 border-b hair">
               <div className={`num text-[28px] leading-none ${x.current ? "text-[var(--po-accent)]" : ""}`}>{x.n}</div>
               <div>
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
@@ -227,7 +291,6 @@ export default function Overview() {
                 <p className="mt-1.5 text-[14.5px]">{x.objective}</p>
                 <p className="mt-1 text-[13.5px] muted">{x.spend}</p>
               </div>
-              <div className="col-start-2 md:col-start-3 md:text-right num text-[15px]">{x.funding}</div>
             </li>
           ))}
         </ol>
@@ -250,6 +313,18 @@ export default function Overview() {
           ))}
         </ol>
         <Conclusion>{afterStage0}</Conclusion>
+      </Block>
+
+      <Block id="status" title="Current Status" intro={<p>{status.summary}</p>}>
+        <h3 className="font-medium">In place today</h3>
+        <ul className="mt-3 grid gap-2.5 border-t hair pt-4">
+          {status.inPlace.map((x) => (
+            <li key={x} className="text-[15.5px]">
+              {x}
+            </li>
+          ))}
+        </ul>
+        <Conclusion>{status.conclusion}</Conclusion>
       </Block>
 
       <Block
@@ -278,80 +353,7 @@ export default function Overview() {
             </tr>
           </tbody>
         </table>
-        <Conclusion>Research collaboration and optical equipment account for half of the budget.</Conclusion>
-      </Block>
-
-      <Block
-        id="investment-breakeven"
-        title="Investment Breakeven"
-        intro={
-          <>
-            <p>
-              The ₹{budgetTotal.toFixed(1)} lakh Stage 0 request funds technology validation. Stage 0 generates no revenue,
-              and the request is not repaid on its own. Bringing the analyser to market requires {cr(CAPITAL_TOTAL)} across
-              Stages 0 to 2: ₹{budgetTotal.toFixed(1)} lakh, ₹2 crore and ₹10 crore. Investment breakeven is measured
-              against that total.
-            </p>
-          </>
-        }
-      >
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-          <Stat v={cr(CAPITAL_TOTAL)} k="Capital required, Stages 0–2" />
-          <Stat v={`${cr(s.lossesBefore)}`} k={`Operating losses, Years 2–${(s.opBreakeven ?? 2) - 1}`} />
-          <Stat v={`Year ${s.opBreakeven}`} k={`Operating break-even, ${s.plantsAtOpBreakeven} plants`} />
-          <Stat v={`Year ${s.investBreakeven}`} k={`Investment breakeven, ${s.plantsAtInvest} plants`} accent />
-        </div>
-
-        <div className="mt-8 overflow-x-auto">
-          <table className="po-table text-[14px]">
-            <thead>
-              <tr>
-                <th>Year</th>
-                <th className="r">Plants</th>
-                <th className="r hidden sm:table-cell">Revenue</th>
-                <th className="r !whitespace-normal">Operating profit</th>
-                <th className="r">Recovered</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((r) => {
-                const mark = r.year === s.opBreakeven || r.year === s.investBreakeven;
-                return (
-                  <tr key={r.year} className={mark ? "em" : ""}>
-                    <td className="whitespace-nowrap">
-                      Year {r.year}
-                      {r.year === s.opBreakeven && <span className="ml-2 text-[12px] muted !font-normal hidden sm:inline">operating break-even</span>}
-                      {r.year === s.investBreakeven && <span className="ml-2 text-[12px] muted !font-normal hidden sm:inline">investment breakeven</span>}
-                    </td>
-                    <td className="r">{r.active}</td>
-                    <td className="r hidden sm:table-cell">{r.revenue.toFixed(1)}</td>
-                    <td className={`r ${r.operating < 0 ? "text-[var(--po-accent)]" : ""}`}>{r.operating.toFixed(1)}</td>
-                    <td className={`r ${r.year === s.investBreakeven ? "bg-[var(--po-lime)]" : ""}`}>
-                      {r.recovered === null ? "–" : `${r.recovered.toFixed(1)}`}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-        <p className="mt-3 text-[13px] muted max-w-[70ch]">
-          ₹ lakh. Assumptions: analyser ₹5 lakh; cartridge ₹1,000; 360 tests per plant per year; operating costs of ₹1.5
-          crore per year. Plants: 10 pilots in Year 2, 10 paying plants in Year 3, 15 in Year 4 and 25 more each year from
-          Year 5. Operating costs are held constant; higher sales and service costs at scale would delay both break-even
-          points.
-        </p>
-
-        <Conclusion>
-          Operating losses of {cr(s.lossesBefore)} in Years 2 to {(s.opBreakeven ?? 2) - 1} are funded from the capital raised.
-          From Year {s.opBreakeven}, operating profit accumulates against the {cr(CAPITAL_TOTAL)} invested, and the full
-          amount is recovered in Year {s.investBreakeven}, with {s.plantsAtInvest} plants active. That is {investShare}% of
-          India's {market.licensedPlants.toLocaleString("en-IN")}+ licensed packaged drinking water plants. <Src id="bis" />
-        </Conclusion>
-
-        <Link to="/plastic/numbers" className="mt-8 inline-flex items-center gap-2 btn btn-ghost">
-          Financial Modeling <ArrowRight className="h-4 w-4" />
-        </Link>
+        <Conclusion>Research collaboration and optical equipment account for about half of the budget.</Conclusion>
       </Block>
 
       <Block id="team" title="Founder and Research Collaborators">
