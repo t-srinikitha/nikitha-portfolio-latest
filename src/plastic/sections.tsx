@@ -1,5 +1,5 @@
 // Sections shared by the Overview and Business Model pages.
-import { comparables, market, missionCapital, stages } from "./data";
+import { airOption, comparables, market, missionCapital, stageGroups, stages, type StageMarket } from "./data";
 import { BASE, SCENARIOS, crore, project, summarise } from "./model";
 import { Src, Stat } from "./ui";
 
@@ -129,10 +129,7 @@ export function BreakEvenStats() {
     <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
       <Stat v={crore(base.cashRequired)} k="Cash required to reach operating profit" accent />
       <Stat v={`Year ${base.breakeven}`} k="First year of operating profit" />
-      <Stat
-        v={`${(base.plantsAtBreakeven ?? 0) + (base.foodAtBreakeven ?? 0)} customers`}
-        k={`${base.plantsAtBreakeven} water plants and ${base.foodAtBreakeven} food producers in Year ${base.breakeven}`}
-      />
+      <Stat v={`${base.plantsAtBreakeven} plants`} k={`Bottling plants using the analyser in Year ${base.breakeven}`} />
       <Stat v={crore(base.revenueAtBreakeven ?? 0)} k={`Revenue in Year ${base.breakeven}`} />
     </div>
   );
@@ -153,10 +150,8 @@ export function BreakEvenTable({ lastYear = 6 }: { lastYear?: number }) {
           <thead>
             <tr>
               <th>Year</th>
-              <th className="r !whitespace-normal">Water plants</th>
-              <th className="r !whitespace-normal">Food producers</th>
-              <th className="r hidden sm:table-cell">Revenue</th>
-              <th className="r hidden sm:table-cell !whitespace-normal">Food and removal research</th>
+              <th className="r !whitespace-normal">Bottling plants</th>
+              <th className="r">Revenue</th>
               <th className="r !whitespace-normal">Operating profit</th>
               <th className="r !whitespace-normal">Cumulative cash</th>
             </tr>
@@ -168,9 +163,7 @@ export function BreakEvenTable({ lastYear = 6 }: { lastYear?: number }) {
                 <tr key={r.year} className={r.year === base.breakeven ? "em" : ""}>
                   <td className="whitespace-nowrap">Year {r.year}</td>
                   <td className="r">{r.active}</td>
-                  <td className="r">{r.food}</td>
-                  <td className="r hidden sm:table-cell">{r.revenue.toFixed(1)}</td>
-                  <td className="r hidden sm:table-cell">{r.research.toFixed(1)}</td>
+                  <td className="r">{r.revenue.toFixed(1)}</td>
                   <td className={`r ${r.operating < 0 ? "text-[var(--po-accent)]" : ""} ${r.year === base.breakeven ? "bg-[var(--po-lime)]" : ""}`}>
                     {r.operating.toFixed(1)}
                   </td>
@@ -181,13 +174,12 @@ export function BreakEvenTable({ lastYear = 6 }: { lastYear?: number }) {
         </table>
       </div>
       <p className="mt-3 text-[13.5px] muted max-w-[70ch]">
-        ₹ lakh. Year 1 includes ₹{BASE.validationLakh} lakh of technology validation. Years 1 and 2 include ₹
+        ₹ lakh. The break-even covers the benchtop analyser for bottling plants only. Research for food, in-line
+        analysis and removal is funded separately and is not included. Year 1 includes ₹{BASE.validationLakh} lakh of
+        technology validation. Years 1 and 2 include ₹
         {((BASE.developmentLakh[0] + BASE.developmentLakh[1]) / 100).toFixed(0)} crore of product development: prototypes,
         ten pilot analysers, a patent filing and validation of the method. Operating costs are ₹
-        {(BASE.opexLakh / 100).toFixed(1)} crore a year from Year 2, plus ₹{BASE.foodSalesLakh} lakh a year for food sales
-        and service from Year {BASE.foodStart}. Food research costs ₹1 crore in Years 3 and 4. The removal pilot costs ₹1
-        crore a year in Years 4 to 6 and earns no revenue; Stages 5 and 6 are funded separately once it succeeds. Food
-        producers buy the same analyser and subscription as water plants. Cash required is the largest cumulative deficit of{" "}
+        {(BASE.opexLakh / 100).toFixed(1)} crore a year from Year 2. Cash required is the largest cumulative deficit of{" "}
         {crore(base.deficit)}, plus a {BASE.reservePct}% reserve for inventory, receivables and contingency.
       </p>
     </>
@@ -203,7 +195,7 @@ export function ScenarioTable() {
             <th>Case</th>
             <th>Assumption changed</th>
             <th className="r !whitespace-normal">Operating profit from</th>
-            <th className="r !whitespace-normal">Customers</th>
+            <th className="r !whitespace-normal">Plants</th>
             <th className="r !whitespace-normal">Cash required</th>
           </tr>
         </thead>
@@ -215,7 +207,7 @@ export function ScenarioTable() {
                 <td className="whitespace-nowrap">{sc.label}</td>
                 <td className="ink2 !font-normal">{sc.change}</td>
                 <td className="r">{x.breakeven ? `Year ${x.breakeven}` : "Not reached"}</td>
-                <td className="r">{x.plantsAtBreakeven === null ? "–" : x.plantsAtBreakeven + (x.foodAtBreakeven ?? 0)}</td>
+                <td className="r">{x.plantsAtBreakeven ?? "–"}</td>
                 <td className="r">{crore(x.cashRequired)}</td>
               </tr>
             );
@@ -264,38 +256,99 @@ export function MissionCapital() {
         </tbody>
       </table>
       <p className="mt-3 text-[13.5px] muted max-w-[70ch]">
-        Removal is costed for water only. Removal of microplastics from food and air is not yet defined and is not
-        included.
+        Removal is costed for water only. Removal from food and air, and detection in air, are not yet defined and are
+        not included.
       </p>
     </div>
   );
 }
 
-/** The single sequence of stages. `detail` adds the work and the completion test. */
-export function StageList({ detail }: { detail?: boolean }) {
+const MARKETS: { id: StageMarket; label: string }[] = [
+  { id: "water", label: "Water" },
+  { id: "food", label: "Food" },
+  { id: "air", label: "Air" },
+];
+const tone: Record<StageMarket, string> = {
+  water: "bg-[var(--po-detect-soft)] text-[var(--po-detect)]",
+  food: "bg-[var(--po-accent-soft)] text-[var(--po-accent)]",
+  air: "bg-[var(--po-chip)] text-[var(--po-ink-2)]",
+};
+
+function StageCard({ x, detail }: { x: (typeof stages)[number]; detail?: boolean }) {
   return (
-    <ol className="border-t hair">
-      {stages.map((x) => (
-        <li key={x.n} className="grid grid-cols-[44px_1fr] md:grid-cols-[56px_1fr] gap-x-4 py-5 border-b hair">
-          <div className={`num text-[28px] leading-none ${x.current ? "text-[var(--po-accent)]" : ""}`}>{x.n}</div>
-          <div>
-            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <h3 className="font-medium text-[16px]">{x.name}</h3>
-              <span className="mono text-[12px] muted">{x.when}</span>
-              {x.current && <span className="chip !bg-[var(--po-lime)] !text-black">Current</span>}
-            </div>
-            <p className="mt-1.5 text-[14.5px] max-w-[62ch]">{x.objective}</p>
-            {detail && x.work && <p className="mt-1 text-[13.5px] muted max-w-[62ch]">{x.work}</p>}
-            {detail && x.gate && (
-              <p className="mt-2 text-[13.5px] max-w-[62ch]">
-                <span className="muted">Complete when: </span>
-                {x.gate}
-              </p>
-            )}
+    <div
+      className={`h-full bg-[var(--po-paper)] border p-4 ${
+        x.current ? "border-[var(--po-ink)] border-2" : "hair"
+      }`}
+    >
+      <div className="flex items-center gap-2.5">
+        <span className={`num shrink-0 grid place-items-center w-6 h-6 rounded-full text-[12px] ${tone[x.market]}`}>{x.n}</span>
+        <h3 className="font-medium text-[15px] leading-tight">{x.name}</h3>
+        {x.current && <span className="chip !bg-[var(--po-lime)] !text-black ml-auto">Current</span>}
+      </div>
+      <p className="mt-2 text-[13.5px] ink2 leading-snug">{detail ? x.objective : x.short}</p>
+      {detail && x.work && <p className="mt-1.5 text-[13px] muted leading-snug">{x.work}</p>}
+      <div className="mt-2 mono text-[11.5px] muted">{x.when}</div>
+      <p className="mt-3 pt-2.5 border-t hair text-[13px] leading-snug">
+        <span className="muted">Proves: </span>
+        {x.gate}
+      </p>
+    </div>
+  );
+}
+
+/** The stages as a map: one column per market (water, food, air), grouped into Detect, Monitor and Remove.
+ *  On phones the columns collapse into one list, and each card carries its market. */
+export function StageMap({ detail }: { detail?: boolean }) {
+  return (
+    <div>
+      <div className="hidden md:grid md:grid-cols-[1.7fr_1fr_1fr] gap-3 mb-1">
+        {MARKETS.map((m) => (
+          <div key={m.id} className={`mono text-[11.5px] uppercase tracking-wide px-3 py-1.5 text-center ${tone[m.id]}`}>
+            {m.label}
           </div>
-        </li>
-      ))}
-    </ol>
+        ))}
+      </div>
+      {stageGroups.map((g) => {
+        const items = stages.filter((x) => x.group === g.name);
+        const last = g.name === "Remove";
+        return (
+          <section key={g.name} className="mt-6">
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 pb-2 border-b hair">
+              <h3 className="serif text-[22px] leading-none">{g.name}</h3>
+              <span className="text-[13.5px] muted">{g.line}</span>
+            </div>
+            <ol className="mt-3 grid gap-3">
+              {items.map((x, i) => (
+                <li key={x.n} className="md:grid md:grid-cols-[1.7fr_1fr_1fr] md:gap-3">
+                  <div className={x.market === "food" ? "md:col-start-2" : "md:col-start-1"}>
+                    <span className={`md:hidden inline-block mb-1.5 mono text-[10.5px] uppercase tracking-wide px-1.5 py-0.5 ${tone[x.market]}`}>
+                      {MARKETS.find((m) => m.id === x.market)?.label}
+                    </span>
+                    <StageCard x={x} detail={detail} />
+                  </div>
+                  {last && i === items.length - 1 && (
+                    <div className="mt-3 md:mt-0 md:col-start-3">
+                      <span className={`md:hidden inline-block mb-1.5 mono text-[10.5px] uppercase tracking-wide px-1.5 py-0.5 ${tone.air}`}>
+                        Air
+                      </span>
+                      <div className="h-full border border-dashed border-[var(--po-line-2)] p-4">
+                        <div className="flex items-center gap-2.5">
+                          <span className={`num shrink-0 grid place-items-center w-6 h-6 rounded-full text-[12px] ${tone.air}`}>+</span>
+                          <h3 className="font-medium text-[15px] leading-tight">{airOption.name}</h3>
+                        </div>
+                        <p className="mt-2 text-[13.5px] ink2 leading-snug">{detail ? airOption.objective : airOption.short}</p>
+                        <div className="mt-2 mono text-[11.5px] muted">Later option</div>
+                      </div>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </section>
+        );
+      })}
+    </div>
   );
 }
 

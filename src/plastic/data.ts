@@ -35,7 +35,7 @@ export const surfaces = [
   },
   {
     name: "Air",
-    verdict: "Stage 6",
+    verdict: "Later option",
     feasibility:
       "Airborne particles are collected on a filter, which is then tested with the same method.",
   },
@@ -66,38 +66,60 @@ export const objective = {
   pilot: "Uravu Labs, Bengaluru (proposed).",
 };
 
-// One sequence of stages. Stages 0–2 are the first business (benchtop analyser
-// for bottling plants). Research for Stages 3 and 4 begins during Stage 2.
+// One sequence of stages in three groups: Detect (0–3), Monitor (4), Remove (5–6).
+// Stages 0–2 are the first business, the benchtop analyser for bottling plants.
+// Air is a later option outside the numbered stages.
+export type StageGroup = "Detect" | "Monitor" | "Remove";
+export type StageMarket = "water" | "food" | "air";
+
+export const stageGroups: { name: StageGroup; line: string }[] = [
+  { name: "Detect", line: "The benchtop analyser and its cartridges, first for water and then for food." },
+  { name: "Monitor", line: "Continuous measurement on the production line, at the same plants." },
+  { name: "Remove", line: "Removal of microplastics from water, proven by the company's own measurement." },
+];
+
 export const stages: {
   n: number;
+  group: StageGroup;
+  market: StageMarket;
   name: string;
+  short: string;
   when: string;
   objective: string;
   work?: string;
-  gate?: string;
+  gate: string;
   current?: boolean;
 }[] = [
   {
     n: 0,
+    group: "Detect",
+    market: "water",
     name: "Technology validation",
-    when: "Now → ~6 months",
+    short: "Laboratory tests on bottled water.",
+    when: "Now to about 6 months",
     objective: "Validation of differential staining and AI counting against Raman/FTIR.",
-    work: "Reagents, collaboration with professors, lab setup, Raman/FTIR reference testing.",
-    gate: "Counts agree with Raman spectroscopy on the same samples.",
+    work: "Reagents, collaboration with professors, laboratory setup, Raman/FTIR reference testing.",
+    gate: "Counts agree with Raman spectroscopy.",
     current: true,
   },
   {
     n: 1,
+    group: "Detect",
+    market: "water",
     name: "Prototype and pilots",
-    when: "Months 6 → 24",
+    short: "A working analyser at 10 bottling plants.",
+    when: "Months 6 to 24",
     objective: "Development of a working benchtop analyser and pilots at 10 bottling plants.",
-    work: "Core team, 3–4 prototype rounds, 10 pilot analysers, patent filing.",
+    work: "Core team, three to four prototype rounds, 10 pilot analysers, patent filing.",
     gate: "Pilot plants test routinely and pay for cartridges.",
   },
   {
     n: 2,
-    name: "Commercial launch",
-    when: "Years 3 → 5",
+    group: "Detect",
+    market: "water",
+    name: "Benchtop analyser",
+    short: "Sold to bottling plants, with cartridges.",
+    when: "Years 3 to 5",
     objective:
       "Sale of the benchtop analyser and cartridge subscriptions to bottling plants. The target is 60 plants by Year 5.",
     work: "Contract manufacturing, method validation, sales and field service.",
@@ -105,36 +127,57 @@ export const stages: {
   },
   {
     n: 3,
+    group: "Detect",
+    market: "food",
     name: "Food analyser",
+    short: "Salt, sugar, milk and other foods, on the same analyser.",
     when: "Research from Year 3; sales from Year 5",
     objective: "Extension of the analyser to salt, sugar, milk and other foods, which are prepared as liquid samples.",
     gate: "Counts in food agree with reference methods.",
   },
   {
     n: 4,
-    name: "Removal",
-    when: "Research from Year 3; pilot Years 4 → 6",
+    group: "Monitor",
+    market: "water",
+    name: "In-line analysis",
+    short: "Continuous counts on the production line.",
+    when: "Research from Year 4",
     objective:
-      "Removal of microplastics from water at one partner plant. The benchtop analyser verifies each batch.",
-    work: "Metal-phenolic networks (tamarind and iron) bind microplastics at millilitre scale today. The target is cubic metres per hour.",
-    gate: "Consistent removal at a cost acceptable to the plant.",
+      "An analyser installed on the water line that reports counts continuously, sold to the plants that already use the benchtop analyser.",
+    work: "An instrument that stains and images water in flow.",
+    gate: "In-line counts match the benchtop analyser.",
   },
   {
     n: 5,
-    name: "In-line analysis",
-    when: "After Stage 4",
+    group: "Remove",
+    market: "water",
+    name: "Removal pilot",
+    short: "Removal at one partner plant.",
+    when: "After Stage 4, about Years 6 to 7",
     objective:
-      "An analyser installed on the water line that reports counts continuously. It sets the dose for removal and verifies the output.",
-    gate: "A plant runs removal on in-line readings.",
+      "Removal of microplastics from water at one partner plant. In-line analysis sets the dose and verifies the output.",
+    work: "Metal-phenolic networks (tamarind and iron) bind microplastics at millilitre scale today. The target is cubic metres per hour.",
+    gate: "In-line counts show consistent removal at a cost acceptable to the plant.",
   },
   {
     n: 6,
-    name: "Scale",
+    group: "Remove",
+    market: "water",
+    name: "Removal at scale",
+    short: "Removal units at many plants, in India and abroad.",
     when: "After Stage 5",
     objective:
-      "Removal with in-line analysis at bottling and water treatment plants, in India and abroad. Detection is extended to air.",
+      "Manufacture and installation of removal units with in-line analysis at bottling and water treatment plants, in India and abroad.",
+    gate: "Removal units are built and installed at many plants.",
   },
 ];
+
+export const airOption = {
+  name: "Air detection",
+  short: "A later option, with no budget yet.",
+  objective:
+    "Airborne particles are collected on a filter, which is then tested with the same method. Air is pursued once the water and food businesses are established.",
+};
 
 export const stageOrder = [
   {
@@ -143,19 +186,19 @@ export const stageOrder = [
   },
   {
     t: "Food second",
-    b: "Food uses the same staining and imaging method. Only the preparation of the sample changes.",
+    b: "Food uses the same analyser and the same staining and imaging method. Only the preparation of the sample changes.",
   },
   {
-    t: "Removal third",
-    b: "Removal can be proven only against measurement. The benchtop analyser verifies each batch during the removal pilot.",
+    t: "In-line analysis before removal",
+    b: "In-line analysis uses the same optics and is sold to the same plants. Removal can be proven only against continuous measurement, so in-line analysis must exist first.",
   },
   {
-    t: "In-line analysis fourth",
-    b: "Removal at plant scale runs continuously. It requires continuous measurement to set the dose and verify the output.",
+    t: "Removal at one plant, then at many",
+    b: "Removal is a new technology and a new kind of business. It is installed at many plants only after in-line counts show that it works at one.",
   },
   {
-    t: "Scale last",
-    b: "Removal and in-line analysis are installed at many plants only after both have been demonstrated at one.",
+    t: "Air as a later option",
+    b: "Air requires a new way of collecting samples and has no identified first customer. It is pursued once water and food are established.",
   },
 ];
 
@@ -333,22 +376,22 @@ export const missionCapital = [
   },
   {
     stage: "4",
-    programme: "Removal",
-    scope: "Removal chemistry scaled from millilitres to cubic metres per hour at one partner plant.",
-    low: 10,
-    high: 20,
-  },
-  {
-    stage: "5",
     programme: "In-line analysis",
     scope: "An analyser that stains and images water in flow. This requires a new instrument.",
     low: 5,
     high: 10,
   },
   {
+    stage: "5",
+    programme: "Removal pilot",
+    scope: "Removal chemistry scaled from millilitres to cubic metres per hour at one partner plant.",
+    low: 10,
+    high: 20,
+  },
+  {
     stage: "6",
-    programme: "Scale",
-    scope: "Full-scale removal units, their manufacture and installation, and extension of detection to air.",
+    programme: "Removal at scale",
+    scope: "Manufacture and installation of removal units with in-line analysis, in India and abroad.",
     low: 50,
     high: 100,
   },

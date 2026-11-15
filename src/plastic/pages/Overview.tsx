@@ -15,7 +15,7 @@ import {
   collaborators,
 } from "../data";
 import { Block, Callout, Conclusion, PageHead, Stat } from "../ui";
-import { BreakEvenStats, MarketSize, MissionCapital, StageList, base as s, missionTotal, missionUsd, sizing } from "../sections";
+import { BreakEvenStats, MarketSize, MissionCapital, StageMap, base as s, missionTotal, missionUsd, sizing } from "../sections";
 
 
 const comparison = [
@@ -81,12 +81,12 @@ export default function Overview() {
       <Block
         id="stages"
         title="Development Stages"
-        intro={<p>The company's plan is a single sequence of seven stages. Stage 0 is the current stage.</p>}
+        intro={<p>The plan has seven stages in three groups: Detect, Monitor and Remove. Stage 0 is the current stage.</p>}
       >
-        <StageList />
+        <StageMap />
         <Conclusion>
-          Stages 0 to 2 build the first business, a benchtop analyser for bottling plants. Stages 3 to 6 extend detection
-          to food, add removal and in-line analysis, and take both to scale. The{" "}
+          Stages 0 to 2 build the first business, a benchtop analyser for bottling plants. Stage 3 extends detection to
+          food, Stage 4 adds in-line analysis, and Stages 5 and 6 add removal, first at one plant and then at many. The{" "}
           <Link to="/plastic/roadmap" className="ulink">
             R&D Roadmap
           </Link>{" "}
@@ -194,16 +194,15 @@ export default function Overview() {
         title="Break-even"
         intro={
           <p>
-            Revenue comes from the analyser and cartridge subscription, sold to bottling plants from Year 3 and to food
-            producers from Year 5. The removal pilot runs in Years 4 to 6 as a cost.
+            This is the break-even of the benchtop analyser for bottling plants on its own. Research for later stages is
+            funded separately and is not included.
           </p>
         }
       >
         <BreakEvenStats />
         <Conclusion>
-          The company requires about ₹{(s.cashRequired / 100).toFixed(1)} crore and becomes profitable in Year{" "}
-          {s.breakeven}, with {s.plantsAtBreakeven} water plants and {s.foodAtBreakeven} food producers, each paying ₹30,000
-          a month for cartridges. The year-by-year
+          The benchtop analyser business requires about ₹{(s.cashRequired / 100).toFixed(1)} crore and becomes profitable in Year{" "}
+          {s.breakeven}, with {s.plantsAtBreakeven} bottling plants, each paying ₹30,000 a month for cartridges. The year-by-year
           figures are set out under{" "}
           <Link to="/plastic/numbers#break-even" className="ulink">
             Business Model
