@@ -1,5 +1,5 @@
 import { stage0Done } from "../data";
-import { Block, Callout, NextLinks, PageHead, Src } from "../ui";
+import { Block, Callout, PageHead, Src } from "../ui";
 
 const steps = [
   { n: "01", t: "Sample", b: "Water is drawn from the production batch or line." },
@@ -12,8 +12,8 @@ const compare = [
   ["Time to result", "72 hours+", "20–30 minutes"],
   ["Location", "External laboratory", "On site"],
   ["Operator", "Spectroscopy specialist", "Plant quality-control staff"],
-  ["Cost per test", "₹3,000–5,000", "₹1,000–2,000 cartridge"],
-  ["Capital equipment", "~₹1.5 crore: Raman spectrometer and laboratory equipment", "₹3–4.5 lakh analyser"],
+  ["Cost per test", "₹5,000", "₹1,000 cartridge"],
+  ["Capital equipment", "₹1.5 crore: Raman spectrometer and laboratory equipment", "₹5 lakh analyser"],
   ["Output", "Polymer identity and count", "Microplastic count"],
   ["Application", "Reference and confirmation", "Routine screening"],
 ];
@@ -54,7 +54,6 @@ export default function Science() {
   return (
     <>
       <PageHead
-        kicker="PlasticOptics · Technology"
         title="Technical Approach"
         lede={
           <p>
@@ -64,7 +63,7 @@ export default function Science() {
         }
       />
 
-      <Block id="method" tag="Method" title="Measurement Method">
+      <Block id="method" title="Measurement Method">
         <div className="grid md:grid-cols-[1fr_240px] gap-8 items-center">
           <ol className="grid gap-5">
             {steps.map((s) => (
@@ -84,7 +83,7 @@ export default function Science() {
         </div>
       </Block>
 
-      <Block id="compare" tag="Comparison" title="Comparison with Spectroscopy">
+      <Block id="compare" title="Comparison with Spectroscopy">
         <div className="overflow-x-auto -mx-6 md:mx-0 px-6 md:px-0">
           <table className="po-table min-w-[520px]">
             <thead>
@@ -109,7 +108,7 @@ export default function Science() {
 
       <Block
         id="validation"
-        tag="Stage 0"
+       
         title="Validation Plan"
         intro={<p>Each sample is analysed by both PlasticOptics and Raman/FTIR. Research collaborators: Prof. Sarit S. Agasti (JNCASR) and Prof. Suryasarathi Bose (IISc).</p>}
       >
@@ -137,7 +136,7 @@ export default function Science() {
 
       <Block
         id="standards"
-        tag="Regulation"
+       
         title="Regulatory Size Classes"
         intro={<p>Results must align with official size classifications.</p>}
       >
@@ -168,7 +167,7 @@ export default function Science() {
         </table>
       </Block>
 
-      <Block id="removal" tag="Removal" title="Removal Chemistry">
+      <Block id="removal" title="Removal Chemistry">
         <p className="ink2 max-w-[62ch]">
           Metal-phenolic networks (tamarind and iron) bind microplastics, but have been demonstrated only at millilitre
           scale. Scaling to cubic metres per hour is the principal technical challenge in the plan.
@@ -176,15 +175,6 @@ export default function Science() {
         <div className="mt-6">
           <Callout tone="accent">Removal depends on measurement. Detection is therefore developed first.</Callout>
         </div>
-      </Block>
-
-      <Block id="read-next" tag="Further reading">
-        <NextLinks
-          items={[
-            { to: "/plastic/roadmap", title: "Product Roadmap", body: "Development path from detection to removal." },
-            { to: "/plastic/numbers", title: "Financial Model", body: "Financial model and break-even analysis." },
-          ]}
-        />
       </Block>
     </>
   );

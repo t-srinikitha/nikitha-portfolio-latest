@@ -5,12 +5,11 @@ import { SOURCES } from "./data";
 export const inr = (n: number) => "₹" + Math.round(n).toLocaleString("en-IN");
 export const lakh = (n: number, d = 1) => `₹${n.toFixed(d)} L`;
 
-export function PageHead({ kicker, title, lede }: { kicker: string; title: React.ReactNode; lede?: React.ReactNode }) {
+export function PageHead({ title, lede }: { title: React.ReactNode; lede?: React.ReactNode }) {
   return (
     <header className="pt-10 md:pt-16 pb-10 md:pb-12">
-      <span className="chip">{kicker}</span>
-      <h1 className="serif mt-5 text-[34px] leading-[1.08] md:text-[46px] md:leading-[1.05] max-w-[20ch]">{title}</h1>
-      {lede && <div className="mt-5 text-[16px] md:text-[17px] leading-relaxed ink2 max-w-[60ch]">{lede}</div>}
+      <h1 className="serif text-[34px] leading-[1.08] md:text-[46px] md:leading-[1.05] max-w-[20ch]">{title}</h1>
+      {lede && <div className="mt-5 text-[16.5px] md:text-[17.5px] leading-relaxed ink2 max-w-[62ch]">{lede}</div>}
     </header>
   );
 }
@@ -18,25 +17,31 @@ export function PageHead({ kicker, title, lede }: { kicker: string; title: React
 /** A ruled section of the centre column, sfcompute-style. */
 export function Block({
   id,
-  tag,
+  toc,
   title,
   intro,
   children,
 }: {
   id: string;
-  tag: string;
-  title?: React.ReactNode;
+  /** Label in the sidebar section list; defaults to the title. */
+  toc?: string;
+  title: React.ReactNode;
   intro?: React.ReactNode;
   children?: React.ReactNode;
 }) {
+  const label = toc ?? (typeof title === "string" ? title : id);
   return (
-    <section id={id} data-toc={tag} className="border-t hair -mx-6 md:-mx-12 px-6 md:px-12 py-12 md:py-14 scroll-mt-16 lg:scroll-mt-4">
-      <span className="chip">{tag}</span>
-      {title && <h2 className="serif mt-4 text-[26px] md:text-[30px] leading-[1.15] max-w-[28ch]">{title}</h2>}
-      {intro && <div className="mt-3 ink2 max-w-[62ch]">{intro}</div>}
+    <section id={id} data-toc={label} className="border-t hair -mx-6 md:-mx-12 px-6 md:px-12 py-12 md:py-14 scroll-mt-16 lg:scroll-mt-6">
+      <h2 className="serif text-[27px] md:text-[31px] leading-[1.15] max-w-[30ch]">{title}</h2>
+      {intro && <div className="mt-4 ink2 max-w-[64ch] grid gap-3">{intro}</div>}
       {children && <div className="mt-8">{children}</div>}
     </section>
   );
+}
+
+/** A closing sentence that states what the section shows. */
+export function Conclusion({ children }: { children: React.ReactNode }) {
+  return <p className="mt-6 text-[16px] leading-relaxed max-w-[64ch]">{children}</p>;
 }
 
 export function Stat({ v, k, accent }: { v: React.ReactNode; k: React.ReactNode; accent?: boolean }) {

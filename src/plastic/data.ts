@@ -8,21 +8,10 @@ export const EMAIL = "t.srinikitha@gmail.com";
 
 export const PAGES = [
   { path: "/plastic", label: "Overview" },
-  { path: "/plastic/numbers", label: "Financials" },
-  { path: "/plastic/market", label: "Go-to-Market" },
-  { path: "/plastic/roadmap", label: "Roadmap" },
   { path: "/plastic/science", label: "Technology" },
-];
-
-// Right-rail facts, shown on every page.
-export const KEY_NUMBERS: { k: string; v: string; note?: string }[] = [
-  { k: "Funding request", v: "₹23.8 L", note: "Stage 0, six months" },
-  { k: "Time to result", v: "20–30 min", note: "Laboratory: 72 hours+" },
-  { k: "Device", v: "₹1.6 L → ₹3–4.5 L", note: "Cost → price" },
-  { k: "Cartridge", v: "₹400 → ₹1–2 K", note: "Cost → price" },
-  { k: "Laboratory test (current)", v: "₹3–5 K", note: "Per test" },
-  { k: "Operating break-even", v: "35 plants", note: "Year 4" },
-  { k: "Licensed plants in India", v: "6,200+", note: "Packaged drinking water" },
+  { path: "/plastic/market", label: "Go-To-Market" },
+  { path: "/plastic/numbers", label: "Financial Modeling" },
+  { path: "/plastic/roadmap", label: "R&D Roadmap" },
 ];
 
 /* ───────────────────────── V2: overview ───────────────────────── */
@@ -35,46 +24,44 @@ export const surfaces = [
     name: "Drinking water",
     verdict: "Phase 1",
     feasibility:
-      "An established research base exists for detection methods.",
+      "Detection methods for microplastics in water are well established in research. The first product is built for water bottling plants.",
   },
   {
     name: "Food",
     verdict: "Phase 2",
     feasibility:
-      "Salt and spices extend the water method. Development follows validation in water.",
+      "Salt and spices are prepared as liquid samples and tested with the same staining and imaging method used for water. Food testing will be developed after the method is validated in water.",
   },
   {
     name: "Air",
     verdict: "Phase 3",
     feasibility:
-      "Airborne particles are collected on a surface or filter prior to detection.",
+      "Airborne particles are collected on a filter, which is then tested with the same method.",
   },
 ];
 
 export const whereToStart =
-  "Drinking water is the initial focus, and the detection method extends to food and air. Food represents the largest long-term revenue opportunity. The sections below address drinking water.";
+  "Drinking water is the first market because detection methods for water are the most established. Food and air follow, using the same detection method. Food represents the largest long-term revenue opportunity.";
 
 export const whoPays = {
   who: "Water and Beverage Bottling Plants",
-  why: "Bottling plants rely on reverse osmosis, which removes up to 99% of microplastics from source water. After an unknown number of operating cycles, RO membranes may begin to release microplastics into the product. Plants currently cannot quantify microplastic levels in finished product, and therefore cannot determine when membrane performance has declined.",
+  why: "Bottling plants rely on reverse osmosis, which removes up to 99% of microplastics from source water. After an unknown number of operating cycles, RO membranes begin to release microplastics into the product. Plants currently cannot quantify microplastic levels in finished product, and therefore cannot determine when membrane performance has declined.",
 };
 
 export const today = {
-  method: "Current method: FTIR or Raman spectroscopy.",
+  method: "Plants that test today must use Raman or FTIR spectroscopy.",
   facts: [
-    { v: "72 hours+", k: "From sample collection to result" },
-    { v: "Limited capacity", k: "Few university and private laboratories" },
-    { v: "Long lead times", k: "Extended queues at existing laboratories" },
-    { v: "₹3,000–5,000", k: "Cost per test" },
+    { v: "No commercial service", k: "Testing is available only at a few university and private laboratories, with long queues." },
+    { v: "72 hours or more", k: "Time from sample collection to result. The batch has usually shipped by then." },
   ],
-  punchline: "As a result, routine microplastic testing is not performed.",
+  punchline: "As a result, bottling plants do not test for microplastics routinely.",
 };
 
 export const objective = {
   text: "A benchtop analyser operated by plant quality-control staff without specialist training. Microplastic counts are reported within 20–30 minutes, enabling testing of every production batch.",
   how: "Differential staining with AI-based particle counting.",
   revenue:
-    "A one-time device sale, followed by recurring cartridge sales at one cartridge per test.",
+    "A one-time sale of the analyser, followed by recurring sales of test cartridges.",
   pilot: "Uravu Labs, Bengaluru (proposed).",
 };
 
@@ -85,7 +72,7 @@ export const stages = [
     when: "Now → ~6 months",
     objective: "Validation of differential staining and AI counting against Raman/FTIR.",
     spend: "Reagents, collaboration with professors, lab setup, Raman/FTIR reference testing",
-    funding: "~₹23.8 L",
+    funding: "₹23.3 L",
     current: true,
   },
   {
@@ -101,7 +88,7 @@ export const stages = [
     name: "Commercial launch",
     when: "Years 2 → 4",
     objective:
-      "35 or more plants by Year 4, with a target of 50. Initiation of removal R&D and food (salt) R&D.",
+      "Sales to 35 plants by Year 4. Research on microplastic removal and on food testing (salt) begins.",
     spend:
       "Contract manufacturing, tooling, method validation, first sales hire, field service, inventory",
     funding: "₹10 Cr",
@@ -114,7 +101,7 @@ export const unitEconomics = {
     { item: "Microscope, optical filters, container, software", v: 120000 },
     { item: "Assembly, calibration, installation, shipping", v: 40000 },
   ],
-  devicePrice: "₹3–4.5 L",
+  devicePrice: "₹5,00,000",
   cartridgeCost: 400,
   // ₹400 is the planning cost per finished cartridge. Bench consumables today are ₹193
   // (Master Plan); the rest is an allowance for what a lab bench doesn't need.
@@ -122,35 +109,34 @@ export const unitEconomics = {
     { item: "Bench consumables (current)", v: 193 },
     { item: "Housing, assembly, quality control, delivery", v: 207 },
   ],
-  cartridgePrice: "₹1,000–2,000",
-  labPerTest: "₹3,000–5,000",
+  cartridgePrice: "₹1,000",
+  labPerTest: "₹5,000",
   caveat: "All figures are preliminary estimates and will be refined through Stage 0 and customer interviews.",
 };
 
 export const budget = [
-  { item: "My stipend", v: 4.5 },
-  { item: "Research collaboration", v: 4 },
+  { item: "Research collaboration", v: 8 },
   { item: "Optical equipment", v: 4 },
   { item: "Lab space and equipment", v: 3 },
   { item: "Analytical balance", v: 2.8 },
   { item: "Reagents and membranes", v: 2 },
-  { item: "AI counting", v: 2 },
+  { item: "AI token costs", v: 2 },
   { item: "Sample collection", v: 1 },
   { item: "Raman/FTIR reference testing", v: 0.5 },
 ];
 
 export const stage0Done = [
-  "Counts equivalent to or better than Raman spectroscopy on identical samples.",
-  "Method performance confirmed in the presence of iron, organic matter and turbidity.",
-  "Maintenance requirements and final cartridge cost established.",
-  "Customer interviews completed and at least one active pilot in place.",
+  "Microplastics counted by PlasticOptics are equivalent to those counted by Raman spectroscopy on the same samples.",
+  "The method counts microplastics accurately in water that contains iron, organic matter or suspended solids.",
+  "The maintenance requirements of the analyser and the final cost of a cartridge are known.",
+  "Customer interviews are complete, and at least one plant is running a pilot.",
 ];
 
 export const afterStage0 = "On completion of Stage 0, the company will apply for BIRAC BIG or NIDHI-PRAYAS funding and incubation support.";
 
 export const founder = {
   name: "Sri Nikitha T",
-  bio: "IIT Kharagpur and Ashoka University. Over eight years of experience across manufacturing, government and technology, including process innovation at NRB Bearings, industrial wastewater treatment at Ecosattva, the Innovation Fellowship with the Government of Telangana, and AI product management.",
+  bio: "Over eight years of experience across manufacturing, government and technology, including process innovation at NRB Bearings, industrial wastewater treatment at Ecosattva, the Innovation Fellowship with the Government of Telangana, and AI product management. Educated at IIT Kharagpur and Ashoka University.",
 };
 
 /* ───────────────────────── Market facts (sourced) ───────────────────────── */
@@ -222,7 +208,7 @@ export const whyNow = [
 export const pathToMarket = [
   {
     step: "Validate",
-    stage: "Stage 0 · ~6 months · ₹23.8 L",
+    stage: "Stage 0 · ~6 months · ₹23.3 L",
     body: "Demonstrate agreement with Raman. Confirm performance with iron, organic matter and turbidity. Establish cartridge cost. Secure one pilot.",
   },
   {
@@ -238,7 +224,7 @@ export const pathToMarket = [
   {
     step: "Scale",
     stage: "Stage 2 · Years 2–4 · ₹10 Cr",
-    body: "Contract manufacturing, tooling, method validation, sales and field service. Target of 35 or more plants by Year 4, rising to 50.",
+    body: "Contract manufacturing, tooling, method validation, sales and field service. Target of 35 plants by Year 4, followed by 25 new plants each year.",
   },
 ];
 
@@ -260,12 +246,12 @@ export const risks = [
   },
   {
     risk: "Pricing",
-    test: "Plants accept ₹1,000–2,000 per cartridge and ₹3–4.5 lakh per device.",
+    test: "Plants accept ₹1,000 per cartridge and ₹5 lakh per analyser.",
     when: "Stage 0–1",
   },
   {
     risk: "Usage frequency",
-    test: "Approximately one test per day, yielding ₹4.32 lakh of cartridge gross profit per plant per year.",
+    test: "Approximately one test per day, yielding ₹2.16 lakh of cartridge gross profit per plant per year.",
     when: "Stage 1",
   },
   {
@@ -284,7 +270,7 @@ export const unknowns = [
 ];
 
 export const fundingPath = [
-  { label: "Stage 0 · current request", v: "₹23.8 L", how: "Full Stage 0 budget" },
+  { label: "Stage 0 · current request", v: "₹23.3 L", how: "Full Stage 0 budget" },
   { label: "After Stage 0", v: "—", how: "BIRAC BIG or NIDHI-PRAYAS; incubation" },
   { label: "Stage 1", v: "₹2 Cr", how: "Pre-seed and grants" },
   { label: "Stage 2", v: "₹10 Cr", how: "Manufacturing, sales and field service" },
@@ -344,7 +330,7 @@ export const longArc: {
 ];
 
 export const capitalByStage: { n: number; name: string; range: [number, number]; label: string; track: Track | "now" }[] = [
-  { n: 0, name: "Technology validation", range: [23.8, 23.8], label: "₹23.8 L", track: "now" },
+  { n: 0, name: "Technology validation", range: [23.3, 23.3], label: "₹23.3 L", track: "now" },
   { n: 1, name: "Prototype and pilots", range: [200, 200], label: "₹2 Cr", track: "detect" },
   { n: 2, name: "Commercial launch", range: [1000, 1000], label: "₹10 Cr", track: "detect" },
   { n: 3, name: "Continuous detection", range: [500, 1000], label: "₹5–10 Cr", track: "detect" },

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import {
   goal,
   surfaces,
@@ -16,32 +16,46 @@ import {
   market,
   collaborators,
 } from "../data";
-import { Block, Callout, NextLinks, PageHead, Src, Stat, inr } from "../ui";
-import { KeyNumbers } from "../PlasticLayout";
-import { PnlTable } from "../PnlTable";
-import { BASE, project, summarise } from "../model";
-import { ArrowUpRight } from "lucide-react";
+import { Block, Callout, Conclusion, PageHead, Src, Stat, inr } from "../ui";
+import { BASE, CAPITAL_TOTAL, project, summarise } from "../model";
 
-const base = project(BASE, 6);
-const baseSummary = summarise(BASE, base);
+const rows = project(BASE);
+const s = summarise(BASE, rows);
+const deviceCost = ue.deviceCost.reduce((a, c) => a + c.v, 0);
+const cr = (lakh: number) => `₹${(lakh / 100).toFixed(2)} Cr`;
 
-const deviceCost = ue.deviceCost.reduce((s, c) => s + c.v, 0);
+const comparison = [
+  {
+    name: "Current methods (Raman or FTIR spectroscopy)",
+    strong: false,
+    cards: [
+      { k: "Equipment", v: "₹1.5 Cr", d: "Raman spectrometer and supporting laboratory equipment." },
+      { k: "Personnel", v: "Specialist staff", d: "Trained spectroscopists to prepare samples and operate the instrument." },
+      { k: "Per test", v: "₹5,000", d: "Results in 72 hours or more." },
+    ],
+  },
+  {
+    name: "PlasticOptics",
+    strong: true,
+    cards: [
+      { k: "Equipment", v: "₹5 L", d: "Benchtop analyser." },
+      { k: "Personnel", v: "None", d: "Operated by the plant's existing quality-control staff." },
+      { k: "Per test", v: "₹1,000", d: "Single-use test cartridge. Results in 20–30 minutes." },
+    ],
+  },
+];
 
 export default function Overview() {
-  const budgetTotal = budget.reduce((s, b) => s + b.v, 0);
-  const maxBudget = Math.max(...budget.map((b) => b.v));
-  const share = ((35 / market.licensedPlants) * 100).toFixed(1);
+  const budgetTotal = budget.reduce((a, b) => a + b.v, 0);
+  const investShare = s.plantsAtInvest ? ((s.plantsAtInvest / market.licensedPlants) * 100).toFixed(1) : null;
 
   return (
     <>
       <PageHead
-        kicker="PlasticOptics · Overview"
         title="Microplastic Detection and Removal for Water, Food and Air"
         lede={
           <>
-            <p>
-              <span className="text-[var(--po-ink)]">Objective:</span> {goal}
-            </p>
+            <p>{goal}</p>
             <p className="mt-3">
               The first product addresses drinking water: a benchtop analyser with single-use test cartridges. It enables
               quality-control teams at bottling plants to test every production batch within 20–30 minutes.
@@ -50,37 +64,32 @@ export default function Overview() {
         }
       />
 
-      <div className="xl:hidden mb-12">
-        <KeyNumbers inline />
-      </div>
-
-      <Block id="where-to-start" tag="Market focus" title="Initial Market Focus">
+      <Block id="market-focus" title="Initial Market Focus">
         <div className="grid md:grid-cols-3 gap-px bg-[var(--po-line)] border hair">
-          {surfaces.map((s, i) => (
-            <div key={s.name} className="bg-[var(--po-paper)] p-5">
+          {surfaces.map((x, i) => (
+            <div key={x.name} className="bg-[var(--po-paper)] p-5">
               <div className="flex items-baseline justify-between gap-3">
-                <h3 className="font-medium">{s.name}</h3>
+                <h3 className="font-medium">{x.name}</h3>
                 <span
                   className={`mono text-[10.5px] uppercase tracking-wide px-1.5 py-0.5 whitespace-nowrap ${
                     i === 0 ? "bg-[var(--po-ink)] text-[var(--po-bg)]" : "bg-[var(--po-chip)] ink2"
                   }`}
                 >
-                  {s.verdict}
+                  {x.verdict}
                 </span>
               </div>
-              <div className="mt-3 mono text-[10.5px] uppercase tracking-wide muted">Basis</div>
-              <p className="mt-1 text-[13.5px] ink2 leading-relaxed">{s.feasibility}</p>
+              <p className="mt-3 text-[14px] ink2 leading-relaxed">{x.feasibility}</p>
             </div>
           ))}
         </div>
-        <p className="mt-6 ink2 max-w-[62ch]">{whereToStart}</p>
+        <Conclusion>{whereToStart}</Conclusion>
       </Block>
 
-      <Block id="who-pays" tag="Customer" title={whoPays.who} intro={<p>{whoPays.why}</p>}>
+      <Block id="customer" toc="Customer" title={`Customer: ${whoPays.who}`} intro={<p>{whoPays.why}</p>}>
         <p className="font-medium">{today.method}</p>
-        <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
+        <div className="mt-4 grid sm:grid-cols-2 gap-2">
           {today.facts.map((f) => (
-            <Stat key={f.k} v={f.v} k={f.k} />
+            <Stat key={f.v} v={f.v} k={f.k} />
           ))}
         </div>
         <div className="mt-8">
@@ -90,70 +99,65 @@ export default function Overview() {
         </div>
       </Block>
 
-      <Block id="objective" tag="Product" title="Benchtop Analyser" intro={<p>{objective.text}</p>}>
+      <Block id="product" toc="Product" title="Product: Benchtop Analyser" intro={<p>{objective.text}</p>}>
         <dl className="grid md:grid-cols-3 gap-px bg-[var(--po-line)] border hair text-[14px]">
           <div className="bg-[var(--po-paper)] p-5">
-            <dt className="mono text-[10.5px] uppercase tracking-wide muted">Method</dt>
-            <dd className="mt-1.5">{objective.how}</dd>
-            <dd className="mt-3">
-              <Link to="/plastic/science" className="ulink text-[13px] muted">
-                Technical approach
+            <dt className="font-medium">Method</dt>
+            <dd className="mt-1.5 ink2">
+              {objective.how}{" "}
+              <Link to="/plastic/science" className="ulink">
+                Technology
               </Link>
             </dd>
           </div>
           <div className="bg-[var(--po-paper)] p-5">
-            <dt className="mono text-[10.5px] uppercase tracking-wide muted">Revenue model</dt>
-            <dd className="mt-1.5">{objective.revenue}</dd>
+            <dt className="font-medium">Revenue model</dt>
+            <dd className="mt-1.5 ink2">{objective.revenue}</dd>
           </div>
           <div className="bg-[var(--po-paper)] p-5">
-            <dt className="mono text-[10.5px] uppercase tracking-wide muted">Pilot partner</dt>
-            <dd className="mt-1.5">{objective.pilot}</dd>
+            <dt className="font-medium">Pilot partner</dt>
+            <dd className="mt-1.5 ink2">{objective.pilot}</dd>
           </div>
         </dl>
       </Block>
 
-      <Block id="stages" tag="Stages" title="Development Stages">
-        <ol className="border-t hair">
-          {stages.map((s) => (
-            <li key={s.n} className="grid grid-cols-[44px_1fr] md:grid-cols-[56px_1fr_170px] gap-x-4 gap-y-2 py-5 border-b hair">
-              <div className={`num text-[28px] leading-none ${s.current ? "text-[var(--po-accent)]" : ""}`}>{s.n}</div>
-              <div>
-                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                  <h3 className="font-medium text-[16px]">{s.name}</h3>
-                  <span className="mono text-[12px] muted">{s.when}</span>
-                  {s.current && <span className="chip !bg-[var(--po-lime)] !text-black">Current</span>}
-                </div>
-                <p className="mt-1.5 text-[14px]">{s.objective}</p>
-                <p className="mt-1 text-[13px] muted">{s.spend}</p>
+      <Block id="cost-comparison" title="Cost Comparison">
+        <div className="grid gap-6">
+          {comparison.map((layer) => (
+            <div key={layer.name}>
+              <h3 className="font-medium">{layer.name}</h3>
+              <div
+                className={`mt-3 grid sm:grid-cols-3 gap-px border ${
+                  layer.strong ? "bg-[var(--po-ink)] border-[var(--po-ink)]" : "bg-[var(--po-line)] hair"
+                }`}
+              >
+                {layer.cards.map((c) => (
+                  <div key={c.k} className="bg-[var(--po-paper)] p-5">
+                    <div className="text-[13px] muted">{c.k}</div>
+                    <div
+                      className={`mt-1 text-[24px] leading-tight ${c.v.startsWith("₹") ? "num" : "serif"} ${
+                        layer.strong ? "text-[var(--po-accent)]" : ""
+                      }`}
+                    >
+                      {c.v}
+                    </div>
+                    <p className="mt-2 text-[13.5px] ink2 leading-snug">{c.d}</p>
+                  </div>
+                ))}
               </div>
-              <div className="col-start-2 md:col-start-3 md:text-right">
-                <div className="mono text-[10.5px] uppercase tracking-wide muted">Funding</div>
-                <div className="num text-[15px]">{s.funding}</div>
-              </div>
-            </li>
+            </div>
           ))}
-        </ol>
-        <p className="mt-5 text-[13.5px] muted">
-          Removal development follows Stage 2. See{" "}
-          <Link to="/plastic/roadmap" className="ulink">
-            Product Roadmap
-          </Link>
-          .
-        </p>
+        </div>
+        <Conclusion>
+          PlasticOptics lowers equipment cost by 97% and cost per test by 80%, requires no specialist staff, and returns
+          results in minutes rather than days.
+        </Conclusion>
       </Block>
 
-      <Block
-        id="unit-economics"
-        tag="Unit economics"
-        title="Unit Economics"
-        intro={<p>One analyser is installed per plant. Each test consumes one cartridge.</p>}
-      >
+      <Block id="unit-economics" title="Unit Economics">
         <div className="grid md:grid-cols-2 gap-4">
           <div className="border hair bg-[var(--po-paper)]">
-            <div className="px-5 pt-5 flex items-baseline justify-between">
-              <h3 className="font-medium">Benchtop analyser</h3>
-              <span className="mono text-[11px] muted">one per plant</span>
-            </div>
+            <h3 className="px-5 pt-5 font-medium">Benchtop analyser</h3>
             <table className="po-table mt-3">
               <tbody>
                 {ue.deviceCost.map((c) => (
@@ -163,21 +167,18 @@ export default function Overview() {
                   </tr>
                 ))}
                 <tr className="em">
-                  <td className="!pl-5">Cost</td>
+                  <td className="!pl-5">COGS</td>
                   <td className="r !pr-5">{inr(deviceCost)}</td>
                 </tr>
                 <tr className="em">
-                  <td className="!pl-5 !border-b-0">Price ceiling</td>
+                  <td className="!pl-5 !border-b-0">Market price</td>
                   <td className="r !pr-5 !border-b-0 text-[var(--po-accent)]">{ue.devicePrice}</td>
                 </tr>
               </tbody>
             </table>
           </div>
           <div className="border hair bg-[var(--po-paper)]">
-            <div className="px-5 pt-5 flex items-baseline justify-between">
-              <h3 className="font-medium">Test cartridge</h3>
-              <span className="mono text-[11px] muted">one per test</span>
-            </div>
+            <h3 className="px-5 pt-5 font-medium">Test cartridge</h3>
             <table className="po-table mt-3">
               <tbody>
                 {ue.cartridgeBreakdown.map((c) => (
@@ -187,113 +188,180 @@ export default function Overview() {
                   </tr>
                 ))}
                 <tr className="em">
-                  <td className="!pl-5">Cost per cartridge</td>
+                  <td className="!pl-5">COGS</td>
                   <td className="r !pr-5">{inr(ue.cartridgeCost)}</td>
                 </tr>
                 <tr className="em">
-                  <td className="!pl-5 !border-b-0">Price</td>
+                  <td className="!pl-5 !border-b-0">Market price</td>
                   <td className="r !pr-5 !border-b-0 text-[var(--po-accent)]">{ue.cartridgePrice}</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
-
-        <p className="mt-4 text-[13px] muted max-w-[68ch]">
-          The ₹400 cartridge cost is a planning estimate. Bench consumables currently cost ₹193 per test and are projected
-          to fall to ₹60 at volume (see <Link to="/plastic/roadmap#cost-down" className="ulink">Cost Reduction</Link>).
+        <p className="mt-4 text-[13.5px] muted max-w-[68ch]">
+          The ₹400 cartridge COGS is a planning estimate. Bench consumables currently cost ₹193 per test and are projected
+          to fall to ₹60 at volume (see{" "}
+          <Link to="/plastic/roadmap#cost-down" className="ulink">
+            Cost Reduction
+          </Link>
+          ). All figures will be refined through Stage 0 and customer interviews.
         </p>
-
-        <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-2">
-          <Stat v={ue.incumbent.v} k={`${ue.incumbent.label}. The PlasticOptics analyser is priced at 2–3% of this.`} />
-          <Stat v={ue.labPerTest} k="Current laboratory cost per test, with results in 72 hours or more." />
-          <Stat v="₹1,000–2,000" k="PlasticOptics cartridge price per test, with results in 20–30 minutes." accent />
-        </div>
-        <p className="mt-5 text-[13px] muted">{ue.caveat}</p>
+        <Conclusion>
+          Gross margin is 68% on each analyser and 60% on each cartridge. Each active plant generates ₹
+          {s.cartGrossPlant.toFixed(2)} lakh of cartridge gross profit per year at 360 tests.
+        </Conclusion>
       </Block>
 
-      <Block
-        id="break-even"
-        tag="Break-even"
-        title="Break-Even Analysis"
-        intro={
-          <p>
-            Operating break-even is reached in Year {baseSummary.opBreakeven} at {baseSummary.plantsToCover} active plants,
-            equivalent to {share}% of India's {market.licensedPlants.toLocaleString("en-IN")}+ licensed packaged drinking
-            water plants. <Src id="bis" />
-          </p>
-        }
-      >
-        <PnlTable rows={base} />
-        <p className="mt-3 text-[12.5px] muted max-w-[70ch]">
-          Assumptions: device price ₹3 lakh; cartridge price ₹1,600; 360 tests per plant per year. Pilot units are funded
-          from the Stage 1 raise. No revenue is assumed in Year 1.
-        </p>
-        <div className="mt-6 grid md:grid-cols-2 gap-4 text-[14px]">
-          <Callout>
-            <b>Contribution per plant.</b> Each active plant generates ₹{baseSummary.cartGrossPlant.toFixed(2)} lakh of cartridge
-            gross profit per year (₹1,200 × 360). Operating costs of ₹{baseSummary.opex} lakh therefore require{" "}
-            {baseSummary.plantsToCover} plants.
-          </Callout>
-          <Callout tone="accent">
-            <b>Cumulative position.</b> The deficit peaks at ₹{(-baseSummary.trough / 100).toFixed(2)} crore in Year{" "}
-            {baseSummary.troughYear}. At 35 plants the position holds steady; recovery requires 50 or more plants.
-          </Callout>
-        </div>
-        <Link to="/plastic/numbers" className="mt-6 inline-flex items-center gap-2 btn btn-ghost">
-          View Financial Model <ArrowRight className="h-4 w-4" />
-        </Link>
-      </Block>
-
-      <Block
-        id="investment"
-        tag="Funding"
-        title={<>Funding Requirement: ₹{budgetTotal.toFixed(1)} Lakh</>}
-        intro={
-          <p>
-            The request covers the full Stage 0 budget over a six-month period.
-          </p>
-        }
-      >
-        <ul className="grid gap-2.5">
-          {budget.map((b) => (
-            <li key={b.item} className="grid grid-cols-[1fr_auto] sm:grid-cols-[220px_1fr_56px] gap-x-4 gap-y-1 items-center text-[14px]">
-              <span>{b.item}</span>
-              <span className="num text-right sm:order-3">{b.v.toFixed(1)}</span>
-              <span className="col-span-2 sm:col-span-1 sm:order-2 h-2 bg-[var(--po-chip)]">
-                <span className="block h-full bg-[var(--po-ink)]" style={{ width: `${(b.v / maxBudget) * 100}%` }} />
-              </span>
+      <Block id="stages" title="Development Stages">
+        <ol className="border-t hair">
+          {stages.map((x) => (
+            <li key={x.n} className="grid grid-cols-[44px_1fr] md:grid-cols-[56px_1fr_150px] gap-x-4 gap-y-2 py-5 border-b hair">
+              <div className={`num text-[28px] leading-none ${x.current ? "text-[var(--po-accent)]" : ""}`}>{x.n}</div>
+              <div>
+                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                  <h3 className="font-medium text-[16px]">{x.name}</h3>
+                  <span className="mono text-[12px] muted">{x.when}</span>
+                  {x.current && <span className="chip !bg-[var(--po-lime)] !text-black">Current</span>}
+                </div>
+                <p className="mt-1.5 text-[14.5px]">{x.objective}</p>
+                <p className="mt-1 text-[13.5px] muted">{x.spend}</p>
+              </div>
+              <div className="col-start-2 md:col-start-3 md:text-right num text-[15px]">{x.funding}</div>
             </li>
           ))}
-          <li className="grid grid-cols-[1fr_auto] sm:grid-cols-[220px_1fr_56px] gap-x-4 pt-3 mt-1 border-t hair font-semibold text-[14px]">
-            <span>Total, ₹ lakh</span>
-            <span className="num text-right sm:order-3">{budgetTotal.toFixed(1)}</span>
-            <span className="hidden sm:block sm:order-2" />
-          </li>
-        </ul>
+        </ol>
+        <Conclusion>
+          Work on microplastic removal begins in parallel with Stage 2 and continues after it. The{" "}
+          <Link to="/plastic/roadmap" className="ulink">
+            R&D Roadmap
+          </Link>{" "}
+          sets out the removal stages.
+        </Conclusion>
       </Block>
 
-      <Block id="stage-0" tag="Stage 0" title="Stage 0 Milestones">
+      <Block id="stage-0" title="Stage 0 Milestones" intro={<p>Stage 0 is complete when the following are true.</p>}>
         <ol className="grid gap-3">
           {stage0Done.map((d, i) => (
-            <li key={d} className="grid grid-cols-[28px_1fr] gap-3 text-[15px]">
+            <li key={d} className="grid grid-cols-[28px_1fr] gap-3 text-[15.5px]">
               <span className="num text-[13px] muted pt-0.5">0{i + 1}</span>
               <span>{d}</span>
             </li>
           ))}
         </ol>
-        <p className="mt-6 text-[14px] ink2">{afterStage0}</p>
+        <Conclusion>{afterStage0}</Conclusion>
       </Block>
 
-      <Block id="team" tag="Team" title="Founder and Research Collaborators">
+      <Block
+        id="funding"
+        toc="Funding Requirement"
+        title={<>Funding Requirement: ₹{budgetTotal.toFixed(1)} Lakh</>}
+        intro={<p>The request covers the full Stage 0 budget for six months.</p>}
+      >
+        <table className="po-table max-w-[520px] text-[14px]">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th className="r">₹ lakh</th>
+            </tr>
+          </thead>
+          <tbody>
+            {budget.map((b) => (
+              <tr key={b.item}>
+                <td>{b.item}</td>
+                <td className="r">{b.v.toFixed(1)}</td>
+              </tr>
+            ))}
+            <tr className="em">
+              <td>Total</td>
+              <td className="r">{budgetTotal.toFixed(1)}</td>
+            </tr>
+          </tbody>
+        </table>
+        <Conclusion>Research collaboration and optical equipment account for half of the budget.</Conclusion>
+      </Block>
+
+      <Block
+        id="investment-breakeven"
+        title="Investment Breakeven"
+        intro={
+          <>
+            <p>
+              The ₹{budgetTotal.toFixed(1)} lakh Stage 0 request funds technology validation. Stage 0 generates no revenue,
+              and the request is not repaid on its own. Bringing the analyser to market requires {cr(CAPITAL_TOTAL)} across
+              Stages 0 to 2: ₹{budgetTotal.toFixed(1)} lakh, ₹2 crore and ₹10 crore. Investment breakeven is measured
+              against that total.
+            </p>
+          </>
+        }
+      >
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+          <Stat v={cr(CAPITAL_TOTAL)} k="Capital required, Stages 0–2" />
+          <Stat v={`${cr(s.lossesBefore)}`} k={`Operating losses, Years 2–${(s.opBreakeven ?? 2) - 1}`} />
+          <Stat v={`Year ${s.opBreakeven}`} k={`Operating break-even, ${s.plantsAtOpBreakeven} plants`} />
+          <Stat v={`Year ${s.investBreakeven}`} k={`Investment breakeven, ${s.plantsAtInvest} plants`} accent />
+        </div>
+
+        <div className="mt-8 overflow-x-auto">
+          <table className="po-table text-[14px]">
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th className="r">Plants</th>
+                <th className="r hidden sm:table-cell">Revenue</th>
+                <th className="r !whitespace-normal">Operating profit</th>
+                <th className="r">Recovered</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r) => {
+                const mark = r.year === s.opBreakeven || r.year === s.investBreakeven;
+                return (
+                  <tr key={r.year} className={mark ? "em" : ""}>
+                    <td className="whitespace-nowrap">
+                      Year {r.year}
+                      {r.year === s.opBreakeven && <span className="ml-2 text-[12px] muted !font-normal hidden sm:inline">operating break-even</span>}
+                      {r.year === s.investBreakeven && <span className="ml-2 text-[12px] muted !font-normal hidden sm:inline">investment breakeven</span>}
+                    </td>
+                    <td className="r">{r.active}</td>
+                    <td className="r hidden sm:table-cell">{r.revenue.toFixed(1)}</td>
+                    <td className={`r ${r.operating < 0 ? "text-[var(--po-accent)]" : ""}`}>{r.operating.toFixed(1)}</td>
+                    <td className={`r ${r.year === s.investBreakeven ? "bg-[var(--po-lime)]" : ""}`}>
+                      {r.recovered === null ? "–" : `${r.recovered.toFixed(1)}`}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-3 text-[13px] muted max-w-[70ch]">
+          ₹ lakh. Assumptions: analyser ₹5 lakh; cartridge ₹1,000; 360 tests per plant per year; operating costs of ₹1.5
+          crore per year. Plants: 10 pilots in Year 2, 10 paying plants in Year 3, 15 in Year 4 and 25 more each year from
+          Year 5. Operating costs are held constant; higher sales and service costs at scale would delay both break-even
+          points.
+        </p>
+
+        <Conclusion>
+          Operating losses of {cr(s.lossesBefore)} in Years 2 to {(s.opBreakeven ?? 2) - 1} are funded from the capital raised.
+          From Year {s.opBreakeven}, operating profit accumulates against the {cr(CAPITAL_TOTAL)} invested, and the full
+          amount is recovered in Year {s.investBreakeven}, with {s.plantsAtInvest} plants active. That is {investShare}% of
+          India's {market.licensedPlants.toLocaleString("en-IN")}+ licensed packaged drinking water plants. <Src id="bis" />
+        </Conclusion>
+
+        <Link to="/plastic/numbers" className="mt-8 inline-flex items-center gap-2 btn btn-ghost">
+          Financial Modeling <ArrowRight className="h-4 w-4" />
+        </Link>
+      </Block>
+
+      <Block id="team" title="Founder and Research Collaborators">
         <div className="grid sm:grid-cols-[112px_1fr] gap-6 items-start">
           <img src="/Profile.jpeg" alt={founder.name} className="w-28 h-28 object-cover grayscale border hair" />
           <div>
-            <h3 className="font-medium">{founder.name}</h3>
-            <div className="mono text-[11.5px] muted">Founder</div>
-            <p className="mt-2 ink2 max-w-[60ch]">{founder.bio}</p>
+            <h3 className="font-medium">{founder.name}, Founder</h3>
+            <p className="mt-2 ink2 max-w-[62ch]">{founder.bio}</p>
             <a href="/climate" className="mt-3 inline-block ulink text-[13.5px] muted">
-              Climate and sustainability record
+              Climate and sustainability work
             </a>
           </div>
         </div>
@@ -303,27 +371,16 @@ export default function Overview() {
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <h3 className="font-medium">{c.name}</h3>
-                  <div className="mono text-[11.5px] muted mt-0.5">{c.org}</div>
+                  <div className="text-[13px] muted mt-0.5">
+                    {c.role}, {c.org}
+                  </div>
                 </div>
                 <ArrowUpRight className="h-4 w-4 muted shrink-0" />
               </div>
-              <div className="mt-3 text-[13px]">{c.role}</div>
-              <p className="mt-1 text-[13px] ink2 leading-relaxed">{c.work}</p>
+              <p className="mt-3 text-[13.5px] ink2 leading-relaxed">{c.work}</p>
             </a>
           ))}
         </div>
-        <p className="mt-3 text-[12.5px] muted">Research collaborators for Stage 0.</p>
-      </Block>
-
-      <Block id="read-next" tag="Further reading">
-        <NextLinks
-          items={[
-            { to: "/plastic/numbers", title: "Financial Model", body: "Financial model and break-even analysis." },
-            { to: "/plastic/market", title: "Go-to-Market Strategy", body: "Customers, value proposition, regulation and risk." },
-            { to: "/plastic/roadmap", title: "Product Roadmap", body: "Development path from detection to removal." },
-            { to: "/plastic/science", title: "Technical Approach", body: "Method, validation and standards." },
-          ]}
-        />
       </Block>
     </>
   );

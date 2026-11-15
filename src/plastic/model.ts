@@ -1,9 +1,9 @@
 // Operating model, ₹ lakh. A simple P&L by year:
 //   revenue (devices + cartridges) − COGS = gross profit
 //   gross profit − (R&D + G&A + sales & field service) = operating profit
-// Defaults reproduce the V2 plan: device ₹3 L price / ₹1.6 L cost, cartridge
-// ₹1,600 price / ₹400 cost at 360 tests a plant a year, and ₹1.5 Cr a year of
-// operating costs. Pilot plants buy cartridges; their devices are pilot units
+// Base case: analyser ₹5 L price / ₹1.6 L cost, cartridge ₹1,000 price / ₹400
+// cost at 360 tests a plant a year, and ₹1.5 Cr a year of operating costs (V2).
+// Plants: 10 pilots in Year 2, 10 paying in Year 3, 15 in Year 4, then 25 a year. Pilot plants buy cartridges; their devices are pilot units
 // funded by the Stage 1 raise, so they carry no device revenue or COGS.
 
 export type Inputs = {
@@ -22,9 +22,9 @@ export type Inputs = {
 };
 
 export const BASE: Inputs = {
-  devicePrice: 300000,
+  devicePrice: 500000,
   deviceCost: 160000,
-  cartridgePrice: 1600,
+  cartridgePrice: 1000,
   cartridgeCost: 400,
   testsPerYear: 360,
   rdLakh: 70,
@@ -33,8 +33,13 @@ export const BASE: Inputs = {
   pilotsY2: 10,
   payingY3: 10,
   payingY4: 15,
-  growth: 0,
+  growth: 25,
 };
+
+/** Capital raised across Stages 0–2, ₹ lakh. */
+export const CAPITAL = { stage0: 23.3, stage1: 200, stage2: 1000 };
+export const CAPITAL_TOTAL = CAPITAL.stage0 + CAPITAL.stage1 + CAPITAL.stage2;
+export const HORIZON = 12;
 
 export type Row = {
   year: number;
@@ -55,6 +60,7 @@ export type Row = {
   opex: number;
   operating: number;
   cumulative: number;
+  recovered: number | null; // operating profit accumulated from operating break-even onwards
 };
 
 const r1 = (n: number) => Math.round(n * 10) / 10;
@@ -64,10 +70,11 @@ export function opexOf(i: Inputs) {
   return i.rdLakh + i.gaLakh + i.salesLakh;
 }
 
-export function project(i: Inputs, lastYear = 8): Row[] {
+export function project(i: Inputs, lastYear = HORIZON): Row[] {
   const rows: Row[] = [];
   let active = 0;
   let cumulative = 0;
+  let recovered: number | null = null;
   for (let year = 2; year <= lastYear; year++) {
     const newPilot = year === 2 ? i.pilotsY2 : 0;
     const newPaying = year === 3 ? i.payingY3 : year === 4 ? i.payingY4 : year >= 5 ? i.growth : 0;
@@ -83,6 +90,8 @@ export function project(i: Inputs, lastYear = 8): Row[] {
     const opex = opexOf(i);
     const operating = gross - opex;
     cumulative += operating;
+    if (recovered === null && operating > 0) recovered = 0;
+    if (recovered !== null) recovered += operating;
     rows.push({
       year,
       newPaying,
@@ -102,6 +111,7 @@ export function project(i: Inputs, lastYear = 8): Row[] {
       opex: r1(opex),
       operating: r1(operating),
       cumulative: r1(cumulative),
+      recovered: recovered === null ? null : r1(recovered),
     });
   }
   return rows;
@@ -115,6 +125,9 @@ export function summarise(i: Inputs, rows: Row[]) {
   const trough = Math.min(0, ...rows.map((r) => r.cumulative));
   const troughYear = rows.find((r) => r.cumulative === trough)?.year ?? null;
   const payback = rows.find((r, idx) => idx > 0 && r.cumulative >= 0 && rows[idx - 1].cumulative < 0)?.year ?? null;
+  const opRow = rows.find((r) => r.operating > 0) ?? null;
+  const investRow = rows.find((r) => r.recovered !== null && r.recovered >= CAPITAL_TOTAL) ?? null;
+  const lossesBefore = r1(-rows.filter((r) => !opRow || r.year < opRow.year).reduce((a, r) => a + Math.min(0, r.operating), 0));
   return {
     cartGrossPlant: Math.round(cartGrossPlant * 100) / 100,
     opex,
@@ -123,6 +136,10 @@ export function summarise(i: Inputs, rows: Row[]) {
     trough: r1(trough),
     troughYear,
     payback,
+    plantsAtOpBreakeven: opRow?.active ?? null,
+    investBreakeven: investRow?.year ?? null,
+    plantsAtInvest: investRow?.active ?? null,
+    lossesBefore,
   };
 }
 
@@ -146,8 +163,8 @@ export const PNL_ROWS: { label: string; key: keyof Row; kind: "count" | "money" 
 ];
 
 export const PRESETS: { id: string; label: string; note: string; inputs: Inputs }[] = [
-  { id: "base", label: "Base case", note: "V2 plan: 35 plants by Year 4; no further growth.", inputs: BASE },
-  { id: "growth", label: "Growth", note: "Fifteen additional plants per year from Year 5.", inputs: { ...BASE, growth: 15 } },
-  { id: "cheap", label: "Low cartridge price", note: "Cartridge price of ₹1,000.", inputs: { ...BASE, cartridgePrice: 1000 } },
-  { id: "fewer", label: "Low usage", note: "180 tests per plant per year.", inputs: { ...BASE, testsPerYear: 180 } },
+  { id: "base", label: "Base case", note: "35 plants by Year 4, then 25 new plants each year.", inputs: BASE },
+  { id: "slow", label: "Slow growth", note: "15 new plants each year from Year 5.", inputs: { ...BASE, growth: 15 } },
+  { id: "fast", label: "Fast growth", note: "40 new plants each year from Year 5.", inputs: { ...BASE, growth: 40 } },
+  { id: "fewer", label: "Low usage", note: "180 tests per plant per year instead of 360.", inputs: { ...BASE, testsPerYear: 180 } },
 ];

@@ -21,8 +21,8 @@
   background: var(--po-bg);
   color: var(--po-ink);
   font-family: var(--po-sans);
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 16px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   font-feature-settings: "ss01", "cv11";
   color-scheme: light;

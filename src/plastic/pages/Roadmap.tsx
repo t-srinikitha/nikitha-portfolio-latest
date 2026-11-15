@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import {
   capitalByStage,
   costKeys,
@@ -10,7 +9,7 @@ import {
   testCostSteps,
   type Track,
 } from "../data";
-import { Axis, Block, Callout, Figure, Gridlines, NextLinks, PageHead, RangeRow, inr } from "../ui";
+import { Axis, Block, Callout, Figure, Gridlines, PageHead, RangeRow, inr } from "../ui";
 
 const TRACK_COLOR: Record<Track | "now", string> = {
   detect: "var(--po-detect)",
@@ -87,8 +86,7 @@ export default function Roadmap() {
   return (
     <>
       <PageHead
-        kicker="PlasticOptics · Roadmap"
-        title="Product Roadmap"
+        title="R&D Roadmap"
         lede={
           <p>
             The long-term objective is industrial-scale removal of microplastics from water, food and air, beginning with
@@ -99,7 +97,7 @@ export default function Roadmap() {
         }
       />
 
-      <Block id="arc" tag="Stages" title="Development Stages">
+      <Block id="arc" title="Development Stages">
         <div className="grid gap-4">
           <Band label="DETECTION · BATCH" color="var(--po-detect)">
             <div className="grid md:grid-cols-3 gap-3">
@@ -127,7 +125,7 @@ export default function Roadmap() {
         <p className="mt-4 text-[12.5px] muted">Dashed outlines indicate stages that require new technology.</p>
       </Block>
 
-      <Block id="capital" tag="Capital" title="Capital Requirements">
+      <Block id="capital" title="Capital Requirements">
         <Figure title="Estimated capital, ₹" note="Logarithmic scale. Figures for Stages 3–5 are preliminary estimates.">
           <Axis labels={[[0, "₹1 L"], [25, "₹10 L"], [50, "₹1 Cr"], [75, "₹10 Cr"], [100, "₹100 Cr"]]} />
           <div className="grid gap-2">
@@ -154,7 +152,7 @@ export default function Roadmap() {
 
       <Block
         id="long-range-economics"
-        tag="Long-range economics"
+       
         title="Target Unit Economics"
         intro={
           <p>
@@ -212,7 +210,7 @@ export default function Roadmap() {
 
       <Block
         id="cost-down"
-        tag="Cost-down"
+       
         title="Cost Reduction"
         intro={<p>Consumables per test, from current bench cost to the target at volume. The financial model assumes ₹400 per cartridge; these reductions are not included.</p>}
       >
@@ -259,7 +257,7 @@ export default function Roadmap() {
         </div>
       </Block>
 
-      <Block id="beyond-water" tag="Beyond water" title="Food and Air Applications">
+      <Block id="beyond-water" title="Food and Air Applications">
         <div className="grid md:grid-cols-2 gap-4">
           {surfaces.slice(1).map((s) => (
             <div key={s.name} className="border hair bg-[var(--po-paper)] p-5">
@@ -274,18 +272,6 @@ export default function Roadmap() {
         <div className="mt-6">
           <Callout tone="accent">Food represents the largest long-term revenue opportunity. Salt R&D begins in Stage 2.</Callout>
         </div>
-        <p className="mt-6 text-[13.5px] muted">
-          <Link to="/plastic" className="ulink">Overview</Link>
-        </p>
-      </Block>
-
-      <Block id="read-next" tag="Further reading">
-        <NextLinks
-          items={[
-            { to: "/plastic/science", title: "Technical Approach", body: "Method, validation and standards." },
-            { to: "/plastic/market", title: "Go-to-Market Strategy", body: "Customers, value proposition, regulation and risk." },
-          ]}
-        />
       </Block>
     </>
   );

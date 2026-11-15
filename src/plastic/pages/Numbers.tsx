@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { RotateCcw } from "lucide-react";
-import { BASE, PRESETS, project, summarise, type Inputs, type Row } from "../model";
+import { BASE, CAPITAL_TOTAL, HORIZON, PRESETS, project, summarise, type Inputs, type Row } from "../model";
 import { market } from "../data";
 import { Block, Callout, PageHead, Src, Stat, inr } from "../ui";
 import { PnlTable } from "../PnlTable";
@@ -17,17 +17,17 @@ type Field = {
 
 const FIELDS: { group: string; fields: Field[] }[] = [
   {
-    group: "Device",
+    group: "Analyser",
     fields: [
-      { key: "devicePrice", label: "Device price", min: 150000, max: 600000, step: 10000, fmt: inr, note: "Range ₹3–4.5 lakh; base case ₹3 lakh" },
-      { key: "deviceCost", label: "Device cost", min: 80000, max: 300000, step: 5000, fmt: inr, note: "₹1.2 lakh components; ₹0.4 lakh assembly" },
+      { key: "devicePrice", label: "Analyser price", min: 200000, max: 800000, step: 10000, fmt: inr, note: "Base case ₹5 lakh" },
+      { key: "deviceCost", label: "Analyser COGS", min: 80000, max: 300000, step: 5000, fmt: inr, note: "₹1.2 lakh components; ₹0.4 lakh assembly" },
     ],
   },
   {
     group: "Cartridge",
     fields: [
-      { key: "cartridgePrice", label: "Cartridge price", min: 600, max: 3000, step: 50, fmt: inr, note: "Range ₹1,000–2,000; base case ₹1,600" },
-      { key: "cartridgeCost", label: "Cartridge cost", min: 50, max: 1000, step: 10, fmt: inr, note: "Base case ₹400; current bench consumables ₹193" },
+      { key: "cartridgePrice", label: "Cartridge price", min: 500, max: 2500, step: 50, fmt: inr, note: "Base case ₹1,000" },
+      { key: "cartridgeCost", label: "Cartridge COGS", min: 50, max: 1000, step: 10, fmt: inr, note: "Base case ₹400; current bench consumables ₹193" },
       { key: "testsPerYear", label: "Tests per plant per year", min: 50, max: 730, step: 10, fmt: (v) => `${v}`, note: "Base case 360, approximately one per day" },
     ],
   },
@@ -45,7 +45,7 @@ const FIELDS: { group: string; fields: Field[] }[] = [
       { key: "pilotsY2", label: "Pilot plants, Year 2", min: 0, max: 30, step: 1, fmt: (v) => `${v}`, note: "Cartridge purchases only" },
       { key: "payingY3", label: "New paying plants, Year 3", min: 0, max: 50, step: 1, fmt: (v) => `${v}` },
       { key: "payingY4", label: "New paying plants, Year 4", min: 0, max: 50, step: 1, fmt: (v) => `${v}` },
-      { key: "growth", label: "New paying plants per year, Year 5+", min: 0, max: 50, step: 1, fmt: (v) => `${v}`, note: "Base case 0" },
+      { key: "growth", label: "New paying plants per year, Year 5+", min: 0, max: 50, step: 1, fmt: (v) => `${v}`, note: "Base case 25" },
     ],
   },
 ];
@@ -114,7 +114,7 @@ function Chart({ rows }: { rows: Row[] }) {
             Y{r.year}
           </text>
           <text x={x(i)} y={H - padB + 29} textAnchor="middle" fontSize="9.5" fill="var(--po-muted)" fontFamily="var(--po-mono)">
-            {narrow ? r.active : `${r.active} plants`}
+            {r.active}
           </text>
         </g>
       ))}
@@ -129,7 +129,7 @@ function Chart({ rows }: { rows: Row[] }) {
 export default function Numbers() {
   const [inputs, setInputs] = useState<Inputs>(BASE);
   const [preset, setPreset] = useState("base");
-  const rows = useMemo(() => project(inputs, 8), [inputs]);
+  const rows = useMemo(() => project(inputs, HORIZON), [inputs]);
   const s = useMemo(() => summarise(inputs, rows), [inputs, rows]);
 
   const set = (k: keyof Inputs, v: number) => {
@@ -142,7 +142,7 @@ export default function Numbers() {
   const poolCart = (cartRevPlant * plants) / 100; // Cr
   const poolDevice = ((inputs.devicePrice / 1e5) * plants) / 100; // Cr
 
-  const sens = [1000, 1600, 2000].map((p) => ({
+  const sens = [800, 1000, 1500, 2000].map((p) => ({
     p,
     cells: [180, 360, 720].map((t) => Math.ceil(s.opex / (((p - inputs.cartridgeCost) * t) / 1e5))),
   }));
@@ -150,17 +150,16 @@ export default function Numbers() {
   return (
     <>
       <PageHead
-        kicker="PlasticOptics · Financials"
         title="Financial Model"
         lede={
           <p>
-            Profit and loss projection and break-even analysis. Default inputs reproduce the V2 plan. All inputs are
-            adjustable.
+            Profit and loss projection to Year {HORIZON}, with operating break-even and investment breakeven. All inputs
+            are adjustable.
           </p>
         }
       />
 
-      <Block id="assumptions" tag="Assumptions" title="Model Inputs">
+      <Block id="assumptions" title="Model Inputs">
         <div className="flex flex-wrap gap-2">
           {PRESETS.map((p) => (
             <button
@@ -220,24 +219,25 @@ export default function Numbers() {
           ))}
         </div>
         <p className="mt-4 text-[12.5px] muted max-w-[70ch]">
-          Total operating costs of ₹1.5 crore per year follow the V2 plan. The allocation across R&D, G&A and sales is an
-          estimate. Cost of goods is reflected in gross profit.
+          Total operating costs of ₹1.5 crore per year follow the V2 plan, and the allocation across R&D, G&A and sales
+          is an estimate. Operating costs are held constant; in practice, sales and field-service costs rise with the
+          number of plants, which would delay both break-even points.
         </p>
       </Block>
 
-      <Block id="results" tag="Results" title="Model Outputs">
+      <Block id="results" title="Model Outputs">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
           <Stat v={`₹${s.cartGrossPlant.toFixed(2)} L`} k="Cartridge gross profit per plant per year" />
-          <Stat v={Number.isFinite(s.plantsToCover) ? `${s.plantsToCover} plants` : "never"} k={`Active plants required to cover ₹${s.opex} lakh of operating costs`} accent />
-          <Stat v={s.opBreakeven ? `Year ${s.opBreakeven}` : "Not by Year 8"} k="Year of operating break-even" />
-          <Stat v={`₹${(-s.trough / 100).toFixed(2)} Cr`} k={`Peak cumulative deficit${s.troughYear ? ` (Year ${s.troughYear})` : ""}`} />
-          <Stat v={s.payback ? `Year ${s.payback}` : "Not by Year 8"} k="Year of cumulative payback" />
-          <Stat v={Number.isFinite(s.plantsToCover) ? `${((s.plantsToCover / plants) * 100).toFixed(1)}%` : "–"} k={`Share of ${plants.toLocaleString("en-IN")}+ licensed plants required`} />
+          <Stat v={Number.isFinite(s.plantsToCover) ? `${s.plantsToCover} plants` : "never"} k={`Plants needed for cartridge gross profit alone to cover ₹${s.opex} lakh of operating costs`} accent />
+          <Stat v={s.opBreakeven ? `Year ${s.opBreakeven}` : `Not by Year ${HORIZON}`} k={s.opBreakeven ? `Operating break-even, ${s.plantsAtOpBreakeven} plants` : "Operating break-even"} />
+          <Stat v={`₹${(-s.trough / 100).toFixed(2)} Cr`} k={`Peak cumulative operating deficit${s.troughYear ? ` (Year ${s.troughYear})` : ""}`} />
+          <Stat v={s.investBreakeven ? `Year ${s.investBreakeven}` : `Not by Year ${HORIZON}`} k={`Investment breakeven: recovery of ₹${(CAPITAL_TOTAL / 100).toFixed(2)} Cr${s.plantsAtInvest ? `, ${s.plantsAtInvest} plants` : ""}`} />
+          <Stat v={Number.isFinite(s.plantsToCover) ? `${((s.plantsToCover / plants) * 100).toFixed(1)}%` : "–"} k={`Of ${plants.toLocaleString("en-IN")}+ licensed plants, on cartridge gross profit alone`} />
         </div>
 
         <div className="mt-8 border hair bg-[var(--po-paper)] p-4 md:p-6">
           <div className="flex flex-wrap items-baseline justify-between gap-2 mb-4">
-            <div className="font-medium text-[14.5px]">Operating profit and cumulative, ₹ lakh</div>
+            <div className="font-medium text-[14.5px]">Operating profit and cumulative, ₹ lakh. Active plants below each year.</div>
             <div className="flex gap-4 text-[12px] muted">
               <span className="inline-flex items-center gap-1.5">
                 <i className="inline-block h-2.5 w-2.5 bg-[var(--po-ink)]" /> Operating profit
@@ -261,12 +261,12 @@ export default function Numbers() {
 
       <Block
         id="use-of-funds"
-        tag="Use of funds"
+       
         title="Use of Funds"
         intro={
           <p>
-            The projection reflects operating losses only. Capital raised also funds product development, pilots and
-            manufacturing.
+            Capital raised funds the operating losses before break-even, as well as product development, pilots and
+            manufacturing. Investment breakeven is measured against the total.
           </p>
         }
       >
@@ -284,8 +284,8 @@ export default function Numbers() {
               <tr>
                 <td className="font-medium whitespace-nowrap">Stage 0 (current request)</td>
                 <td className="whitespace-nowrap ink2">Now → ~6 months</td>
-                <td className="ink2">Reagents, research collaboration, lab, optics, Raman/FTIR reference tests, stipend</td>
-                <td className="r">₹23.8 L</td>
+                <td className="ink2">Research collaboration, optics, lab, reagents, AI token costs, Raman/FTIR reference tests</td>
+                <td className="r">₹23.3 L</td>
               </tr>
               <tr>
                 <td className="font-medium whitespace-nowrap">Stage 1</td>
@@ -306,7 +306,7 @@ export default function Numbers() {
                 <td>Total</td>
                 <td />
                 <td className="ink2 !font-normal">Peak operating deficit in the model: ₹{(-s.trough / 100).toFixed(2)} Cr</td>
-                <td className="r">₹12.24 Cr</td>
+                <td className="r">₹{(CAPITAL_TOTAL / 100).toFixed(2)} Cr</td>
               </tr>
             </tbody>
           </table>
@@ -318,12 +318,12 @@ export default function Numbers() {
 
       <Block
         id="sensitivity"
-        tag="Sensitivity"
+       
         title="Sensitivity Analysis"
         intro={
           <p>
-            Active plants required to cover ₹{s.opex} lakh of operating costs, at a cartridge cost of{" "}
-            {inr(inputs.cartridgeCost)}. Cartridge economics determine the outcome.
+            Active plants whose cartridge gross profit alone covers ₹{s.opex} lakh of annual operating costs, at a cartridge
+            COGS of {inr(inputs.cartridgeCost)}.
           </p>
         }
       >
@@ -342,7 +342,7 @@ export default function Numbers() {
                 <tr key={row.p}>
                   <td className="num">{inr(row.p)}</td>
                   {row.cells.map((c, i) => (
-                    <td key={i} className={`r ${row.p === 1600 && i === 1 ? "bg-[var(--po-lime)] font-semibold" : ""}`}>
+                    <td key={i} className={`r ${row.p === inputs.cartridgePrice && [180, 360, 720][i] === inputs.testsPerYear ? "bg-[var(--po-lime)] font-semibold" : ""}`}>
                       {Number.isFinite(c) && c > 0 ? c : "—"}
                     </td>
                   ))}
@@ -353,16 +353,16 @@ export default function Numbers() {
         </div>
         <div className={`mt-6 ${Number.isFinite(sens[0].cells[0]) && sens[0].cells[0] > 0 ? "" : "hidden"}`}>
           <Callout>
-            In the most conservative case (₹1,000 cartridge; 180 tests per year), {sens[0].cells[0]} plants are required,
+            In the most conservative case (₹800 cartridge; 180 tests per year), {sens[0].cells[0]} plants are required,
             equivalent to {((sens[0].cells[0] / plants) * 100).toFixed(1)}% of licensed plants. Stage 1 pilots will measure
-            both variables.
+            both price acceptance and testing frequency.
           </Callout>
         </div>
       </Block>
 
       <Block
         id="market-size"
-        tag="Market size"
+       
         title="Market Size"
         intro={
           <p>
@@ -376,7 +376,7 @@ export default function Numbers() {
         <div className="grid sm:grid-cols-3 gap-2">
           <Stat v={`₹${cartRevPlant.toFixed(2)} L`} k={`Cartridge revenue per plant per year (${inr(inputs.cartridgePrice)} × ${inputs.testsPerYear})`} />
           <Stat v={`₹${Math.round(poolCart).toLocaleString("en-IN")} Cr`} k="Annual cartridge revenue potential across licensed plants" accent />
-          <Stat v={`₹${Math.round(poolDevice).toLocaleString("en-IN")} Cr`} k="One-time device revenue potential across licensed plants" />
+          <Stat v={`₹${Math.round(poolDevice).toLocaleString("en-IN")} Cr`} k="One-time analyser revenue potential across licensed plants" />
         </div>
         <p className="mt-5 text-[13px] muted max-w-[68ch]">
           These figures represent a ceiling at current pricing assumptions, not a forecast. They exclude beverage plants,
