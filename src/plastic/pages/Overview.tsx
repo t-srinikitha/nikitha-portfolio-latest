@@ -191,18 +191,19 @@ export default function Overview() {
       <Block
         id="break-even"
         toc="Break-even"
-        title="Break-even: Bottling Plant Business"
+        title="Break-even"
         intro={
           <p>
-            The first business is the sale of benchtop analysers and cartridge subscriptions to bottling plants, in
-            Stages 0 to 2.
+            Revenue comes from the analyser and cartridge subscription, sold to bottling plants from Year 3 and to food
+            producers from Year 5. The removal pilot runs in Years 4 to 6 as a cost.
           </p>
         }
       >
         <BreakEvenStats />
         <Conclusion>
-          The bottling-plant business requires about ₹{(s.cashRequired / 100).toFixed(1)} crore and becomes profitable in
-          Year {s.breakeven}, with {s.plantsAtBreakeven} plants each paying ₹30,000 a month for cartridges. The year-by-year
+          The company requires about ₹{(s.cashRequired / 100).toFixed(1)} crore and becomes profitable in Year{" "}
+          {s.breakeven}, with {s.plantsAtBreakeven} water plants and {s.foodAtBreakeven} food producers, each paying ₹30,000
+          a month for cartridges. The year-by-year
           figures are set out under{" "}
           <Link to="/plastic/numbers#break-even" className="ulink">
             Business Model

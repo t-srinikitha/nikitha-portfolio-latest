@@ -129,11 +129,21 @@ export function BreakEvenStats() {
     <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
       <Stat v={crore(base.cashRequired)} k="Cash required to reach operating profit" accent />
       <Stat v={`Year ${base.breakeven}`} k="First year of operating profit" />
-      <Stat v={`${base.plantsAtBreakeven} plants`} k={`Active plants in Year ${base.breakeven}`} />
+      <Stat
+        v={`${(base.plantsAtBreakeven ?? 0) + (base.foodAtBreakeven ?? 0)} customers`}
+        k={`${base.plantsAtBreakeven} water plants and ${base.foodAtBreakeven} food producers in Year ${base.breakeven}`}
+      />
       <Stat v={crore(base.revenueAtBreakeven ?? 0)} k={`Revenue in Year ${base.breakeven}`} />
     </div>
   );
 }
+
+const scenarioResults = SCENARIOS.map((sc) => summarise(sc.inputs, project(sc.inputs)));
+export const scenarioRange = {
+  latest: Math.max(...scenarioResults.map((x) => x.breakeven ?? 99)),
+  low: Math.min(...scenarioResults.map((x) => x.cashRequired)),
+  high: Math.max(...scenarioResults.map((x) => x.cashRequired)),
+};
 
 export function BreakEvenTable({ lastYear = 6 }: { lastYear?: number }) {
   return (
@@ -143,9 +153,10 @@ export function BreakEvenTable({ lastYear = 6 }: { lastYear?: number }) {
           <thead>
             <tr>
               <th>Year</th>
-              <th className="r">Plants</th>
+              <th className="r !whitespace-normal">Water plants</th>
+              <th className="r !whitespace-normal">Food producers</th>
               <th className="r hidden sm:table-cell">Revenue</th>
-              <th className="r hidden sm:table-cell !whitespace-normal">Operating costs</th>
+              <th className="r hidden sm:table-cell !whitespace-normal">Food and removal research</th>
               <th className="r !whitespace-normal">Operating profit</th>
               <th className="r !whitespace-normal">Cumulative cash</th>
             </tr>
@@ -157,8 +168,9 @@ export function BreakEvenTable({ lastYear = 6 }: { lastYear?: number }) {
                 <tr key={r.year} className={r.year === base.breakeven ? "em" : ""}>
                   <td className="whitespace-nowrap">Year {r.year}</td>
                   <td className="r">{r.active}</td>
+                  <td className="r">{r.food}</td>
                   <td className="r hidden sm:table-cell">{r.revenue.toFixed(1)}</td>
-                  <td className="r hidden sm:table-cell">{r.opex.toFixed(1)}</td>
+                  <td className="r hidden sm:table-cell">{r.research.toFixed(1)}</td>
                   <td className={`r ${r.operating < 0 ? "text-[var(--po-accent)]" : ""} ${r.year === base.breakeven ? "bg-[var(--po-lime)]" : ""}`}>
                     {r.operating.toFixed(1)}
                   </td>
@@ -172,7 +184,10 @@ export function BreakEvenTable({ lastYear = 6 }: { lastYear?: number }) {
         ₹ lakh. Year 1 includes ₹{BASE.validationLakh} lakh of technology validation. Years 1 and 2 include ₹
         {((BASE.developmentLakh[0] + BASE.developmentLakh[1]) / 100).toFixed(0)} crore of product development: prototypes,
         ten pilot analysers, a patent filing and validation of the method. Operating costs are ₹
-        {(BASE.opexLakh / 100).toFixed(1)} crore a year from Year 2. Cash required is the largest cumulative deficit of{" "}
+        {(BASE.opexLakh / 100).toFixed(1)} crore a year from Year 2, plus ₹{BASE.foodSalesLakh} lakh a year for food sales
+        and service from Year {BASE.foodStart}. Food research costs ₹1 crore in Years 3 and 4. The removal pilot costs ₹1
+        crore a year in Years 4 to 6 and earns no revenue; Stages 5 and 6 are funded separately once it succeeds. Food
+        producers buy the same analyser and subscription as water plants. Cash required is the largest cumulative deficit of{" "}
         {crore(base.deficit)}, plus a {BASE.reservePct}% reserve for inventory, receivables and contingency.
       </p>
     </>
@@ -188,7 +203,7 @@ export function ScenarioTable() {
             <th>Case</th>
             <th>Assumption changed</th>
             <th className="r !whitespace-normal">Operating profit from</th>
-            <th className="r">Plants</th>
+            <th className="r !whitespace-normal">Customers</th>
             <th className="r !whitespace-normal">Cash required</th>
           </tr>
         </thead>
@@ -200,7 +215,7 @@ export function ScenarioTable() {
                 <td className="whitespace-nowrap">{sc.label}</td>
                 <td className="ink2 !font-normal">{sc.change}</td>
                 <td className="r">{x.breakeven ? `Year ${x.breakeven}` : "Not reached"}</td>
-                <td className="r">{x.plantsAtBreakeven ?? "–"}</td>
+                <td className="r">{x.plantsAtBreakeven === null ? "–" : x.plantsAtBreakeven + (x.foodAtBreakeven ?? 0)}</td>
                 <td className="r">{crore(x.cashRequired)}</td>
               </tr>
             );

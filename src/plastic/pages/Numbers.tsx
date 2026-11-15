@@ -10,6 +10,7 @@ import {
   base as s,
   missionTotal,
   missionUsd,
+  scenarioRange,
   sizing,
 } from "../sections";
 import { Block, Conclusion, PageHead, Src, inr } from "../ui";
@@ -36,6 +37,9 @@ const assumptions = [
   { a: "Cartridge COGS", v: inr(BASE.cartridgeCost), t: "Stage 0" },
   { a: "Analyser COGS", v: inr(deviceCost), t: "Prototypes in Stage 1" },
   { a: "Plants", v: "10 pilots in Year 2, 60 plants by Year 5", t: "Stages 1 and 2" },
+  { a: "Food producers", v: "10 in Year 5, then 15 a year", t: "Stage 3" },
+  { a: "Food research", v: "₹1 crore, Years 3 and 4", t: "Stage 3" },
+  { a: "Removal pilot", v: "₹1 crore a year, Years 4 to 6", t: "Stage 4" },
   { a: "Operating costs", v: "₹1.5 crore a year", t: "Stage 1" },
 ];
 
@@ -170,11 +174,12 @@ export default function Numbers() {
       <Block
         id="break-even"
         toc="Break-even"
-        title="Break-even: Bottling Plant Business"
+        title="Break-even"
         intro={
           <p>
-            This is the cash required by the first business, and the year in which it becomes profitable. It excludes
-            the cost of food, air and removal research.
+            This is the cash the company requires and the year in which it becomes profitable. Revenue comes from water
+            plants from Year 3 and from food producers from Year {BASE.foodStart}. The removal pilot is a cost in this
+            period and earns no revenue.
           </p>
         }
       >
@@ -183,15 +188,14 @@ export default function Numbers() {
           <BreakEvenTable lastYear={8} />
         </div>
         <Conclusion>
-          The bottling-plant business requires about ₹{(s.cashRequired / 100).toFixed(1)} crore and reaches operating profit in Year{" "}
-          {s.breakeven}, with {s.plantsAtBreakeven} plants. That is {brandShare}% of the estimated{" "}
-          {market.nationalBrandPlants} plants that bottle for national brands.
+          The company requires about ₹{(s.cashRequired / 100).toFixed(1)} crore and reaches operating profit in Year{" "}
+          {s.breakeven}, with {s.plantsAtBreakeven} water plants and {s.foodAtBreakeven} food producers. The water plants
+          are {brandShare}% of the estimated {market.nationalBrandPlants} plants that bottle for national brands.
           {cashPositive && (
             <>
               {" "}
-              Cumulative cash turns positive in Year {cashPositive} if operating costs remain at ₹
-              {(BASE.opexLakh / 100).toFixed(1)} crore a year. Sales and service costs will rise as plants are added, so
-              Year {cashPositive} is the earliest case.
+              Cumulative cash turns positive in Year {cashPositive} if operating costs remain flat. Sales and service
+              costs will rise as customers are added, so Year {cashPositive} is the earliest case.
             </>
           )}
         </Conclusion>
@@ -201,8 +205,9 @@ export default function Numbers() {
           <ScenarioTable />
         </div>
         <Conclusion>
-          In each case the business reaches operating profit by Year 7 and requires between ₹5.1 crore and ₹7.2 crore.
-          Slower sales and higher operating costs increase the cash required the most.
+          In each case the company reaches operating profit by Year {scenarioRange.latest} and requires between ₹
+          {(scenarioRange.low / 100).toFixed(1)} crore and ₹{(scenarioRange.high / 100).toFixed(1)} crore. Slower sales
+          and higher operating costs increase the cash required the most.
         </Conclusion>
       </Block>
 

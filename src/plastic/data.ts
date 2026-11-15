@@ -99,21 +99,21 @@ export const stages: {
     name: "Commercial launch",
     when: "Years 3 → 5",
     objective:
-      "Sale of the benchtop analyser and cartridge subscriptions to bottling plants. The target is 60 plants by Year 5, when the business becomes profitable.",
+      "Sale of the benchtop analyser and cartridge subscriptions to bottling plants. The target is 60 plants by Year 5.",
     work: "Contract manufacturing, method validation, sales and field service.",
-    gate: "The bottling-plant business is profitable.",
+    gate: "60 bottling plants use the analyser.",
   },
   {
     n: 3,
     name: "Food analyser",
-    when: "Research begins during Stage 2",
+    when: "Research from Year 3; sales from Year 5",
     objective: "Extension of the analyser to salt, sugar, milk and other foods, which are prepared as liquid samples.",
     gate: "Counts in food agree with reference methods.",
   },
   {
     n: 4,
     name: "Removal",
-    when: "Research begins during Stage 2",
+    when: "Research from Year 3; pilot Years 4 → 6",
     objective:
       "Removal of microplastics from water at one partner plant. The benchtop analyser verifies each batch.",
     work: "Metal-phenolic networks (tamarind and iron) bind microplastics at millilitre scale today. The target is cubic metres per hour.",
@@ -320,7 +320,7 @@ export const missionCapital = [
   {
     stage: "0–2",
     programme: "Benchtop analyser",
-    scope: "Validation, product development and operating losses until the bottling-plant business is profitable.",
+    scope: "Validation, product development and operating losses of the water business.",
     low: 5,
     high: 5,
   },
@@ -397,7 +397,7 @@ export const pathToMarket = [
   {
     step: "Sell",
     stage: "Stage 2 · Years 3–5",
-    body: "Pilot plants serve as references. Each sale comprises one analyser and a cartridge subscription. The target is 60 plants by Year 5, when the business becomes profitable.",
+    body: "Pilot plants serve as references. Each sale comprises one analyser and a cartridge subscription. The target is 60 plants by Year 5.",
   },
 ];
 

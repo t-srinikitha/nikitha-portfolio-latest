@@ -18,8 +18,9 @@ export default function Roadmap() {
       <Block id="stages" title="Development Stages">
         <StageList detail />
         <Conclusion>
-          Stages 0 to 2 run in sequence and build the first business. Research for Stages 3 and 4 begins during Stage 2.
-          Stages 5 and 6 begin only after removal has been demonstrated at one plant.
+          Stages 0 to 2 run in sequence and build the first business. Food and removal research begin in Year 3, during
+          Stage 2, and food sales begin in Year 5. Stages 5 and 6 begin only after removal has been demonstrated at one
+          plant.
         </Conclusion>
       </Block>
 
