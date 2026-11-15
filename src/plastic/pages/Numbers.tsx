@@ -162,8 +162,8 @@ export default function Numbers() {
           About {market.nationalBrandPlants} plants bottle for national brands and are the first buyers; Bisleri alone has
           128 <Src id="bisleri" />. These plants represent ₹{Math.round(sizing.brandCart)} crore a year in cartridges and ₹
           {Math.round(sizing.brandDevice)} crore in analysers. The count of {market.nationalBrandPlants} is an estimate
-          and will be confirmed in customer interviews. Removal, global sales, and food and air testing are each larger
-          markets than the first product.
+          and will be confirmed in customer interviews. Global sales and food and air testing are each larger markets
+          than the first product.
         </Conclusion>
       </Block>
 

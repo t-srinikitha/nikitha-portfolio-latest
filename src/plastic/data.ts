@@ -295,7 +295,6 @@ export const market = {
   nationalBrandPlants: 500, // estimate: plants bottling for national brands; Bisleri alone has 128
   indiaVolumeBnL: 24.92, // 2024
   globalVolumeBnL: 350, // 2021
-  removalPerM3: 200, // target price of removal, ₹ per cubic metre (20 paise per litre)
   usd: 85, // ₹ per US$, for conversion
 };
 

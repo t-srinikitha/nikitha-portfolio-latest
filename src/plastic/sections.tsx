@@ -18,17 +18,14 @@ export const sizing = (() => {
   const ratio = market.globalVolumeBnL / market.indiaVolumeBnL;
   const indiaCart = (market.licensedPlants * base.cartRevPlant) / 100;
   const indiaDevice = (market.licensedPlants * BASE.devicePrice) / 1e7;
-  const indiaRemoval = round((market.indiaVolumeBnL * 1e6 * market.removalPerM3) / 1e7, 10);
   return {
     ratio: Math.round(ratio),
     indiaCart,
     indiaDevice,
-    indiaRemoval,
     brandCart: (market.nationalBrandPlants * base.cartRevPlant) / 100,
     brandDevice: (market.nationalBrandPlants * BASE.devicePrice) / 1e7,
     globalCart: round(indiaCart * ratio, 100),
     globalDevice: round(indiaDevice * ratio, 100),
-    globalRemoval: round((market.globalVolumeBnL * 1e6 * market.removalPerM3) / 1e7, 100),
   };
 })();
 
@@ -64,11 +61,6 @@ export function MarketSize({ notes = true }: { notes?: boolean }) {
                 <td className="r">{cr(z.indiaDevice)}</td>
                 <td className="r">{withUsd(z.globalDevice)}</td>
               </tr>
-              <tr>
-                <td>Removal, per year</td>
-                <td className="r">{cr(z.indiaRemoval)}</td>
-                <td className="r">{withUsd(z.globalRemoval)}</td>
-              </tr>
             </tbody>
           </table>
         </div>
@@ -77,8 +69,7 @@ export function MarketSize({ notes = true }: { notes?: boolean }) {
           Each plant is counted at one ₹5 lakh analyser and ₹{base.cartRevPlant.toFixed(1)} lakh of cartridges a year. India
           bottles about 25 billion litres a year <Src id="indiaVolume" /> and the world about{" "}
           {market.globalVolumeBnL} billion litres <Src id="unu" />, so the global figures are the India figures multiplied
-          by {z.ratio}, at India prices. Removal is priced at ₹{market.removalPerM3} per cubic metre, which is 20 paise per
-          litre. US dollar figures use ₹{market.usd} per dollar.
+          by {z.ratio}, at India prices. US dollar figures use ₹{market.usd} per dollar.
         </p>
       </div>
 

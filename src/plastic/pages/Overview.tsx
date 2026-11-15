@@ -179,7 +179,7 @@ export default function Overview() {
         <MarketSize notes={false} />
         <Conclusion>
           The benchtop analyser for bottling plants in India is a market of ₹{Math.round(sizing.indiaCart)} crore a year
-          in cartridges. Removal, global sales, and food and air testing are each larger markets than the first product.
+          in cartridges. Global sales and food and air testing are each larger markets than the first product.
           The basis for each figure is set out under{" "}
           <Link to="/plastic/numbers#market-size" className="ulink">
             Business Model
