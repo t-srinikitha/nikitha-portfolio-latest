@@ -24,54 +24,45 @@ export const phases = [
   {
     n: 1,
     name: "Water",
-    text: "Research on the detection and removal of microplastics in water is sufficient to begin. Water is the first market, and its methods are the basis for food and air.",
+    text: "The research is ready to begin. Water is the first market, and its methods carry over to food and air.",
   },
   {
     n: 2,
     name: "Food",
-    text: "Food is a highly varied sample: salt, sugar, milk and other staples. The detection method for water extends to food; salt, for example, is dissolved in water and its microplastics are separated onto a filter. Removal from food is a harder problem.",
+    text: "Salt, sugar, milk and other staples. Salt, for example, is dissolved in water, filtered and tested the same way. Removal from food is harder.",
   },
   {
     n: 3,
     name: "Air",
-    text: "Airborne particles settle on a water surface and are then tested with the same method. Air detection therefore also builds on water.",
+    text: "Airborne particles settle on a water surface and are tested with the same method.",
   },
 ];
 
 export const focus =
-  "For the next four years, PlasticOptics will focus entirely on water (Phase 1): the test cartridge, the benchtop analyser, an affordable Raman spectrometer and removal. The aim is to complete 90% of Phase 1 research and reach product–market fit in three to four years, with scale proceeding in parallel. Food (salt, sugar, milk and other staples) and air follow.";
+  "Phase 1 (water) takes about four years: the test cartridge, the benchtop analyser, an affordable Raman spectrometer and removal. Stages overlap from Year 3.";
 
-export const whyNowIndia = [
+// The Problem: three short reasons, each with sources.
+export const problem: { k: string; text: string; src: (keyof typeof SOURCES)[] }[] = [
   {
-    text: "In February 2026 the Madras High Court ordered that PET bottled water carry a warning in bold red letters: “This water may contain Micro/Nano Plastics.” The order also covers packaged salt and sugar.",
-    src: ["madrasHc"] as const,
+    k: "Health",
+    text: "A litre of bottled water contains about 240,000 plastic particles. People with microplastics in their arteries had 4.5 times the risk of heart attack, stroke or death over about three years.",
+    src: ["pnasBottled", "nejmPlaque"],
   },
   {
-    text: "In April the Supreme Court declined to interfere with the order.",
-    src: ["supremeCourt"] as const,
+    k: "Regulation",
+    text: "The Madras High Court has ordered a microplastics warning on PET bottled water, salt and sugar. The Supreme Court declined to interfere.",
+    src: ["madrasHc", "supremeCourt"],
   },
   {
-    text: "In September the High Court refused requests from FSSAI and industry bodies to recall it. FSSAI regulations on labelling and certification are expected to follow.",
-    src: ["madrasHcRecall"] as const,
-  },
-];
-
-export const labs = [
-  {
-    name: "SGS",
-    price: "₹75,000",
-    detail: "Samples are shipped abroad for analysis. Results take more than 10 days.",
-  },
-  {
-    name: "Eurofins",
-    price: "₹75,000",
-    detail: "A ₹13,000 thermal desorption test is also offered, but it reports only polymer mass, not particle counts or sizes.",
+    k: "Testing",
+    text: "SGS and Eurofins quote ₹75,000 per test. Results take more than ten days, and SGS ships samples abroad.",
+    src: [],
   },
 ];
 
 export const discovery = [
-  "None of the 10–15 beverage contract manufacturers consulted in Gujarat, Maharashtra, Goa and Bengaluru has yet received a request from its buyers for microplastic testing.",
-  "Testing laboratories receive such requests about once a year. Awareness of the problem is the main barrier.",
+  "None of the 10–15 beverage contract manufacturers consulted has been asked by a buyer to test for microplastics.",
+  "Testing laboratories receive such a request about once a year. Awareness is the main barrier.",
 ];
 
 export const customers = [
@@ -207,8 +198,8 @@ export const breakEven = [
 ];
 
 export const microplasticsIndex = [
-  "A recurring, standardised test of bottled water from leading brands, with the results published.",
-  "Public data creates pull from brands and the media, and a ₹5,000 test makes it inexpensive for a brand to respond.",
+  "Leading bottled water brands are tested regularly and the results are published.",
+  "Public results create demand from brands, and a ₹5,000 test makes it cheap for a brand to respond.",
 ];
 
 export const objective = {
@@ -237,12 +228,20 @@ export const afterStage0 = "On completion of Stage 0, the company will apply for
 
 export const founder = {
   name: "Sri Nikitha T",
-  bio: "Over eight years of experience across manufacturing, government and technology, including process innovation at NRB Bearings, industrial wastewater treatment at Ecosattva, the Innovation Fellowship with the Government of Telangana, and AI product management. Educated at IIT Kharagpur and Ashoka University.",
+  bio: "Eight years in manufacturing, government and technology: process innovation at NRB Bearings, industrial wastewater treatment at Ecosattva, the Government of Telangana Innovation Fellowship, and AI product management. IIT Kharagpur and Ashoka University.",
 };
 
 /* ───────────────────────── Market facts (sourced) ───────────────────────── */
 
 export const SOURCES = {
+  pnasBottled: {
+    label: "Qian et al., PNAS (2024): about 240,000 plastic particles per litre of bottled water",
+    url: "https://www.pnas.org/doi/10.1073/pnas.2300582121",
+  },
+  nejmPlaque: {
+    label: "Marfella et al., New England Journal of Medicine (2024): microplastics in carotid plaque and cardiovascular events",
+    url: "https://www.nejm.org/doi/full/10.1056/NEJMoa2309822",
+  },
   madrasHc: {
     label: "Verdictum, Madras High Court orders microplastics warning on PET bottled water, salt and sugar (Feb 2026)",
     url: "https://www.verdictum.in/madras-high-court/food-safety-and-standards-authority-of-india-v-g-subramania-koushik-2026mhc3978-may-contain-microplastics-label-mandatory-pet-bottle-water-sugar-salt-1623145",
@@ -350,7 +349,7 @@ export const market = {
 /* ───────────────────────── Current status ───────────────────────── */
 
 export const status = {
-  summary: "PlasticOptics is at the idea stage, with substantial groundwork complete. The method has not yet been tested in the laboratory.",
+  summary: "PlasticOptics is at the idea stage. The groundwork is done; the method has not yet been tested in the laboratory.",
   inPlace: [
     "Access to a Raman spectrometer for reference testing.",
     "Most of the materials required for the Stage 0 experiments.",

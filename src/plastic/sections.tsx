@@ -1,5 +1,5 @@
 // Sections shared by the Overview, Business Model and R&D Roadmap pages.
-import { breakEven, incumbent, labs, market, phases, prices, stages, whyNowIndia } from "./data";
+import { breakEven, incumbent, market, phases, prices, problem, stages } from "./data";
 import { Src } from "./ui";
 
 const fmt = (n: number) => n.toLocaleString("en-IN");
@@ -28,33 +28,23 @@ export function PhaseCards() {
   );
 }
 
-/** Court orders and laboratory prices in India. */
-export function WhyNow() {
+/** The problem in three short cards. */
+export function ProblemCards() {
   return (
-    <div className="grid gap-10">
-      <p className="max-w-[64ch]">
-        {whyNowIndia.map((w) => (
-          <span key={w.text}>
-            {w.text}{" "}
-            {w.src.map((x) => (
-              <Src key={x} id={x} />
-            ))}{" "}
-          </span>
-        ))}
-      </p>
-      <div>
-        <h4 className="font-medium">Testing available in India today</h4>
-        <div className="mt-3 grid sm:grid-cols-2 gap-px bg-[var(--po-line)] border hair">
-          {labs.map((l) => (
-            <div key={l.name} className="bg-[var(--po-paper)] p-5">
-              <div className="text-[13px] muted">{l.name}</div>
-              <div className="num text-[22px] mt-1">{l.price}</div>
-              <p className="mt-2 text-[13.5px] ink2 leading-snug">{l.detail}</p>
+    <div className="grid md:grid-cols-3 gap-px bg-[var(--po-line)] border hair">
+      {problem.map((x) => (
+        <div key={x.k} className="bg-[var(--po-paper)] p-5">
+          <h3 className="serif text-[22px] leading-none">{x.k}</h3>
+          <p className="mt-3 text-[14px] ink2 leading-relaxed">{x.text}</p>
+          {x.src.length > 0 && (
+            <div className="mt-3 flex gap-3">
+              {x.src.map((id) => (
+                <Src key={id} id={id} />
+              ))}
             </div>
-          ))}
+          )}
         </div>
-        <p className="mt-3 text-[13px] muted">Prices per sample, as quoted to PlasticOptics in 2026.</p>
-      </div>
+      ))}
     </div>
   );
 }

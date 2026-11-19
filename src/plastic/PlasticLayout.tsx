@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { ArrowRight, Menu, X } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import { EMAIL, PAGES } from "./data";
 import "./plastic.css";
 
@@ -61,6 +61,7 @@ function Contents() {
   const { pathname } = useLocation();
   const [items, setItems] = useState<TocItem[]>([]);
   const [active, setActive] = useState<string | null>(null);
+  const [toggled, setToggled] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const t = setTimeout(() => {
@@ -73,6 +74,7 @@ function Contents() {
         }),
       );
     }, 0);
+    setToggled({});
     return () => clearTimeout(t);
   }, [pathname]);
 
@@ -94,26 +96,70 @@ function Contents() {
 
   if (!items.length) return null;
   const activeGroup = items.find((i) => i.id === active)?.parent ?? active;
+  const groups = items
+    .filter((i) => i.level === 1)
+    .map((g) => ({ ...g, subs: items.filter((i) => i.parent === g.id) }));
+
   return (
     <nav aria-label="Contents of this page">
-      <div className="mono text-[11px] uppercase tracking-wide muted mb-3">Contents</div>
-      <ul className="grid border-l hair">
-        {items.map((it) => {
-          const on = it.id === active || (it.level === 1 && it.id === activeGroup);
+      <div className="mono text-[11px] uppercase tracking-wide muted mb-5">Contents</div>
+      <ul className="grid gap-1">
+        {groups.map((g) => {
+          const isActive = g.id === activeGroup;
+          const isOpen = toggled[g.id] ?? isActive;
           return (
-            <li key={it.id}>
-              <a
-                href={`#${it.id}`}
-                className={`-ml-px block border-l leading-snug transition-colors ${
-                  it.level === 1 ? "pl-3 pt-2.5 pb-1 text-[13.5px] font-medium" : "pl-6 py-1 text-[13px]"
-                } ${
-                  on
-                    ? "border-[var(--po-ink)] text-[var(--po-ink)]"
-                    : `border-transparent hover:text-[var(--po-ink)] ${it.level === 1 ? "ink2" : "muted"}`
-                }`}
-              >
-                {it.label}
-              </a>
+            <li key={g.id}>
+              <div className="flex items-start justify-between gap-2">
+                <a
+                  href={`#${g.id}`}
+                  className={`flex-1 py-2 text-[14px] leading-snug transition-colors ${
+                    isActive ? "text-[var(--po-ink)] font-medium" : "ink2 hover:text-[var(--po-ink)]"
+                  }`}
+                >
+                  {g.label}
+                </a>
+                {g.subs.length > 0 && (
+                  <button
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-label={`${isOpen ? "Hide" : "Show"} subsections of ${g.label}`}
+                    onClick={() => setToggled((t) => ({ ...t, [g.id]: !isOpen }))}
+                    className="mt-1.5 p-1 -mr-1 muted hover:text-[var(--po-ink)]"
+                  >
+                    <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+                  </button>
+                )}
+              </div>
+              {g.subs.length > 0 && (
+                <div
+                  className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+                    isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                  }`}
+                >
+                  <ul className="min-h-0 overflow-hidden">
+                    <li className="h-1" aria-hidden />
+                    {g.subs.map((it) => {
+                      const on = it.id === active;
+                      return (
+                        <li key={it.id}>
+                          <a
+                            href={`#${it.id}`}
+                            tabIndex={isOpen ? 0 : -1}
+                            className={`block border-l py-1.5 pl-3.5 text-[13px] leading-snug transition-colors ${
+                              on
+                                ? "border-[var(--po-ink)] text-[var(--po-ink)]"
+                                : "border-[var(--po-line)] muted hover:text-[var(--po-ink)]"
+                            }`}
+                          >
+                            {it.label}
+                          </a>
+                        </li>
+                      );
+                    })}
+                    <li className="h-2" aria-hidden />
+                  </ul>
+                </div>
+              )}
             </li>
           );
         })}
@@ -197,7 +243,7 @@ export function PlasticLayout({ children }: { children: React.ReactNode }) {
         </main>
         {/* Right column: contents of the current page */}
         <aside className="hidden lg:block no-print">
-          <div className="sticky top-0 max-h-screen overflow-y-auto py-10 pl-6 pr-6">
+          <div className="sticky top-0 max-h-screen overflow-y-auto py-10 pl-7 pr-7">
             <Contents />
           </div>
         </aside>
