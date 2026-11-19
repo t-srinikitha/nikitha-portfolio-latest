@@ -49,7 +49,7 @@ export default function Overview() {
             <p>
               A single-use cartridge captures the microplastics in a water sample. A benchtop analyser reads it in 20–30
               minutes. Plant staff run it without a laboratory or a specialist.{" "}
-              <Link to="/plastic/science" className="ulink">
+              <Link to="/plastic/technology" className="ulink">
                 How it works
               </Link>
             </p>
@@ -210,7 +210,7 @@ export default function Overview() {
             <StageList detail={false} />
           </div>
           <p className="mt-6 text-[15px]">
-            <Link to="/plastic/roadmap" className="ulink">
+            <Link to="/plastic/technology#roadmap" className="ulink">
               Each stage in detail
             </Link>
           </p>

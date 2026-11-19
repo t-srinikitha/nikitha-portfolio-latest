@@ -9,10 +9,8 @@ export const EMAIL = "t.srinikitha@gmail.com";
 
 export const PAGES = [
   { path: "/plastic", label: "Overview" },
-  { path: "/plastic/science", label: "Technology" },
-  { path: "/plastic/market", label: "Go-To-Market" },
-  { path: "/plastic/numbers", label: "Business Model" },
-  { path: "/plastic/roadmap", label: "R&D Roadmap" },
+  { path: "/plastic/technology", label: "Technology" },
+  { path: "/plastic/business", label: "Business" },
 ];
 
 /* ───────────────────────── V2: overview ───────────────────────── */

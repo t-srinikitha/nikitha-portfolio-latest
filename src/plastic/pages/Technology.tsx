@@ -1,5 +1,29 @@
-import { stage0Done } from "../data";
+import { focus, stage0Done } from "../data";
+import { PhaseCards, StageList, StageTimeline } from "../sections";
 import { Block, Callout, PageHead, Src, Sub } from "../ui";
+
+const order = [
+  {
+    t: "Water first",
+    b: "Research on detection and removal in water is sufficient to begin, and the methods for food and air build on it.",
+  },
+  {
+    t: "Test cartridge before analyser",
+    b: "The cartridge is the core of the system. The analyser is built around a cartridge that works in real water.",
+  },
+  {
+    t: "Testing service during the pilots",
+    b: "A ₹5,000 testing service builds the data set and early demand before the analyser is sold.",
+  },
+  {
+    t: "Raman and removal in parallel",
+    b: "Once the analyser sells, the Raman spectrometer adds the identity and source of each particle, and the removal kit acts on what the analyser measures.",
+  },
+  {
+    t: "Food and air after Phase 1",
+    b: "Food and air use the same detection method with different sample preparation, and follow once Phase 1 reaches product–market fit.",
+  },
+];
 
 const steps = [
   {
@@ -76,15 +100,16 @@ function Membrane() {
   );
 }
 
-export default function Science() {
+export default function Technology() {
   return (
     <>
       <PageHead
-        title="Technical Approach"
+        title="Technology"
         lede={
           <p>
-            Spectroscopy identifies each particle chemically, which makes it slow and costly. PlasticOptics quantifies
-            plastic particles using dyes, optics and software, at low cost and on site.
+            Spectroscopy identifies each particle chemically, which makes it slow and costly. PlasticOptics counts plastic
+            particles with dyes, optics and software, at low cost and on site. The roadmap below sets out the order of
+            the work.
           </p>
         }
       />
@@ -134,12 +159,21 @@ export default function Science() {
             </table>
           </div>
         </Sub>
+
+        <Sub id="removal" title="Removal Chemistry">
+          <p className="ink2 max-w-[62ch]">
+            Metal-phenolic networks (tamarind and iron) bind microplastics, but have been demonstrated only at millilitre
+            scale. Scaling to cubic metres per hour is the principal technical challenge in the plan.
+          </p>
+          <div className="mt-6">
+            <Callout tone="accent">Removal depends on measurement. Detection is therefore developed first.</Callout>
+          </div>
+        </Sub>
       </Block>
 
       <Block id="validation-group" title="Validation">
         <Sub
           id="validation"
-
           title="Validation Plan"
           intro={
             <p>
@@ -172,7 +206,6 @@ export default function Science() {
 
         <Sub
           id="standards"
-
           title="Regulatory Size Classes"
           intro={<p>Results must align with official size classifications.</p>}
         >
@@ -204,14 +237,28 @@ export default function Science() {
         </Sub>
       </Block>
 
-      <Block id="removal" title="Removal Chemistry">
-        <p className="ink2 max-w-[62ch]">
-          Metal-phenolic networks (tamarind and iron) bind microplastics, but have been demonstrated only at millilitre
-          scale. Scaling to cubic metres per hour is the principal technical challenge in the plan.
-        </p>
-        <div className="mt-6">
-          <Callout tone="accent">Removal depends on measurement. Detection is therefore developed first.</Callout>
-        </div>
+      <Block id="roadmap" title="R&D Roadmap" intro={<p>The work is planned in three phases, beginning with water.</p>}>
+        <Sub id="phases" title="Water, Food and Air">
+          <PhaseCards />
+        </Sub>
+
+        <Sub id="stages" title="Phase 1 Stages" intro={<p>{focus}</p>}>
+          <StageTimeline />
+          <div className="mt-10">
+            <StageList detail />
+          </div>
+        </Sub>
+
+        <Sub id="order" title="Reasons for this Order">
+          <dl className="border-t hair">
+            {order.map((x) => (
+              <div key={x.t} className="grid md:grid-cols-[240px_1fr] gap-x-6 gap-y-1 py-4 border-b hair">
+                <dt className="font-medium">{x.t}</dt>
+                <dd className="ink2 max-w-[60ch]">{x.b}</dd>
+              </div>
+            ))}
+          </dl>
+        </Sub>
       </Block>
     </>
   );

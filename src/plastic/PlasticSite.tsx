@@ -3,10 +3,8 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { PlasticLayout } from "./PlasticLayout";
 import { PAGES } from "./data";
 import Overview from "./pages/Overview";
-import Numbers from "./pages/Numbers";
-import Market from "./pages/Market";
-import Roadmap from "./pages/Roadmap";
-import Science from "./pages/Science";
+import Business from "./pages/Business";
+import Technology from "./pages/Technology";
 
 function useTitle() {
   const { pathname } = useLocation();
@@ -22,10 +20,13 @@ export default function PlasticSite() {
     <PlasticLayout>
       <Routes>
         <Route index element={<Overview />} />
-        <Route path="numbers" element={<Numbers />} />
-        <Route path="market" element={<Market />} />
-        <Route path="roadmap" element={<Roadmap />} />
-        <Route path="science" element={<Science />} />
+        <Route path="technology" element={<Technology />} />
+        <Route path="business" element={<Business />} />
+        {/* Old addresses */}
+        <Route path="science" element={<Navigate to="/plastic/technology" replace />} />
+        <Route path="roadmap" element={<Navigate to="/plastic/technology#roadmap" replace />} />
+        <Route path="market" element={<Navigate to="/plastic/business" replace />} />
+        <Route path="numbers" element={<Navigate to="/plastic/business#model" replace />} />
         <Route path="*" element={<Navigate to="/plastic" replace />} />
       </Routes>
     </PlasticLayout>

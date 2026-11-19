@@ -90,8 +90,12 @@ function Contents() {
       setActive(current);
     };
     onScroll();
+    const t = setTimeout(onScroll, 150);
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, [items]);
 
   if (!items.length) return null;
@@ -191,6 +195,7 @@ export function PlasticLayout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!hash) window.scrollTo(0, 0);
+    else setTimeout(() => document.getElementById(hash.slice(1))?.scrollIntoView(), 50);
     setOpen(false);
   }, [pathname, hash]);
 
