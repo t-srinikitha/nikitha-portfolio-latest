@@ -9,12 +9,12 @@ const steps = [
 ];
 
 const compare = [
-  ["Time to result", "72 hours+", "20–30 minutes"],
-  ["Location", "External laboratory", "On site"],
+  ["Time to result", "10 days or more", "20–30 minutes"],
+  ["Location", "External laboratory; samples often shipped abroad", "On site"],
   ["Operator", "Spectroscopy specialist", "Plant quality-control staff"],
-  ["Cost per test", "₹5,000", "₹1,000 cartridge"],
-  ["Capital equipment", "₹1.5 crore: Raman spectrometer and laboratory equipment", "₹5 lakh analyser"],
-  ["Output", "Polymer identity and count", "Microplastic count"],
+  ["Cost per test", "₹75,000", "₹2,000 cartridge"],
+  ["Capital equipment", "₹1.5 crore: Raman spectrometer and laboratory equipment", "₹8 lakh analyser"],
+  ["Output", "Polymer identity and count", "Microplastic count and plastic class"],
   ["Application", "Reference and confirmation", "Routine screening"],
 ];
 

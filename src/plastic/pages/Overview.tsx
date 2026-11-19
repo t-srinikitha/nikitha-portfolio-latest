@@ -2,42 +2,19 @@ import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import {
   goal,
-  surfaces,
-  whereToStart,
-  whoPays,
-  today,
-  objective,
+  focus,
+  discovery,
+  customers,
+  landedCost,
+  incumbent,
+  microplasticsIndex,
   budget,
-  stage0Done,
-  afterStage0,
   founder,
   status,
   collaborators,
 } from "../data";
-import { Block, Callout, Conclusion, PageHead, Stat } from "../ui";
-import { BreakEvenStats, MarketSize, MissionCapital, StageMap, base as s, missionTotal, missionUsd, sizing } from "../sections";
-
-
-const comparison = [
-  {
-    name: "Current methods (Raman or FTIR spectroscopy)",
-    strong: false,
-    cards: [
-      { k: "Equipment", v: "₹1.5 Cr", d: "Raman spectrometer and supporting laboratory equipment." },
-      { k: "Personnel", v: "Specialist staff", d: "Trained spectroscopists to prepare samples and operate the instrument." },
-      { k: "Per test", v: "₹5,000", d: "Results in 72 hours or more." },
-    ],
-  },
-  {
-    name: "PlasticOptics",
-    strong: true,
-    cards: [
-      { k: "Equipment", v: "₹5 L", d: "Benchtop analyser." },
-      { k: "Personnel", v: "None", d: "Operated by the plant's existing quality-control staff." },
-      { k: "Per test", v: "₹1,000", d: "Single-use test cartridge. Results in 20–30 minutes." },
-    ],
-  },
-];
+import { Block, Conclusion, PageHead } from "../ui";
+import { BreakEvenTable, CostComparison, PhaseCards, StageList, StageTimeline, WhyNow, savings } from "../sections";
 
 export default function Overview() {
   const budgetTotal = budget.reduce((a, b) => a + b.v, 0);
@@ -50,43 +27,66 @@ export default function Overview() {
           <>
             <p>{goal}</p>
             <p className="mt-3">
-              The first product addresses drinking water: a benchtop analyser with single-use test cartridges. It enables
-              quality-control teams at bottling plants to test every production batch within 20–30 minutes.
+              The first product is for drinking water: a single-use test cartridge read by a benchtop analyser, which gives
+              a plant's quality-control staff a microplastic count within 20–30 minutes.
             </p>
           </>
         }
       />
 
-      <Block id="market-focus" title="Initial Market Focus">
-        <div className="grid md:grid-cols-3 gap-px bg-[var(--po-line)] border hair">
-          {surfaces.map((x, i) => (
-            <div key={x.name} className="bg-[var(--po-paper)] p-5">
-              <div className="flex items-baseline justify-between gap-3">
-                <h3 className="font-medium">{x.name}</h3>
-                <span
-                  className={`mono text-[10.5px] uppercase tracking-wide px-1.5 py-0.5 whitespace-nowrap ${
-                    i === 0 ? "bg-[var(--po-ink)] text-[var(--po-bg)]" : "bg-[var(--po-chip)] ink2"
-                  }`}
-                >
-                  {x.verdict}
-                </span>
-              </div>
-              <p className="mt-3 text-[14px] ink2 leading-relaxed">{x.feasibility}</p>
-            </div>
-          ))}
-        </div>
-        <Conclusion>{whereToStart}</Conclusion>
+      <Block id="phases" title="Three Phases">
+        <PhaseCards />
+        <Conclusion>
+          Water comes first because the research is sufficient to begin, and because the methods for food and air are
+          built on it.
+        </Conclusion>
       </Block>
 
       <Block
-        id="stages"
-        title="Development Stages"
-        intro={<p>The plan has seven stages in three groups: Detect, Monitor and Remove. Stage 0 is the current stage.</p>}
+        id="why-now"
+        title="Why Now"
+        intro={<p>A labelling requirement is now in force in India, and testing is scarce, slow and expensive.</p>}
       >
-        <StageMap />
+        <WhyNow />
         <Conclusion>
-          Stages 0 to 2 build the first business, a benchtop analyser for bottling plants. Stage 3 extends detection to
-          food, Stage 4 adds in-line analysis, and Stages 5 and 6 add removal, first at one plant and then at many. The{" "}
+          Bottled water companies will need to know what their product contains. A company that can test has a
+          competitive advantage, and development must begin now to be ready when labelling and certification
+          regulations arrive.
+        </Conclusion>
+      </Block>
+
+      <Block id="customers" title="Target Customers">
+        <h3 className="font-medium">What customers have said</h3>
+        <ul className="mt-3 grid gap-2.5 border-t hair pt-4 max-w-[64ch]">
+          {discovery.map((d) => (
+            <li key={d} className="text-[15px]">
+              {d}
+            </li>
+          ))}
+        </ul>
+        <h3 className="mt-10 font-medium">First customers</h3>
+        <div className="mt-3 grid md:grid-cols-3 gap-px bg-[var(--po-line)] border hair">
+          {customers.map((c) => (
+            <div key={c.name} className="bg-[var(--po-paper)] p-5">
+              <h4 className="font-medium">{c.name}</h4>
+              <p className="mt-2 text-[14px] ink2 leading-relaxed">{c.text}</p>
+            </div>
+          ))}
+        </div>
+        <Conclusion>
+          The first customers are therefore those who already value purity or already count particles. Demand from the
+          wider market must be built through awareness.
+        </Conclusion>
+      </Block>
+
+      <Block id="stages" title="Phase 1 Stages" intro={<p>{focus}</p>}>
+        <StageTimeline />
+        <div className="mt-10">
+          <StageList detail={false} />
+        </div>
+        <Conclusion>
+          Stages 0 and 1 run in sequence. From Year 3 the benchtop analyser is sold while the Raman spectrometer and the
+          removal kit are developed in parallel. The{" "}
           <Link to="/plastic/roadmap" className="ulink">
             R&D Roadmap
           </Link>{" "}
@@ -94,134 +94,76 @@ export default function Overview() {
         </Conclusion>
       </Block>
 
-      <Block id="stage-0" title="Stage 0 Milestones" intro={<p>Stage 0 is complete when the following are true.</p>}>
-        <ol className="grid gap-3">
-          {stage0Done.map((d, i) => (
-            <li key={d} className="grid grid-cols-[28px_1fr] gap-3 text-[15.5px]">
-              <span className="num text-[13px] muted pt-0.5">0{i + 1}</span>
-              <span>{d}</span>
-            </li>
-          ))}
-        </ol>
-        <Conclusion>{afterStage0}</Conclusion>
-      </Block>
-
-      <Block id="customer" toc="Customer" title={`Customer: ${whoPays.who}`} intro={<p>{whoPays.why}</p>}>
-        <p className="font-medium">{today.method}</p>
-        <div className="mt-4 grid sm:grid-cols-2 gap-2">
-          {today.facts.map((f) => (
-            <Stat key={f.v} v={f.v} k={f.k} />
-          ))}
-        </div>
-        <div className="mt-8">
-          <Callout tone="accent">
-            <span className="serif text-[22px]">{today.punchline}</span>
-          </Callout>
-        </div>
-      </Block>
-
-      <Block id="product" toc="Product" title="Product: Benchtop Analyser" intro={<p>{objective.text}</p>}>
-        <dl className="grid md:grid-cols-3 gap-px bg-[var(--po-line)] border hair text-[14px]">
-          <div className="bg-[var(--po-paper)] p-5">
-            <dt className="font-medium">Method</dt>
-            <dd className="mt-1.5 ink2">
-              {objective.how}{" "}
-              <Link to="/plastic/science" className="ulink">
-                Technology
-              </Link>
-            </dd>
-          </div>
-          <div className="bg-[var(--po-paper)] p-5">
-            <dt className="font-medium">Revenue model</dt>
-            <dd className="mt-1.5 ink2">{objective.revenue}</dd>
-          </div>
-          <div className="bg-[var(--po-paper)] p-5">
-            <dt className="font-medium">Pilot partner</dt>
-            <dd className="mt-1.5 ink2">{objective.pilot}</dd>
-          </div>
-        </dl>
-      </Block>
-
-      <Block id="cost-comparison" title="Cost Comparison">
-        <div className="grid gap-6">
-          {comparison.map((layer) => (
-            <div key={layer.name}>
-              <h3 className="font-medium">{layer.name}</h3>
-              <div
-                className={`mt-3 grid sm:grid-cols-3 gap-px border ${
-                  layer.strong ? "bg-[var(--po-ink)] border-[var(--po-ink)]" : "bg-[var(--po-line)] hair"
-                }`}
-              >
-                {layer.cards.map((c) => (
-                  <div key={c.k} className="bg-[var(--po-paper)] p-5">
-                    <div className="text-[13px] muted">{c.k}</div>
-                    <div
-                      className={`mt-1 text-[24px] leading-tight ${c.v.startsWith("₹") ? "num" : "serif"} ${
-                        layer.strong ? "text-[var(--po-accent)]" : ""
-                      }`}
-                    >
-                      {c.v}
-                    </div>
-                    <p className="mt-2 text-[13.5px] ink2 leading-snug">{c.d}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
+      <Block
+        id="unit-economics"
+        title="Unit Economics"
+        intro={<p>The development of the test cartridge and the benchtop analyser is well understood, and the input costs of each are estimated below.</p>}
+      >
+        <table className="po-table max-w-[620px] text-[14px]">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Inputs</th>
+              <th className="r !whitespace-normal">Total landed cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            {landedCost.map((x) => (
+              <tr key={x.item}>
+                <td className="font-medium whitespace-nowrap pr-4">{x.item}</td>
+                <td className="ink2">
+                  {x.inputs.map((i) => (
+                    <span key={i} className="block">
+                      {i}
+                    </span>
+                  ))}
+                </td>
+                <td className="r">{x.total}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p className="mt-3 text-[13.5px] muted max-w-[70ch]">
+          These are preliminary figures and will change with development and market research. A commercial Raman or FTIR
+          system costs about {incumbent.equipment}, and the current market rate for a microplastic test is {incumbent.perTest}.
+        </p>
+        <div className="mt-10">
+          <CostComparison />
         </div>
         <Conclusion>
-          PlasticOptics lowers equipment cost by 97% and cost per test by 80%, requires no specialist staff, and returns
-          results in minutes rather than days.
-        </Conclusion>
-      </Block>
-
-      <Block id="market-size" title="Market Size" intro={<p>These are back-of-the-envelope estimates.</p>}>
-        <MarketSize notes={false} />
-        <Conclusion>
-          The benchtop analyser for bottling plants in India is a market of ₹{Math.round(sizing.indiaCart)} crore a year
-          in cartridges. Global sales and food and air testing are each larger markets than the first product.
-          The basis for each figure is set out under{" "}
-          <Link to="/plastic/numbers#market-size" className="ulink">
-            Business Model
-          </Link>
-          .
+          PlasticOptics lowers equipment cost by {savings.equipment}% and cost per test by {savings.perTest}%, requires no
+          specialist staff, and returns results in minutes rather than days.
         </Conclusion>
       </Block>
 
       <Block
         id="break-even"
-        toc="Break-even"
         title="Break-even"
         intro={
           <p>
-            This is the break-even of the benchtop analyser for bottling plants on its own. Research for later stages is
-            funded separately and is not included.
+            Research, team expansion and operating costs continue throughout Phase 1. For simplicity, this view covers the
+            benchtop analyser only. Prices are set for an 80% margin: ₹2,000 per cartridge and ₹8 lakh per analyser.
           </p>
         }
       >
-        <BreakEvenStats />
+        <BreakEvenTable />
         <Conclusion>
-          The benchtop analyser business requires about ₹{(s.cashRequired / 100).toFixed(1)} crore and becomes profitable in Year{" "}
-          {s.breakeven}, with {s.plantsAtBreakeven} bottling plants, each paying ₹30,000 a month for cartridges. The year-by-year
-          figures are set out under{" "}
-          <Link to="/plastic/numbers#break-even" className="ulink">
-            Business Model
-          </Link>
-          .
+          With 120 active plants in Year 5, revenue from the benchtop analyser reaches ₹18.24 crore. The cost side will be
+          modelled as Stage 0 and the pilots establish actual costs.
         </Conclusion>
       </Block>
 
-      <Block
-        id="total-capital"
-        toc="Total Capital"
-        title="Total Capital for the Full Objective"
-        intro={<p>This is a back-of-the-envelope estimate of the capital required to complete all seven stages.</p>}
-      >
-        <MissionCapital />
+      <Block id="index" title="Microplastics Index">
+        <ul className="grid gap-2.5 border-t hair pt-4 max-w-[64ch]">
+          {microplasticsIndex.map((x) => (
+            <li key={x} className="text-[15.5px]">
+              {x}
+            </li>
+          ))}
+        </ul>
         <Conclusion>
-          The full objective requires an estimated ₹{missionTotal.low}–{missionTotal.high} crore ({missionUsd}) over
-          about ten years. Two-thirds of this is Stage 6, which is committed only after removal and in-line analysis
-          have been demonstrated. The ₹{budgetTotal.toFixed(1)} lakh requested now funds Stage 0.
+          The Index addresses the main barrier found in customer conversations, which is awareness, and it begins in
+          Stage 0.
         </Conclusion>
       </Block>
 
@@ -239,14 +181,14 @@ export default function Overview() {
 
       <Block
         id="funding"
-        toc="Funding Requirement"
-        title={<>Funding Requirement: ₹{budgetTotal.toFixed(1)} Lakh</>}
-        intro={<p>The request covers the full Stage 0 budget for six months.</p>}
+        toc="The Ask"
+        title={<>The Ask (Stage 0): ₹{budgetTotal.toFixed(1)} Lakh</>}
+        intro={<p>The request covers the full Stage 0 budget: nine months to build and validate the test cartridge.</p>}
       >
         <table className="po-table max-w-[520px] text-[14px]">
           <thead>
             <tr>
-              <th>Item</th>
+              <th>Category</th>
               <th className="r">₹ lakh</th>
             </tr>
           </thead>

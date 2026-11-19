@@ -17,208 +17,205 @@ export const PAGES = [
 
 /* ───────────────────────── V2: overview ───────────────────────── */
 
-export const goal =
-  "To develop a fast, industrial-grade system that detects and removes microplastics from water, food and air.";
+export const goal = "The goal is to measure and remove microplastics from water, food and air.";
 
-export const surfaces = [
+// Phase 1 is water; food and air follow. Stages belong to Phase 1.
+export const phases = [
   {
-    name: "Drinking water",
-    verdict: "Stages 0–2",
-    feasibility:
-      "Detection methods for microplastics in water are well established in research. The first product is a benchtop analyser for water bottling plants.",
+    n: 1,
+    name: "Water",
+    text: "Research on the detection and removal of microplastics in water is sufficient to begin. Water is the first market, and its methods are the basis for food and air.",
   },
   {
+    n: 2,
     name: "Food",
-    verdict: "Stage 3",
-    feasibility:
-      "Salt, sugar, milk and other foods are prepared as liquid samples and tested with the same staining and imaging method used for water.",
+    text: "Food is a highly varied sample: salt, sugar, milk and other staples. The detection method for water extends to food; salt, for example, is dissolved in water and its microplastics are separated onto a filter. Removal from food is a harder problem.",
   },
   {
+    n: 3,
     name: "Air",
-    verdict: "Later option",
-    feasibility:
-      "Airborne particles are collected on a filter, which is then tested with the same method.",
+    text: "Airborne particles settle on a water surface and are then tested with the same method. Air detection therefore also builds on water.",
   },
 ];
 
-export const whereToStart =
-  "Drinking water is the first market because detection methods for water are the most established. Food follows with the same method, and air is addressed last. Food represents the largest long-term revenue opportunity.";
+export const focus =
+  "For the next four years, PlasticOptics will focus entirely on water (Phase 1): the test cartridge, the benchtop analyser, an affordable Raman spectrometer and removal. The aim is to complete 90% of Phase 1 research and reach product–market fit in three to four years, with scale proceeding in parallel. Food (salt, sugar, milk and other staples) and air follow.";
 
-export const whoPays = {
-  who: "Water and Beverage Bottling Plants",
-  why: "Bottling plants rely on reverse osmosis, which removes up to 99% of microplastics from source water. After an unknown number of operating cycles, RO membranes begin to release microplastics into the product. Plants currently cannot quantify microplastic levels in finished product, and therefore cannot determine when membrane performance has declined.",
-};
-
-export const today = {
-  method: "Plants that test today must use Raman or FTIR spectroscopy.",
-  facts: [
-    { v: "No commercial service", k: "Testing is available only at a few university and private laboratories, with long queues." },
-    { v: "72 hours or more", k: "Time from sample collection to result. The batch has usually shipped by then." },
-  ],
-  punchline: "As a result, bottling plants do not test for microplastics routinely.",
-};
-
-export const objective = {
-  text: "A benchtop analyser operated by plant quality-control staff without specialist training. Microplastic counts are reported within 20–30 minutes, enabling testing of every production batch.",
-  how: "Differential staining with AI-based particle counting.",
-  revenue:
-    "A one-time sale of the analyser at ₹5 lakh, followed by a subscription of 30 test cartridges a month at ₹30,000.",
-  pilot: "Uravu Labs, Bengaluru (proposed).",
-};
-
-// One sequence of stages in three groups: Detect (0–3), Monitor (4), Remove (5–6).
-// Stages 0–2 are the first business, the benchtop analyser for bottling plants.
-// Air is a later option outside the numbered stages.
-export type StageGroup = "Detect" | "Monitor" | "Remove";
-export type StageMarket = "water" | "food" | "air";
-
-export const stageGroups: { name: StageGroup; line: string }[] = [
-  { name: "Detect", line: "The benchtop analyser and its cartridges, first for water and then for food." },
-  { name: "Monitor", line: "Continuous measurement on the production line, at the same plants." },
-  { name: "Remove", line: "Removal of microplastics from water, proven by the company's own measurement." },
+export const whyNowIndia = [
+  {
+    when: "February 2026",
+    text: "The Madras High Court ordered that PET bottled water carry a warning in bold red letters: “This water may contain Micro/Nano Plastics.” The order also covers packaged salt and sugar.",
+    src: ["madrasHc"] as const,
+  },
+  {
+    when: "April 2026",
+    text: "The Supreme Court declined to interfere with the order.",
+    src: ["supremeCourt"] as const,
+  },
+  {
+    when: "September 2026",
+    text: "The High Court refused requests from FSSAI and industry bodies to recall the order. FSSAI regulations on labelling and certification are expected to follow.",
+    src: ["madrasHcRecall"] as const,
+  },
 ];
 
+export const labs = [
+  {
+    name: "SGS",
+    price: "₹74,820–84,870 + GST",
+    detail: "Samples are shipped abroad for analysis. Results take more than 10 days.",
+  },
+  {
+    name: "Eurofins",
+    price: "₹75,000",
+    detail: "A ₹13,000 thermal desorption test is also offered, but it reports only polymer mass, not particle counts or sizes.",
+  },
+];
+
+export const discovery = [
+  "PlasticOptics has spoken to 10–15 beverage contract manufacturers in Gujarat, Maharashtra, Goa and Bengaluru. None has yet received a request from its buyers for microplastic testing.",
+  "Testing laboratories receive such requests about once a year. Awareness of the problem is the main barrier.",
+];
+
+export const customers = [
+  {
+    name: "Premium packaged water brands",
+    text: "Brands that compete on purity, such as Backbay, Uravu and Smartwater, for which testing is a competitive advantage.",
+  },
+  {
+    name: "Injectable pharmaceutical manufacturers",
+    text: "They already count particles in every batch, but cannot tell which particles are plastic.",
+  },
+  {
+    name: "Export beverage contractors",
+    text: "Buyers in Europe and Australia are beginning to set microplastic requirements that suppliers must meet.",
+  },
+];
+
+// Phase 1 stages. start and end are in years from today, for the timeline.
 export const stages: {
   n: number;
-  group: StageGroup;
-  market: StageMarket;
   name: string;
-  short: string;
   when: string;
-  objective: string;
-  work?: string;
-  gate: string;
+  start: number;
+  end: number;
+  ongoing?: boolean;
+  what: string;
+  notes: string[];
+  funding: string;
   current?: boolean;
 }[] = [
   {
     n: 0,
-    group: "Detect",
-    market: "water",
-    name: "Technology validation",
-    short: "Laboratory tests on bottled water.",
-    when: "Now to about 6 months",
-    objective: "Validation of differential staining and AI counting against Raman/FTIR.",
-    work: "Reagents, collaboration with professors, laboratory setup, Raman/FTIR reference testing.",
-    gate: "Counts agree with Raman spectroscopy.",
+    name: "Build the test cartridge",
+    when: "Months 0–9",
+    start: 0,
+    end: 0.75,
+    what: "The core of the system: a single-use cartridge that detects microplastics and distinguishes them from other particles.",
+    notes: [
+      "The principal challenge is performance in real water samples.",
+      "Research collaboration with Prof. Sarit S. Agasti and Prof. Suryasarathi Bose.",
+      "Launch of the Microplastics Index to raise awareness of the problem.",
+    ],
+    funding: "₹23.8 lakh (this request)",
     current: true,
   },
   {
     n: 1,
-    group: "Detect",
-    market: "water",
-    name: "Prototype and pilots",
-    short: "A working analyser at 10 bottling plants.",
-    when: "Months 6 to 24",
-    objective: "Development of a working benchtop analyser and pilots at 10 bottling plants.",
-    work: "Core team, three to four prototype rounds, 10 pilot analysers, patent filing.",
-    gate: "Pilot plants test routinely and pay for cartridges.",
+    name: "Build the benchtop analyser",
+    when: "Months 9–24",
+    start: 0.75,
+    end: 2,
+    what: "An industrial prototype installed in plants. It reports particle counts and plastic classes.",
+    notes: [
+      "Rapid iteration of the prototype, with five pilot plants.",
+      "A testing service at ₹5,000 per sample, which also builds the data set.",
+    ],
+    funding: "₹75 lakh (BIRAC BIG, NIDHI-PRAYAS, service revenue)",
   },
   {
     n: 2,
-    group: "Detect",
-    market: "water",
-    name: "Benchtop analyser",
-    short: "Sold to bottling plants, with cartridges.",
-    when: "Years 3 to 5",
-    objective:
-      "Sale of the benchtop analyser and cartridge subscriptions to bottling plants. The target is 60 plants by Year 5.",
-    work: "Contract manufacturing, method validation, sales and field service.",
-    gate: "60 bottling plants use the analyser.",
+    name: "Scale the benchtop analyser",
+    when: "Years 3–4",
+    start: 2,
+    end: 4,
+    what: "Growth from five pilot plants to 20 plants in Year 3 and 60 by the end of Year 4.",
+    notes: [
+      "Expansion of the team.",
+      "Contract manufacturing of test cartridges and benchtop analysers.",
+      "A sales and marketing organisation.",
+    ],
+    funding: "₹5 crore (Seed)",
   },
   {
     n: 3,
-    group: "Detect",
-    market: "food",
-    name: "Food analyser",
-    short: "Salt, sugar, milk and other foods, on the same analyser.",
-    when: "Research from Year 3; sales from Year 5",
-    objective: "Extension of the analyser to salt, sugar, milk and other foods, which are prepared as liquid samples.",
-    gate: "Counts in food agree with reference methods.",
+    name: "Build an affordable Raman spectrometer",
+    when: "Years 3–4, in parallel",
+    start: 2,
+    end: 4,
+    what: "Counts and identifies each particle, so that a plant can trace its source.",
+    notes: [
+      "Highly challenging: many components are under controlled intellectual property, and the supply chain must be redesigned.",
+    ],
+    funding: "Series A",
   },
   {
     n: 4,
-    group: "Monitor",
-    market: "water",
-    name: "In-line analysis",
-    short: "Continuous counts on the production line.",
-    when: "Research from Year 4",
-    objective:
-      "An analyser installed on the water line that reports counts continuously, sold to the plants that already use the benchtop analyser.",
-    work: "An instrument that stains and images water in flow.",
-    gate: "In-line counts match the benchtop analyser.",
+    name: "Removal kit",
+    when: "Year 4, in parallel",
+    start: 3,
+    end: 4,
+    what: "A simple kit, attached to a filter at a plant outlet, that removes microplastics.",
+    notes: [
+      "Research on removal is extensive, but no commercial product exists. The challenge is a technology that is scalable and usable.",
+    ],
+    funding: "Series B",
   },
   {
     n: 5,
-    group: "Remove",
-    market: "water",
-    name: "Removal pilot",
-    short: "Removal at one partner plant.",
-    when: "After Stage 4, about Years 6 to 7",
-    objective:
-      "Removal of microplastics from water at one partner plant. In-line analysis sets the dose and verifies the output.",
-    work: "Metal-phenolic networks (tamarind and iron) bind microplastics at millilitre scale today. The target is cubic metres per hour.",
-    gate: "In-line counts show consistent removal at a cost acceptable to the plant.",
-  },
-  {
-    n: 6,
-    group: "Remove",
-    market: "water",
-    name: "Removal at scale",
-    short: "Removal units at many plants, in India and abroad.",
-    when: "After Stage 5",
-    objective:
-      "Manufacture and installation of removal units with in-line analysis at bottling and water treatment plants, in India and abroad.",
-    gate: "Removal units are built and installed at many plants.",
+    name: "Scale",
+    when: "Year 5 onward",
+    start: 4,
+    end: 5,
+    ongoing: true,
+    what: "120 plants in Year 5. The removal kit and Raman spectrometer are scaled while benchtop analysers sell in India, and the benchtop analyser is taken to Dubai and Singapore, where testing is not limited to spectroscopy.",
+    notes: ["The first PlasticOptics factory."],
+    funding: "Series C",
   },
 ];
 
-export const airOption = {
-  name: "Air detection",
-  short: "A later option, with no budget yet.",
-  objective:
-    "Airborne particles are collected on a filter, which is then tested with the same method. Air is pursued once the water and food businesses are established.",
+export const prices = {
+  device: 800000, // ₹, also the catch-all for service and maintenance per active plant per year
+  cartridge: 2000, // ₹
+  testsPerYear: 360,
+  marginPct: 80,
 };
 
-export const stageOrder = [
-  {
-    t: "Benchtop analyser first",
-    b: "Detection in water is the most established in research, and bottling plants are an identifiable customer. The analyser provides the measurement on which every later stage depends.",
-  },
-  {
-    t: "Food second",
-    b: "Food uses the same analyser and the same staining and imaging method. Only the preparation of the sample changes.",
-  },
-  {
-    t: "In-line analysis before removal",
-    b: "In-line analysis uses the same optics and is sold to the same plants. Removal can be proven only against continuous measurement, so in-line analysis must exist first.",
-  },
-  {
-    t: "Removal at one plant, then at many",
-    b: "Removal is a new technology and a new kind of business. It is installed at many plants only after in-line counts show that it works at one.",
-  },
-  {
-    t: "Air as a later option",
-    b: "Air requires a new way of collecting samples and has no identified first customer. It is pursued once water and food are established.",
-  },
+export const landedCost = [
+  { item: "Benchtop analyser", inputs: ["₹1.2 lakh optics", "₹40,000 assembly and calibration"], total: "₹1.6 lakh" },
+  { item: "Test cartridge", inputs: ["₹400 assembly and AI token costs"], total: "₹400" },
 ];
 
-export const unitEconomics = {
-  incumbent: { label: "Raman spectrometer and lab equipment", v: "~₹1.5 Cr" },
-  deviceCost: [
-    { item: "Microscope, optical filters, container, software", v: 120000 },
-    { item: "Assembly, calibration, installation, shipping", v: 40000 },
-  ],
-  devicePrice: "₹5,00,000",
-  cartridgeCost: 400,
-  // ₹400 is the planning cost per finished cartridge. Bench consumables today are ₹193
-  // (Master Plan); the rest is an allowance for what a lab bench doesn't need.
-  cartridgeBreakdown: [
-    { item: "Bench consumables (current)", v: 193 },
-    { item: "Housing, assembly, quality control, delivery", v: 207 },
-  ],
-  cartridgePrice: "₹1,000",
-  labPerTest: "₹5,000",
-  caveat: "All figures are preliminary estimates and will be refined through Stage 0 and customer interviews.",
+export const incumbent = { equipment: "₹1.5 crore", perTest: "₹75,000" };
+
+// Break-even table exactly as in "PlasticOptics - Latest" (Nov 2026). Values in ₹ lakh.
+// Device column is ₹8 lakh × ACTIVE plants: a catch-all for device sales, service and maintenance.
+// Costs are not yet modelled beyond Year 1; blank cells are deliberate.
+export const breakEven = [
+  { year: 1, active: 0, added: 0, cartridges: 0, device: 0, revenue: "0", capital: "₹23.8 L", costs: "₹23.8 L" },
+  { year: 2, active: 0, added: 0, cartridges: 0, device: 0, revenue: "0", capital: "₹75 L", costs: "" },
+  { year: 3, active: 20, added: 20, cartridges: 144, device: 160, revenue: "₹3.04 Cr", capital: "", costs: "" },
+  { year: 4, active: 60, added: 40, cartridges: 432, device: 480, revenue: "₹9.12 Cr", capital: "", costs: "" },
+  { year: 5, active: 120, added: 60, cartridges: 864, device: 960, revenue: "₹18.24 Cr", capital: "", costs: "" },
+];
+
+export const microplasticsIndex = [
+  "A recurring, standardised test of bottled water from leading brands, with the results published.",
+  "Public data creates pull from brands and the media, and a ₹5,000 test makes it inexpensive for a brand to respond.",
+];
+
+export const objective = {
+  pilot: "Uravu Labs, Bengaluru (proposed).",
 };
 
 export const budget = [
@@ -227,7 +224,7 @@ export const budget = [
   { item: "Lab space and equipment", v: 3 },
   { item: "Analytical balance", v: 2.8 },
   { item: "Reagents and membranes", v: 2 },
-  { item: "AI token costs", v: 2 },
+  { item: "AI counting", v: 2 },
   { item: "Sample collection", v: 1 },
   { item: "Raman/FTIR reference testing", v: 0.5 },
 ];
@@ -236,7 +233,7 @@ export const stage0Done = [
   "Microplastics counted by PlasticOptics are equivalent to those counted by Raman spectroscopy on the same samples.",
   "The method counts microplastics accurately in water that contains iron, organic matter or suspended solids.",
   "The maintenance requirements of the analyser and the final cost of a cartridge are known.",
-  "Customer interviews are complete, and at least one plant is running a pilot.",
+  "Customer interviews are complete, and the first pilot plant has agreed to take part.",
 ];
 
 export const afterStage0 = "On completion of Stage 0, the company will apply for BIRAC BIG or NIDHI-PRAYAS funding and incubation support.";
@@ -249,6 +246,18 @@ export const founder = {
 /* ───────────────────────── Market facts (sourced) ───────────────────────── */
 
 export const SOURCES = {
+  madrasHc: {
+    label: "Verdictum, Madras High Court orders microplastics warning on PET bottled water, salt and sugar (Feb 2026)",
+    url: "https://www.verdictum.in/madras-high-court/food-safety-and-standards-authority-of-india-v-g-subramania-koushik-2026mhc3978-may-contain-microplastics-label-mandatory-pet-bottle-water-sugar-salt-1623145",
+  },
+  supremeCourt: {
+    label: "Daily Excelsior, Supreme Court: nothing wrong in displaying the warning (Apr 2026)",
+    url: "https://www.dailyexcelsior.com/?p=2189290",
+  },
+  madrasHcRecall: {
+    label: "Bar & Bench, Madras High Court refuses to recall microplastics disclosure order (Sept 2026)",
+    url: "https://www.barandbench.com/news/litigation/madras-high-court-refuses-to-recall-order-to-disclose-microplastics-in-packaged-water-sugar-salt",
+  },
   bis: {
     label: "BIS, compulsory certification of packaged drinking water (Sept 2022)",
     url: "https://services.bis.gov.in/php/BIS_2.0/BISBlog/?p=610",
@@ -344,66 +353,25 @@ export const market = {
 /* ───────────────────────── Current status ───────────────────────── */
 
 export const status = {
-  summary: "PlasticOptics is at the idea stage. The method has not yet been tested in the laboratory.",
+  summary: "PlasticOptics is at the idea stage, with substantial groundwork complete. The method has not yet been tested in the laboratory.",
   inPlace: [
     "Access to a Raman spectrometer for reference testing.",
     "Most of the materials required for the Stage 0 experiments.",
-    "Initial discussions with bottling plants and brands.",
+    "Conversations with 10–15 beverage contract manufacturers and with testing laboratories.",
+    "Price quotes for microplastic testing from SGS and Eurofins.",
     "Agreement from Prof. Sarit S. Agasti (JNCASR) and Prof. Suryasarathi Bose (IISc) to collaborate.",
   ],
   conclusion:
     "The funding requested pays for the experiments that establish whether the method works, and for a first prototype.",
 };
 
-/* ───────────────────────── Capital for the full objective (estimate) ───────────────────────── */
-
-// ₹ crore. The first line comes from the business case in model.ts, rounded.
-// The removal and in-line analysis lines follow the Master Plan estimates.
-export const missionCapital = [
-  {
-    stage: "0–2",
-    programme: "Benchtop analyser",
-    scope: "Validation, product development and operating losses of the water business.",
-    low: 5,
-    high: 5,
-  },
-  {
-    stage: "3",
-    programme: "Food analyser",
-    scope: "Sample preparation and validation for salt, sugar, milk and other foods.",
-    low: 5,
-    high: 10,
-  },
-  {
-    stage: "4",
-    programme: "In-line analysis",
-    scope: "An analyser that stains and images water in flow. This requires a new instrument.",
-    low: 5,
-    high: 10,
-  },
-  {
-    stage: "5",
-    programme: "Removal pilot",
-    scope: "Removal chemistry scaled from millilitres to cubic metres per hour at one partner plant.",
-    low: 10,
-    high: 20,
-  },
-  {
-    stage: "6",
-    programme: "Removal at scale",
-    scope: "Manufacture and installation of removal units with in-line analysis, in India and abroad.",
-    low: 50,
-    high: 100,
-  },
-];
-
-export const comparables = [
-  { name: "Matter", where: "United Kingdom", raised: "US$10 million", round: "Series A, 2023", what: "Microplastic filtration for washing machines and wastewater.", src: "matter" as const },
-  { name: "PolyGone Systems", where: "United States", raised: "US$4 million", round: "Seed, 2026", what: "Microplastic monitoring and removal. The round followed about US$2.3 million in grants.", src: "polygone" as const },
-  { name: "Klar2O", where: "Germany", raised: "€4.5 million", round: "Series A, 2025", what: "Removal of microplastics and PFAS from drinking water.", src: "klar2o" as const },
-];
-
 export const whyNow = [
+  {
+    when: "2026",
+    where: "India · Madras High Court",
+    what: "Ordered PET bottled water, packaged salt and packaged sugar to carry a warning that they may contain micro- or nano-plastics. The Supreme Court declined to interfere, and the High Court refused to recall the order.",
+    src: ["madrasHc", "madrasHcRecall"] as const,
+  },
   {
     when: "2022",
     where: "California",
@@ -429,18 +397,18 @@ export const whyNow = [
 export const pathToMarket = [
   {
     step: "Validate",
-    stage: "Stage 0 · ~6 months",
-    body: "Demonstrate agreement with Raman. Confirm performance with iron, organic matter and turbidity. Establish cartridge cost. Secure one pilot.",
+    stage: "Stage 0 · months 0–9",
+    body: "Build the test cartridge and demonstrate agreement with Raman. Confirm performance in real water. Launch the Microplastics Index.",
   },
   {
     step: "Pilot",
-    stage: "Stage 1 · months 6–24",
-    body: "Three to four prototype iterations. Ten pilot plants purchasing cartridges. Patent filing. Measurement of testing frequency and price acceptance.",
+    stage: "Stage 1 · months 9–24",
+    body: "Build the benchtop analyser and run five pilot plants. Offer a testing service at ₹5,000 per sample to build data and demand.",
   },
   {
     step: "Sell",
-    stage: "Stage 2 · Years 3–5",
-    body: "Pilot plants serve as references. Each sale comprises one analyser and a cartridge subscription. The target is 60 plants by Year 5.",
+    stage: "Stage 2 · Years 3–4",
+    body: "Sell the analyser with test cartridges, service and maintenance: 20 plants in Year 3 and 60 by the end of Year 4.",
   },
 ];
 
@@ -451,29 +419,29 @@ export const risks = [
     when: "Stage 0",
   },
   {
-    risk: "Field performance",
+    risk: "Performance in real water",
     test: "Counts remain accurate with iron, organic matter and turbidity present.",
     when: "Stage 0",
   },
   {
     risk: "Cartridge cost",
-    test: "Production cost of ₹400 or less per cartridge.",
+    test: "Landed cost of ₹400 or less per cartridge.",
     when: "Stage 0",
   },
   {
-    risk: "Pricing",
-    test: "Plants accept ₹1,000 per cartridge and ₹5 lakh per analyser.",
-    when: "Stage 0–1",
+    risk: "Awareness",
+    test: "Buyers rarely request microplastic testing today. The Microplastics Index and the testing service must create demand.",
+    when: "Stages 0–1",
   },
   {
-    risk: "Usage frequency",
-    test: "Approximately one test per day, yielding ₹2.16 lakh of cartridge gross profit per plant per year.",
+    risk: "Pricing",
+    test: "Customers accept ₹2,000 per cartridge and ₹8 lakh for the analyser.",
     when: "Stage 1",
   },
   {
-    risk: "Demand without regulation",
-    test: "India has no microplastic limit for drinking water. Pilots must convert to paid contracts on quality and brand value.",
-    when: "Stage 1–2",
+    risk: "Usage",
+    test: "About one test a day per plant (360 a year).",
+    when: "Stages 1–2",
   },
 ];
 

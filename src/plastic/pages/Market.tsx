@@ -1,12 +1,12 @@
-import { market, objective, pathToMarket, risks, whyNow, whoPays } from "../data";
+import { discovery, market, objective, pathToMarket, risks, whyNow } from "../data";
 import { Block, Callout, Conclusion, PageHead, Src } from "../ui";
 
 const segments = [
-  { name: "Plants bottling for national brands", size: `About ${market.nationalBrandPlants} plants (estimate). First buyers.`, when: "Stage 2" },
-  { name: "Other packaged drinking water plants", size: `${market.licensedPlants.toLocaleString("en-IN")}+ BIS-licensed in India in total`, when: "Stage 2" },
-  { name: "Beverage bottling plants", size: "Same RO and filtration exposure", when: "Stage 2" },
-  { name: "Food producers and testing laboratories", size: "Salt, sugar, milk and other foods", when: "Stage 3" },
-  { name: "Water utilities", size: "Removal with in-line analysis", when: "Stage 6" },
+  { name: "Premium packaged water brands", size: "Backbay, Uravu, Smartwater and other brands that compete on purity", when: "Stages 1–2" },
+  { name: "Injectable pharmaceutical manufacturers", size: "Already count particles in every batch; cannot identify plastic", when: "Stages 1–2" },
+  { name: "Export beverage contractors", size: "Buyers in Europe and Australia are beginning to set requirements", when: "Stages 1–2" },
+  { name: "Other packaged drinking water plants", size: `${market.licensedPlants.toLocaleString("en-IN")}+ BIS-licensed in India in total`, when: "Stage 2 onward" },
+  { name: "Food producers", size: "Salt, sugar, milk and other staples", when: "Phase 2" },
 ];
 
 export default function Market() {
@@ -16,14 +16,25 @@ export default function Market() {
         title="Go-to-Market Strategy"
         lede={
           <p>
-            PlasticOptics will sell first to the plants that bottle for India's national brands, and then to the rest of
-            India's {market.licensedPlants.toLocaleString("en-IN")}+ licensed packaged drinking water plants. The plan is
-            ten pilot plants in Stage 1, then 60 plants by Year 5.
+            PlasticOptics will sell first to customers that already value purity or already count particles, and build wider
+            demand through awareness. The plan is five pilot plants in Stage 1, 20 plants in Year 3 and 60 by the end of
+            Year 4.
           </p>
         }
       />
 
-      <Block id="customer" toc="Customer" title={`Customer: ${whoPays.who}`} intro={<p>{whoPays.why}</p>}>
+      <Block
+        id="customer"
+        toc="Customers"
+        title="Target Customers"
+        intro={
+          <>
+            {discovery.map((d) => (
+              <p key={d}>{d}</p>
+            ))}
+          </>
+        }
+      >
         <table className="po-table">
           <thead>
             <tr>
@@ -56,42 +67,31 @@ export default function Market() {
         </div>
       </Block>
 
-      <Block
-        id="value"
-       
-        title="Value Proposition"
-        intro={
-          <p>
-            Annual cost of daily testing at 360 tests per year, under each approach.
-          </p>
-        }
-      >
+      <Block id="value" title="Value Proposition" intro={<p>Cost and time of one microplastic test, under each approach.</p>}>
         <div className="grid md:grid-cols-2 gap-4">
           <div className="border hair bg-[var(--po-paper)] p-5">
-            <div className="font-medium">External laboratory (Raman or FTIR)</div>
-            <div className="num text-[28px] mt-2">₹18 L</div>
-            <div className="text-[13px] muted">per year: 360 tests × ₹5,000</div>
+            <div className="font-medium">External laboratory (SGS or Eurofins)</div>
+            <div className="num text-[28px] mt-2">₹75,000</div>
+            <div className="text-[13px] muted">per sample, quotes obtained by PlasticOptics</div>
             <ul className="mt-4 text-[13.5px] grid gap-1.5 ink2">
-              <li>Results in 72 hours or more</li>
-              <li>Samples shipped to external laboratories</li>
+              <li>Results in 10 days or more</li>
+              <li>Samples often shipped abroad</li>
               <li>Results arrive after the batch has shipped</li>
             </ul>
           </div>
           <div className="border-2 border-[var(--po-ink)] bg-[var(--po-paper)] p-5">
             <div className="font-medium">PlasticOptics, on site</div>
-            <div className="num text-[28px] mt-2">₹8.6 L</div>
-            <div className="text-[13px] muted">first year: ₹5 L analyser + 360 × ₹1,000</div>
+            <div className="num text-[28px] mt-2">₹2,000</div>
+            <div className="text-[13px] muted">per test cartridge, with a ₹8 lakh analyser</div>
             <ul className="mt-4 text-[13.5px] grid gap-1.5 ink2">
               <li>Results in 20–30 minutes</li>
               <li>Performed on site by quality-control staff</li>
-              <li>
-                <span className="num">₹3.6 L</span> per year from the second year
-              </li>
+              <li>Every batch can be tested</li>
             </ul>
           </div>
         </div>
         <Conclusion>
-          A plant saves ₹9.4 lakh in the first year and ₹14.4 lakh in each later year, and receives results before the
+          One laboratory test costs as much as 37 PlasticOptics tests, and a PlasticOptics result is available before the
           batch leaves the plant.
         </Conclusion>
       </Block>

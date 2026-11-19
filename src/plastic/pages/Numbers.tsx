@@ -1,149 +1,121 @@
-import { market, unitEconomics as ue } from "../data";
-import { BASE, crore, project } from "../model";
-import {
-  BreakEvenStats,
-  BreakEvenTable,
-  Comparables,
-  MarketSize,
-  MissionCapital,
-  ScenarioTable,
-  base as s,
-  missionTotal,
-  missionUsd,
-  scenarioRange,
-  sizing,
-} from "../sections";
-import { Block, Conclusion, PageHead, Src, inr } from "../ui";
+import { incumbent, landedCost, market, prices } from "../data";
+import { BreakEvenTable, MarketSize, sizing } from "../sections";
+import { Block, Conclusion, PageHead, inr } from "../ui";
 
-const deviceCost = ue.deviceCost.reduce((a, c) => a + c.v, 0);
-const monthlyPrice = BASE.testsPerMonth * BASE.cartridgePrice;
-const monthlyCost = BASE.testsPerMonth * BASE.cartridgeCost;
-const pct = (price: number, cost: number) => `${Math.round(((price - cost) / price) * 100)}%`;
-const L2 = (rupees: number) => (rupees / 1e5).toFixed(2);
-
-const yearOne = {
-  revenue: BASE.devicePrice + monthlyPrice * 12,
-  cogs: deviceCost + monthlyCost * 12,
-};
-const later = { revenue: monthlyPrice * 12, cogs: monthlyCost * 12 };
-const labPerYear = 5000 * BASE.testsPerMonth * 12;
-
-const cashPositive = project(BASE).find((r) => r.cumulative > 0)?.year ?? null;
+const cards = [
+  {
+    title: "Benchtop analyser",
+    rows: [
+      ["Price", "₹8,00,000"],
+      ["Landed cost", "₹1,60,000"],
+    ],
+    margin: "80%",
+  },
+  {
+    title: "Test cartridge",
+    rows: [
+      ["Price", "₹2,000"],
+      ["Landed cost", "₹400"],
+    ],
+    margin: "80%",
+  },
+];
 
 const assumptions = [
-  { a: "Analyser price", v: ue.devicePrice, t: "Customer interviews in Stage 0; pilots in Stage 1" },
-  { a: "Cartridge price", v: ue.cartridgePrice, t: "Customer interviews in Stage 0; pilots in Stage 1" },
-  { a: "Tests per plant", v: `${BASE.testsPerMonth} a month`, t: "Pilots in Stage 1" },
-  { a: "Cartridge COGS", v: inr(BASE.cartridgeCost), t: "Stage 0" },
-  { a: "Analyser COGS", v: inr(deviceCost), t: "Prototypes in Stage 1" },
-  { a: "Plants", v: "10 pilots in Year 2, 60 plants by Year 5", t: "Stages 1 and 2" },
-  { a: "Operating costs", v: "₹1.5 crore a year", t: "Stage 1" },
+  { a: "Analyser price", v: "₹8 lakh", t: "Pilots in Stage 1" },
+  { a: "Cartridge price", v: "₹2,000", t: "Pilots in Stage 1" },
+  { a: "Tests per plant", v: "360 a year", t: "Pilots in Stage 1" },
+  { a: "Cartridge landed cost", v: "₹400", t: "Stage 0" },
+  { a: "Analyser landed cost", v: "₹1.6 lakh", t: "Prototypes in Stage 1" },
+  { a: "Active plants", v: "20 in Year 3, 60 in Year 4, 120 in Year 5", t: "Stage 2" },
 ];
 
 export default function Numbers() {
-  const brandShare = s.plantsAtBreakeven ? Math.round((s.plantsAtBreakeven / market.nationalBrandPlants) * 100) : null;
-
   return (
     <>
       <PageHead
         title="Business Model"
         lede={
           <p>
-            PlasticOptics sells a benchtop analyser to bottling plants, followed by a monthly subscription of test
-            cartridges. This page sets out the economics of one plant, the size of the market, the cash the first
-            business requires, and the capital required for the full objective.
+            PlasticOptics sells a benchtop analyser and single-use test cartridges, with service and maintenance. This page
+            sets out the prices, the input costs, the revenue of the benchtop analyser business and the size of the market.
           </p>
         }
       />
 
       <Block id="revenue-model" title="Revenue Model">
         <div className="grid md:grid-cols-2 gap-4">
-          <div className="border hair bg-[var(--po-paper)]">
-            <h3 className="px-5 pt-5 font-medium">Benchtop analyser, one-time sale</h3>
-            <table className="po-table mt-3">
-              <tbody>
-                <tr>
-                  <td className="!pl-5">Market price</td>
-                  <td className="r !pr-5">{ue.devicePrice}</td>
-                </tr>
-                <tr>
-                  <td className="!pl-5">COGS</td>
-                  <td className="r !pr-5">{inr(deviceCost)}</td>
-                </tr>
-                <tr className="em">
-                  <td className="!pl-5 !border-b-0">Gross profit</td>
-                  <td className="r !pr-5 !border-b-0 text-[var(--po-accent)]">
-                    {inr(BASE.devicePrice - deviceCost)} ({pct(BASE.devicePrice, deviceCost)})
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div className="border hair bg-[var(--po-paper)]">
-            <h3 className="px-5 pt-5 font-medium">Cartridge subscription, {BASE.testsPerMonth} tests a month</h3>
-            <table className="po-table mt-3">
-              <tbody>
-                <tr>
-                  <td className="!pl-5">Market price, per month</td>
-                  <td className="r !pr-5">{inr(monthlyPrice)}</td>
-                </tr>
-                <tr>
-                  <td className="!pl-5">COGS, per month</td>
-                  <td className="r !pr-5">{inr(monthlyCost)}</td>
-                </tr>
-                <tr className="em">
-                  <td className="!pl-5 !border-b-0">Gross profit, per month</td>
-                  <td className="r !pr-5 !border-b-0 text-[var(--po-accent)]">
-                    {inr(monthlyPrice - monthlyCost)} ({pct(monthlyPrice, monthlyCost)})
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          {cards.map((c) => (
+            <div key={c.title} className="border hair bg-[var(--po-paper)]">
+              <h3 className="px-5 pt-5 font-medium">{c.title}</h3>
+              <table className="po-table mt-3">
+                <tbody>
+                  {c.rows.map(([k, v]) => (
+                    <tr key={k}>
+                      <td className="!pl-5">{k}</td>
+                      <td className="r !pr-5">{v}</td>
+                    </tr>
+                  ))}
+                  <tr className="em">
+                    <td className="!pl-5 !border-b-0">Margin</td>
+                    <td className="r !pr-5 !border-b-0 text-[var(--po-accent)]">{c.margin}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          ))}
         </div>
         <Conclusion>
-          The analyser is sold once, and the subscription continues for as long as the plant tests. A cartridge is
-          priced at {ue.cartridgePrice} and a laboratory test costs {ue.labPerTest}.
+          Prices are set for an {prices.marginPct}% margin. At one test a day, a plant buys 360 cartridges a year, worth{" "}
+          {inr(sizing.cartPerPlant)}. A laboratory test costs {incumbent.perTest} today.
         </Conclusion>
       </Block>
 
-      <Block id="one-plant" title="Economics of One Plant">
-        <table className="po-table max-w-[560px] text-[14px]">
+      <Block id="unit-economics" title="Unit Economics">
+        <table className="po-table max-w-[620px] text-[14px]">
           <thead>
             <tr>
-              <th>₹ lakh</th>
-              <th className="r">Year 1</th>
-              <th className="r !whitespace-normal">Each later year</th>
+              <th>Item</th>
+              <th>Inputs</th>
+              <th className="r !whitespace-normal">Total landed cost</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Revenue</td>
-              <td className="r">{L2(yearOne.revenue)}</td>
-              <td className="r">{L2(later.revenue)}</td>
-            </tr>
-            <tr>
-              <td>COGS</td>
-              <td className="r">{L2(yearOne.cogs)}</td>
-              <td className="r">{L2(later.cogs)}</td>
-            </tr>
-            <tr className="em">
-              <td>Gross profit</td>
-              <td className="r">{L2(yearOne.revenue - yearOne.cogs)}</td>
-              <td className="r">{L2(later.revenue - later.cogs)}</td>
-            </tr>
-            <tr>
-              <td className="ink2">Cost to the plant of the same tests at a laboratory</td>
-              <td className="r">{L2(labPerYear)}</td>
-              <td className="r">{L2(labPerYear)}</td>
-            </tr>
+            {landedCost.map((x) => (
+              <tr key={x.item}>
+                <td className="font-medium whitespace-nowrap pr-4">{x.item}</td>
+                <td className="ink2">
+                  {x.inputs.map((i) => (
+                    <span key={i} className="block">
+                      {i}
+                    </span>
+                  ))}
+                </td>
+                <td className="r">{x.total}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
         <Conclusion>
-          One plant generates ₹{L2(yearOne.revenue - yearOne.cogs)} lakh of gross profit in its first year and ₹
-          {L2(later.revenue - later.cogs)} lakh in each later year. The plant pays less than half of what the same tests
-          cost at a laboratory. Operating costs of ₹{(BASE.opexLakh / 100).toFixed(1)} crore a year are covered by the
-          cartridge gross profit of {s.plantsToCover} plants.
+          These are preliminary figures and will change with development and market research. A commercial Raman or FTIR
+          system costs about {incumbent.equipment}.
+        </Conclusion>
+      </Block>
+
+      <Block
+        id="break-even"
+        title="Break-even"
+        intro={
+          <p>
+            Research, team expansion and operating costs continue throughout Phase 1. For simplicity, this view covers the
+            benchtop analyser only.
+          </p>
+        }
+      >
+        <BreakEvenTable />
+        <Conclusion>
+          With 120 active plants in Year 5, revenue from the benchtop analyser reaches ₹18.24 crore. The cost side will be
+          modelled as Stage 0 and the pilots establish actual costs.
         </Conclusion>
       </Block>
 
@@ -152,88 +124,16 @@ export default function Numbers() {
         title="Market Size"
         intro={
           <p>
-            These are back-of-the-envelope estimates. The bottled water figures are built from plant counts, volumes and
+            These are back-of-the-envelope estimates. The packaged water figures are built from plant counts, volumes and
             PlasticOptics prices. The food and air figures are existing testing markets.
           </p>
         }
       >
         <MarketSize />
         <Conclusion>
-          The bottling-plant analyser in India is a market of ₹{Math.round(sizing.indiaCart)} crore a year in cartridges.
-          About {market.nationalBrandPlants} plants bottle for national brands and are the first buyers; Bisleri alone has
-          128 <Src id="bisleri" />. These plants represent ₹{Math.round(sizing.brandCart)} crore a year in cartridges and ₹
-          {Math.round(sizing.brandDevice)} crore in analysers. The count of {market.nationalBrandPlants} is an estimate
-          and will be confirmed in customer interviews. Global sales and food and air testing are each larger markets
-          than the first product.
-        </Conclusion>
-      </Block>
-
-      <Block
-        id="break-even"
-        toc="Break-even"
-        title="Break-even"
-        intro={
-          <p>
-            This is the cash the benchtop analyser business requires and the year in which it becomes profitable. It
-            covers bottling plants only. Research for food, in-line analysis and removal is funded separately and is not
-            included.
-          </p>
-        }
-      >
-        <BreakEvenStats />
-        <div className="mt-8">
-          <BreakEvenTable lastYear={8} />
-        </div>
-        <Conclusion>
-          The benchtop analyser business requires about ₹{(s.cashRequired / 100).toFixed(1)} crore and reaches operating
-          profit in Year {s.breakeven}, with {s.plantsAtBreakeven} bottling plants. These are {brandShare}% of the estimated{" "}
-          {market.nationalBrandPlants} plants that bottle for national brands.
-          {cashPositive && (
-            <>
-              {" "}
-              Cumulative cash turns positive in Year {cashPositive} if operating costs remain flat. Sales and service
-              costs will rise as customers are added, so Year {cashPositive} is the earliest case.
-            </>
-          )}
-        </Conclusion>
-
-        <h3 className="mt-12 font-medium">Downside cases</h3>
-        <div className="mt-3">
-          <ScenarioTable />
-        </div>
-        <Conclusion>
-          In each case the business reaches operating profit by Year {scenarioRange.latest} and requires between ₹
-          {(scenarioRange.low / 100).toFixed(1)} crore and ₹{(scenarioRange.high / 100).toFixed(1)} crore. Slower sales
-          and higher operating costs increase the cash required the most.
-        </Conclusion>
-      </Block>
-
-      <Block
-        id="total-capital"
-        toc="Total Capital"
-        title="Total Capital for the Full Objective"
-        intro={
-          <p>
-            The objective is industrial-scale detection and removal of microplastics in water, food and air. The table
-            is a back-of-the-envelope estimate of the capital this requires, by stage.
-          </p>
-        }
-      >
-        <MissionCapital />
-        <p className="mt-2 text-[13.5px] muted max-w-[70ch]">
-          The first line is the business case above. The other lines are estimates that will be revised as each
-          stage is defined.
-        </p>
-
-        <h3 className="mt-10 font-medium">Capital raised by comparable companies</h3>
-        <div className="mt-3">
-          <Comparables />
-        </div>
-        <Conclusion>
-          The full objective requires an estimated ₹{missionTotal.low}–{missionTotal.high} crore ({missionUsd}) over
-          about ten years. Two-thirds of this is Stage 6, which is committed only after removal and in-line analysis
-          have been demonstrated. Companies in the United Kingdom, the United States and Germany have each raised US$4–10 million to
-          bring one microplastic product to early commercial scale.
+          At PlasticOptics prices, India's packaged drinking water plants represent ₹{Math.round(sizing.indiaCart)} crore a
+          year in cartridges. Year 5's 120 plants are {((120 / market.licensedPlants) * 100).toFixed(1)}% of these plants.
+          Food and air testing are each larger markets than the first product.
         </Conclusion>
       </Block>
 

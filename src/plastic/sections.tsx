@@ -1,46 +1,278 @@
-// Sections shared by the Overview and Business Model pages.
-import { airOption, comparables, market, missionCapital, stageGroups, stages, type StageMarket } from "./data";
-import { BASE, SCENARIOS, crore, project, summarise } from "./model";
-import { Src, Stat } from "./ui";
+// Sections shared by the Overview, Business Model and R&D Roadmap pages.
+import { breakEven, incumbent, labs, market, phases, prices, stages, whyNowIndia } from "./data";
+import { Src } from "./ui";
 
-const rows = project(BASE);
-export const base = summarise(BASE, rows);
+const fmt = (n: number) => n.toLocaleString("en-IN");
+const cr = (n: number) => `₹${fmt(Math.round(n))} Cr`;
 
-const round = (n: number, to: number) => Math.round(n / to) * to;
-const cr = (n: number) => `₹${Math.round(n).toLocaleString("en-IN")} Cr`;
-const usd = (croreValue: number) => {
-  const m = (croreValue * 1e7) / market.usd / 1e6;
-  return m >= 1000 ? `US$${(m / 1000).toFixed(1)} billion` : `US$${round(m, 10)} million`;
-};
+/** The three phases: water first, then food and air. */
+export function PhaseCards() {
+  return (
+    <div className="grid md:grid-cols-3 gap-px bg-[var(--po-line)] border hair">
+      {phases.map((x) => (
+        <div key={x.n} className={`p-5 ${x.n === 1 ? "bg-white" : "bg-[var(--po-paper)]"}`}>
+          <div className="flex items-baseline justify-between gap-3">
+            <h3 className="serif text-[24px] leading-none">{x.name}</h3>
+            <span
+              className={`mono text-[10.5px] uppercase tracking-wide px-1.5 py-0.5 whitespace-nowrap ${
+                x.n === 1 ? "bg-[var(--po-ink)] text-[var(--po-bg)]" : "bg-[var(--po-chip)] ink2"
+              }`}
+            >
+              Phase {x.n}
+            </span>
+          </div>
+          <p className="mt-3 text-[14px] ink2 leading-relaxed">{x.text}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Court orders and laboratory prices in India. */
+export function WhyNow() {
+  return (
+    <div className="grid gap-10">
+      <ol className="border-l hair ml-1.5">
+        {whyNowIndia.map((w) => (
+          <li key={w.when} className="relative pl-6 pb-6 last:pb-0">
+            <span className="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full bg-[var(--po-accent)]" />
+            <div className="num text-[13px]">{w.when}</div>
+            <p className="mt-1 text-[15px] max-w-[62ch]">
+              {w.text}{" "}
+              {w.src.map((s) => (
+                <Src key={s} id={s} />
+              ))}
+            </p>
+          </li>
+        ))}
+      </ol>
+      <div>
+        <h3 className="font-medium">Testing available in India today</h3>
+        <div className="mt-3 grid sm:grid-cols-2 gap-px bg-[var(--po-line)] border hair">
+          {labs.map((l) => (
+            <div key={l.name} className="bg-[var(--po-paper)] p-5">
+              <div className="text-[13px] muted">{l.name}, per sample</div>
+              <div className="num text-[22px] mt-1">{l.price}</div>
+              <p className="mt-2 text-[13.5px] ink2 leading-snug">{l.detail}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-3 text-[13px] muted">Prices are quotes obtained by PlasticOptics in 2026.</p>
+      </div>
+    </div>
+  );
+}
+
+const YEARS = 5;
+
+/** Phase 1 as a timeline: stages run in parallel from Year 3. */
+export function StageTimeline() {
+  return (
+    <div>
+      <div className="grid md:grid-cols-[230px_1fr] gap-4 mb-2">
+        <div className="hidden md:block" />
+        <div className="grid grid-cols-5 mono text-[11px] muted">
+          {Array.from({ length: YEARS }, (_, i) => (
+            <div key={i} className="border-l hair pl-1.5">
+              Year {i + 1}
+            </div>
+          ))}
+        </div>
+      </div>
+      <ol className="grid gap-3 md:gap-2">
+        {stages.map((x) => (
+          <li key={x.n} className="md:grid md:grid-cols-[230px_1fr] md:gap-4 md:items-center">
+            <div className="flex items-baseline gap-2 text-[14px]">
+              <span className={`num ${x.current ? "text-[var(--po-accent)]" : "muted"}`}>{x.n}</span>
+              <span className="font-medium leading-snug">{x.name}</span>
+            </div>
+            <div className="relative h-7 mt-1.5 md:mt-0 bg-[var(--po-paper)] border hair">
+              <div
+                className={`absolute inset-y-0 flex items-center justify-end pr-1.5 mono text-[11px] ${
+                  x.current ? "bg-[var(--po-accent)] text-white" : "bg-[var(--po-ink)] text-[var(--po-bg)]"
+                }`}
+                style={{ left: `${(x.start / YEARS) * 100}%`, width: `${((x.end - x.start) / YEARS) * 100}%` }}
+                title={x.when}
+              >
+                {x.ongoing && "→"}
+              </div>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+/** Each stage of Phase 1 with its notes and funding. */
+export function StageList({ detail = true }: { detail?: boolean }) {
+  return (
+    <ol className="border-t hair">
+      {stages.map((x) => (
+        <li key={x.n} className="grid grid-cols-[36px_1fr] md:grid-cols-[48px_1fr_220px] gap-x-4 gap-y-2 py-5 border-b hair">
+          <div className={`num text-[26px] leading-none ${x.current ? "text-[var(--po-accent)]" : ""}`}>{x.n}</div>
+          <div>
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <h3 className="font-medium text-[16px]">{x.name}</h3>
+              <span className="mono text-[12px] muted">{x.when}</span>
+              {x.current && <span className="chip !bg-[var(--po-lime)] !text-black">Current</span>}
+            </div>
+            <p className="mt-1.5 text-[14.5px] max-w-[60ch]">{x.what}</p>
+            {detail && (
+              <ul className="mt-2 grid gap-1 text-[13.5px] ink2 max-w-[60ch] list-disc pl-4">
+                {x.notes.map((n) => (
+                  <li key={n}>{n}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <div className="col-start-2 md:col-start-3 md:text-right">
+            <div className="text-[12px] muted">Funding</div>
+            <div className="num text-[14px] mt-0.5">{x.funding.split(" (")[0]}</div>
+            {x.funding.includes(" (") && (
+              <div className="text-[12.5px] ink2 leading-snug mt-0.5">{x.funding.split(" (")[1].replace(/\)$/, "")}</div>
+            )}
+          </div>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+const pct = (a: number, b: number) => Math.round((1 - a / b) * 100);
+
+/** Current methods against PlasticOptics. */
+export function CostComparison() {
+  const layers = [
+    {
+      name: "Current methods (Raman or FTIR spectroscopy)",
+      strong: false,
+      cards: [
+        { k: "Equipment", v: incumbent.equipment, d: "Raman spectrometer and supporting laboratory equipment." },
+        { k: "Personnel", v: "Specialist staff", d: "Trained spectroscopists to prepare samples and operate the instrument." },
+        { k: "Per test", v: incumbent.perTest, d: "Market rate. Results in 10 days or more." },
+      ],
+    },
+    {
+      name: "PlasticOptics",
+      strong: true,
+      cards: [
+        { k: "Equipment", v: "₹8 L", d: "Benchtop analyser." },
+        { k: "Personnel", v: "None", d: "Operated by the plant's existing quality-control staff." },
+        { k: "Per test", v: "₹2,000", d: "Single-use test cartridge. Results in 20–30 minutes." },
+      ],
+    },
+  ];
+  return (
+    <div className="grid gap-6">
+      {layers.map((layer) => (
+        <div key={layer.name}>
+          <h3 className="font-medium">{layer.name}</h3>
+          <div
+            className={`mt-3 grid sm:grid-cols-3 gap-px border ${
+              layer.strong ? "bg-[var(--po-ink)] border-[var(--po-ink)]" : "bg-[var(--po-line)] hair"
+            }`}
+          >
+            {layer.cards.map((c) => (
+              <div key={c.k} className="bg-[var(--po-paper)] p-5">
+                <div className="text-[13px] muted">{c.k}</div>
+                <div
+                  className={`mt-1 text-[24px] leading-tight ${c.v.startsWith("₹") ? "num" : "serif"} ${
+                    layer.strong ? "text-[var(--po-accent)]" : ""
+                  }`}
+                >
+                  {c.v}
+                </div>
+                <p className="mt-2 text-[13.5px] ink2 leading-snug">{c.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+export const savings = { equipment: pct(8, 150), perTest: pct(2000, 75000) };
+
+/** The break-even table, as written in the founder's plan. */
+export function BreakEvenTable() {
+  const dash = (v: string | number) => (v === "" ? "–" : v);
+  return (
+    <>
+      <div className="overflow-x-auto -mx-6 md:mx-0 px-6 md:px-0">
+        <table className="po-table text-[13.5px] min-w-[620px] md:min-w-0">
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th className="r !whitespace-normal">Active plants (new)</th>
+              <th className="r !whitespace-normal">Cartridge sales</th>
+              <th className="r !whitespace-normal">Device sales and maintenance</th>
+              <th className="r">Revenue</th>
+              <th className="r !whitespace-normal">Capital infusion</th>
+              <th className="r !whitespace-normal">Overall costs</th>
+            </tr>
+            <tr className="text-[12px]">
+              <td className="muted !font-normal !whitespace-normal">How calculated</td>
+              <td className="r muted !whitespace-normal">Plants on device (new)</td>
+              <td className="r muted !whitespace-normal">₹2k × 360 × active plants</td>
+              <td className="r muted !whitespace-normal">₹8 L × active plants</td>
+              <td className="r muted !whitespace-normal">Sales and maintenance</td>
+              <td className="r muted !whitespace-normal">EV, Seed, Series A</td>
+              <td className="r muted !whitespace-normal">G&amp;A, S&amp;M, COGS</td>
+            </tr>
+          </thead>
+          <tbody>
+            {breakEven.map((r) => (
+              <tr key={r.year}>
+                <td className="whitespace-nowrap">Year {r.year}</td>
+                <td className="r">
+                  {r.active} ({r.added})
+                </td>
+                <td className="r">{r.cartridges}</td>
+                <td className="r">{r.device}</td>
+                <td className="r font-medium">{r.revenue}</td>
+                <td className="r">{dash(r.capital)}</td>
+                <td className="r">{dash(r.costs)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="mt-3 text-[13.5px] muted max-w-[70ch]">
+        Cartridge and device figures are in ₹ lakh. Prices are set for an {prices.marginPct}% margin: ₹2,000 per
+        cartridge and ₹8 lakh per analyser. The device column includes service and maintenance for each active plant.
+        Costs beyond Year 1 are not yet modelled.
+      </p>
+    </>
+  );
+}
 
 /** Bottom-up market size for bottled water at PlasticOptics prices, ₹ crore. */
 export const sizing = (() => {
   const ratio = market.globalVolumeBnL / market.indiaVolumeBnL;
-  const indiaCart = (market.licensedPlants * base.cartRevPlant) / 100;
-  const indiaDevice = (market.licensedPlants * BASE.devicePrice) / 1e7;
-  return {
-    ratio: Math.round(ratio),
-    indiaCart,
-    indiaDevice,
-    brandCart: (market.nationalBrandPlants * base.cartRevPlant) / 100,
-    brandDevice: (market.nationalBrandPlants * BASE.devicePrice) / 1e7,
-    globalCart: round(indiaCart * ratio, 100),
-    globalDevice: round(indiaDevice * ratio, 100),
-  };
+  const cartPerPlant = prices.cartridge * prices.testsPerYear; // ₹ per plant per year
+  const indiaCart = (market.licensedPlants * cartPerPlant) / 1e7;
+  const indiaDevice = (market.licensedPlants * prices.device) / 1e7;
+  const round = (n: number) => Math.round(n / 100) * 100;
+  return { ratio: Math.round(ratio), cartPerPlant, indiaCart, indiaDevice, globalCart: round(indiaCart * ratio), globalDevice: round(indiaDevice * ratio) };
 })();
 
+const usd = (croreValue: number) => {
+  const m = (croreValue * 1e7) / market.usd / 1e6;
+  return m >= 1000 ? `US$${(m / 1000).toFixed(1)} billion` : `US$${Math.round(m / 10) * 10} million`;
+};
 const withUsd = (n: number) => (
   <>
     {cr(n)} <span className="block sm:inline muted font-sans text-[12.5px] whitespace-nowrap">({usd(n)})</span>
   </>
 );
 
-export function MarketSize({ notes = true }: { notes?: boolean }) {
+export function MarketSize() {
   const z = sizing;
   return (
     <div className="grid gap-8">
       <div className="min-w-0">
-        <h3 className="font-medium">Bottled water, at PlasticOptics prices</h3>
+        <h3 className="font-medium">Packaged drinking water, at PlasticOptics prices</h3>
         <div className="mt-3">
           <table className="po-table text-[14px]">
             <thead>
@@ -57,22 +289,21 @@ export function MarketSize({ notes = true }: { notes?: boolean }) {
                 <td className="r">{withUsd(z.globalCart)}</td>
               </tr>
               <tr>
-                <td>Analysers, one-time</td>
+                <td>Analysers, service and maintenance, per year</td>
                 <td className="r">{cr(z.indiaDevice)}</td>
                 <td className="r">{withUsd(z.globalDevice)}</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p className={notes ? "mt-3 text-[13.5px] muted max-w-[70ch]" : "hidden"}>
-          India has {market.licensedPlants.toLocaleString("en-IN")}+ licensed packaged drinking water plants <Src id="bis" />.
-          Each plant is counted at one ₹5 lakh analyser and ₹{base.cartRevPlant.toFixed(1)} lakh of cartridges a year. India
-          bottles about 25 billion litres a year <Src id="indiaVolume" /> and the world about{" "}
-          {market.globalVolumeBnL} billion litres <Src id="unu" />, so the global figures are the India figures multiplied
-          by {z.ratio}, at India prices. US dollar figures use ₹{market.usd} per dollar.
+        <p className="mt-3 text-[13.5px] muted max-w-[70ch]">
+          India has {fmt(market.licensedPlants)}+ licensed packaged drinking water plants <Src id="bis" />. Each plant is
+          counted at ₹8 lakh a year for the analyser, service and maintenance, and 360 cartridges at ₹2,000. India bottles
+          about 25 billion litres a year <Src id="indiaVolume" /> and the world about {market.globalVolumeBnL} billion
+          litres <Src id="unu" />, so the global figures are the India figures multiplied by {z.ratio}, at India prices.
+          US dollar figures use ₹{market.usd} per dollar.
         </p>
       </div>
-
       <div className="min-w-0">
         <h3 className="font-medium">Food and air, existing spend on testing</h3>
         <div className="mt-3">
@@ -113,274 +344,7 @@ export function MarketSize({ notes = true }: { notes?: boolean }) {
             </tbody>
           </table>
         </div>
-        <p className={notes ? "mt-3 text-[13.5px] muted max-w-[70ch]" : "hidden"}>
-          These are existing markets that microplastic testing of food and air would sell into. Published estimates of
-          food testing spend in India differ by more than ten times and are not used here. India operates 1,524 air
-          quality monitoring stations <Src id="airStations" />. The share of these markets available to PlasticOptics
-          cannot be estimated until the method is validated for food and air.
-        </p>
       </div>
-    </div>
-  );
-}
-
-export function BreakEvenStats() {
-  return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-      <Stat v={crore(base.cashRequired)} k="Cash required to reach operating profit" accent />
-      <Stat v={`Year ${base.breakeven}`} k="First year of operating profit" />
-      <Stat v={`${base.plantsAtBreakeven} plants`} k={`Bottling plants using the analyser in Year ${base.breakeven}`} />
-      <Stat v={crore(base.revenueAtBreakeven ?? 0)} k={`Revenue in Year ${base.breakeven}`} />
-    </div>
-  );
-}
-
-const scenarioResults = SCENARIOS.map((sc) => summarise(sc.inputs, project(sc.inputs)));
-export const scenarioRange = {
-  latest: Math.max(...scenarioResults.map((x) => x.breakeven ?? 99)),
-  low: Math.min(...scenarioResults.map((x) => x.cashRequired)),
-  high: Math.max(...scenarioResults.map((x) => x.cashRequired)),
-};
-
-export function BreakEvenTable({ lastYear = 6 }: { lastYear?: number }) {
-  return (
-    <>
-      <div className="overflow-x-auto">
-        <table className="po-table text-[14px]">
-          <thead>
-            <tr>
-              <th>Year</th>
-              <th className="r !whitespace-normal">Bottling plants</th>
-              <th className="r">Revenue</th>
-              <th className="r !whitespace-normal">Operating profit</th>
-              <th className="r !whitespace-normal">Cumulative cash</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows
-              .filter((r) => r.year <= lastYear)
-              .map((r) => (
-                <tr key={r.year} className={r.year === base.breakeven ? "em" : ""}>
-                  <td className="whitespace-nowrap">Year {r.year}</td>
-                  <td className="r">{r.active}</td>
-                  <td className="r">{r.revenue.toFixed(1)}</td>
-                  <td className={`r ${r.operating < 0 ? "text-[var(--po-accent)]" : ""} ${r.year === base.breakeven ? "bg-[var(--po-lime)]" : ""}`}>
-                    {r.operating.toFixed(1)}
-                  </td>
-                  <td className="r">{r.cumulative.toFixed(1)}</td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
-      <p className="mt-3 text-[13.5px] muted max-w-[70ch]">
-        ₹ lakh. The break-even covers the benchtop analyser for bottling plants only. Research for food, in-line
-        analysis and removal is funded separately and is not included. Year 1 includes ₹{BASE.validationLakh} lakh of
-        technology validation. Years 1 and 2 include ₹
-        {((BASE.developmentLakh[0] + BASE.developmentLakh[1]) / 100).toFixed(0)} crore of product development: prototypes,
-        ten pilot analysers, a patent filing and validation of the method. Operating costs are ₹
-        {(BASE.opexLakh / 100).toFixed(1)} crore a year from Year 2. Cash required is the largest cumulative deficit of{" "}
-        {crore(base.deficit)}, plus a {BASE.reservePct}% reserve for inventory, receivables and contingency.
-      </p>
-    </>
-  );
-}
-
-export function ScenarioTable() {
-  return (
-    <div className="overflow-x-auto -mx-6 md:mx-0 px-6 md:px-0">
-      <table className="po-table text-[14px] min-w-[560px]">
-        <thead>
-          <tr>
-            <th>Case</th>
-            <th>Assumption changed</th>
-            <th className="r !whitespace-normal">Operating profit from</th>
-            <th className="r !whitespace-normal">Plants</th>
-            <th className="r !whitespace-normal">Cash required</th>
-          </tr>
-        </thead>
-        <tbody>
-          {SCENARIOS.map((sc) => {
-            const x = summarise(sc.inputs, project(sc.inputs));
-            return (
-              <tr key={sc.id} className={sc.id === "base" ? "em" : ""}>
-                <td className="whitespace-nowrap">{sc.label}</td>
-                <td className="ink2 !font-normal">{sc.change}</td>
-                <td className="r">{x.breakeven ? `Year ${x.breakeven}` : "Not reached"}</td>
-                <td className="r">{x.plantsAtBreakeven ?? "–"}</td>
-                <td className="r">{crore(x.cashRequired)}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-export const missionTotal = {
-  low: missionCapital.reduce((a, m) => a + m.low, 0),
-  high: missionCapital.reduce((a, m) => a + m.high, 0),
-};
-export const missionUsd = `US$${Math.round((missionTotal.low * 1e7) / market.usd / 1e6)}–${Math.round((missionTotal.high * 1e7) / market.usd / 1e6)} million`;
-
-export function MissionCapital() {
-  return (
-    <div>
-      <table className="po-table text-[14px]">
-        <thead>
-          <tr>
-            <th>Stage</th>
-            <th>Work</th>
-            <th className="r">₹ crore</th>
-          </tr>
-        </thead>
-        <tbody>
-          {missionCapital.map((m) => (
-            <tr key={m.programme}>
-              <td className="num whitespace-nowrap">{m.stage}</td>
-              <td>
-                <span className="font-medium">{m.programme}</span>
-                <span className="block ink2">{m.scope}</span>
-              </td>
-              <td className="r">{m.low === m.high ? m.low : `${m.low}–${m.high}`}</td>
-            </tr>
-          ))}
-          <tr className="em">
-            <td />
-            <td>Total</td>
-            <td className="r">
-              {missionTotal.low}–{missionTotal.high}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <p className="mt-3 text-[13.5px] muted max-w-[70ch]">
-        Removal is costed for water only. Removal from food and air, and detection in air, are not yet defined and are
-        not included.
-      </p>
-    </div>
-  );
-}
-
-const MARKETS: { id: StageMarket; label: string }[] = [
-  { id: "water", label: "Water" },
-  { id: "food", label: "Food" },
-  { id: "air", label: "Air" },
-];
-const tone: Record<StageMarket, string> = {
-  water: "bg-[var(--po-detect-soft)] text-[var(--po-detect)]",
-  food: "bg-[var(--po-accent-soft)] text-[var(--po-accent)]",
-  air: "bg-[var(--po-chip)] text-[var(--po-ink-2)]",
-};
-
-function StageCard({ x, detail }: { x: (typeof stages)[number]; detail?: boolean }) {
-  return (
-    <div
-      className={`h-full bg-[var(--po-paper)] border p-4 ${
-        x.current ? "border-[var(--po-ink)] border-2" : "hair"
-      }`}
-    >
-      <div className="flex items-center gap-2.5">
-        <span className={`num shrink-0 grid place-items-center w-6 h-6 rounded-full text-[12px] ${tone[x.market]}`}>{x.n}</span>
-        <h3 className="font-medium text-[15px] leading-tight">{x.name}</h3>
-        {x.current && <span className="chip !bg-[var(--po-lime)] !text-black ml-auto">Current</span>}
-      </div>
-      <p className="mt-2 text-[13.5px] ink2 leading-snug">{detail ? x.objective : x.short}</p>
-      {detail && x.work && <p className="mt-1.5 text-[13px] muted leading-snug">{x.work}</p>}
-      <div className="mt-2 mono text-[11.5px] muted">{x.when}</div>
-      <p className="mt-3 pt-2.5 border-t hair text-[13px] leading-snug">
-        <span className="muted">Proves: </span>
-        {x.gate}
-      </p>
-    </div>
-  );
-}
-
-/** The stages as a map: one column per market (water, food, air), grouped into Detect, Monitor and Remove.
- *  On phones the columns collapse into one list, and each card carries its market. */
-export function StageMap({ detail }: { detail?: boolean }) {
-  return (
-    <div>
-      <div className="hidden md:grid md:grid-cols-[1.7fr_1fr_1fr] gap-3 mb-1">
-        {MARKETS.map((m) => (
-          <div key={m.id} className={`mono text-[11.5px] uppercase tracking-wide px-3 py-1.5 text-center ${tone[m.id]}`}>
-            {m.label}
-          </div>
-        ))}
-      </div>
-      {stageGroups.map((g) => {
-        const items = stages.filter((x) => x.group === g.name);
-        const last = g.name === "Remove";
-        return (
-          <section key={g.name} className="mt-6">
-            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 pb-2 border-b hair">
-              <h3 className="serif text-[22px] leading-none">{g.name}</h3>
-              <span className="text-[13.5px] muted">{g.line}</span>
-            </div>
-            <ol className="mt-3 grid gap-3">
-              {items.map((x, i) => (
-                <li key={x.n} className="md:grid md:grid-cols-[1.7fr_1fr_1fr] md:gap-3">
-                  <div className={x.market === "food" ? "md:col-start-2" : "md:col-start-1"}>
-                    <span className={`md:hidden inline-block mb-1.5 mono text-[10.5px] uppercase tracking-wide px-1.5 py-0.5 ${tone[x.market]}`}>
-                      {MARKETS.find((m) => m.id === x.market)?.label}
-                    </span>
-                    <StageCard x={x} detail={detail} />
-                  </div>
-                  {last && i === items.length - 1 && (
-                    <div className="mt-3 md:mt-0 md:col-start-3">
-                      <span className={`md:hidden inline-block mb-1.5 mono text-[10.5px] uppercase tracking-wide px-1.5 py-0.5 ${tone.air}`}>
-                        Air
-                      </span>
-                      <div className="h-full border border-dashed border-[var(--po-line-2)] p-4">
-                        <div className="flex items-center gap-2.5">
-                          <span className={`num shrink-0 grid place-items-center w-6 h-6 rounded-full text-[12px] ${tone.air}`}>+</span>
-                          <h3 className="font-medium text-[15px] leading-tight">{airOption.name}</h3>
-                        </div>
-                        <p className="mt-2 text-[13.5px] ink2 leading-snug">{detail ? airOption.objective : airOption.short}</p>
-                        <div className="mt-2 mono text-[11.5px] muted">Later option</div>
-                      </div>
-                    </div>
-                  )}
-                </li>
-              ))}
-            </ol>
-          </section>
-        );
-      })}
-    </div>
-  );
-}
-
-export function Comparables() {
-  return (
-    <div>
-      <table className="po-table text-[14px]">
-        <thead>
-          <tr>
-            <th>Company</th>
-            <th>Product</th>
-            <th className="r">Raised</th>
-          </tr>
-        </thead>
-        <tbody>
-          {comparables.map((c) => (
-            <tr key={c.name}>
-              <td className="pr-4">
-                <span className="font-medium">{c.name}</span>
-                <span className="block text-[12.5px] muted">{c.where}</span>
-              </td>
-              <td className="ink2">
-                {c.what} <Src id={c.src} />
-              </td>
-              <td className="r !whitespace-normal">
-                {c.raised}
-                <span className="block font-sans text-[12.5px] muted">{c.round}</span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
   );
 }
