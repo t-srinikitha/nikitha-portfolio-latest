@@ -1,11 +1,27 @@
 import { stage0Done } from "../data";
-import { Block, Callout, PageHead, Src } from "../ui";
+import { Block, Callout, PageHead, Src, Sub } from "../ui";
 
 const steps = [
-  { n: "01", t: "Sample", b: "Water is drawn from the production batch or line." },
-  { n: "02", t: "Filter", b: "A membrane within the cartridge captures particles." },
-  { n: "03", t: "Stain", b: "Differential dyes distinguish plastic particles from natural particles." },
-  { n: "04", t: "Image and count", b: "A microscope with optical filters images the membrane. AI software counts the stained particles." },
+  {
+    n: "01",
+    t: "Sample",
+    b: "Water is drawn from the production batch or line.",
+  },
+  {
+    n: "02",
+    t: "Filter",
+    b: "A membrane within the cartridge captures particles.",
+  },
+  {
+    n: "03",
+    t: "Stain",
+    b: "Differential dyes distinguish plastic particles from natural particles.",
+  },
+  {
+    n: "04",
+    t: "Image and count",
+    b: "A microscope with optical filters images the membrane. AI software counts the stained particles.",
+  },
 ];
 
 const compare = [
@@ -24,10 +40,20 @@ function Membrane() {
     const a = i * 2.39996;
     const r = Math.sqrt((i + 0.5) / 70) * 92;
     const plastic = (i * 7) % 5 === 0 || (i * 3) % 11 === 0;
-    return { x: 110 + r * Math.cos(a), y: 110 + r * Math.sin(a), s: 1.6 + ((i * 13) % 7) * 0.45, plastic };
+    return {
+      x: 110 + r * Math.cos(a),
+      y: 110 + r * Math.sin(a),
+      s: 1.6 + ((i * 13) % 7) * 0.45,
+      plastic,
+    };
   });
   return (
-    <svg viewBox="0 0 220 220" className="w-full max-w-[260px] h-auto" role="img" aria-label="Illustration of a filter membrane with stained plastic particles glowing among unstained natural particles">
+    <svg
+      viewBox="0 0 220 220"
+      className="w-full max-w-[260px] h-auto"
+      role="img"
+      aria-label="Illustration of a filter membrane with stained plastic particles glowing among unstained natural particles"
+    >
       <defs>
         <radialGradient id="glow" r="1">
           <stop offset="0" stopColor="var(--po-accent)" stopOpacity="0.9" />
@@ -63,108 +89,119 @@ export default function Science() {
         }
       />
 
-      <Block id="method" title="Measurement Method">
-        <div className="grid md:grid-cols-[1fr_240px] gap-8 items-center">
-          <ol className="grid gap-5">
-            {steps.map((s) => (
-              <li key={s.n} className="grid grid-cols-[32px_1fr] gap-3">
-                <span className="num text-[13px] muted pt-1">{s.n}</span>
-                <div>
-                  <h3 className="font-medium">{s.t}</h3>
-                  <p className="text-[14px] ink2 mt-0.5">{s.b}</p>
-                </div>
+      <Block id="how" title="How It Works">
+        <Sub id="method" title="Measurement Method">
+          <div className="grid md:grid-cols-[1fr_240px] gap-8 items-center">
+            <ol className="grid gap-5">
+              {steps.map((s) => (
+                <li key={s.n} className="grid grid-cols-[32px_1fr] gap-3">
+                  <span className="num text-[13px] muted pt-1">{s.n}</span>
+                  <div>
+                    <h4 className="font-medium">{s.t}</h4>
+                    <p className="text-[14px] ink2 mt-0.5">{s.b}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <figure className="flex flex-col items-center gap-2">
+              <Membrane />
+              <figcaption className="text-[12px] muted text-center">
+                Illustration: stained plastic particles fluoresce.
+              </figcaption>
+            </figure>
+          </div>
+        </Sub>
+
+        <Sub id="compare" title="Comparison with Spectroscopy">
+          <div className="overflow-x-auto -mx-6 md:mx-0 px-6 md:px-0">
+            <table className="po-table min-w-[520px]">
+              <thead>
+                <tr>
+                  <th />
+                  <th>FTIR / Raman lab</th>
+                  <th>PlasticOptics</th>
+                </tr>
+              </thead>
+              <tbody>
+                {compare.map(([k, a, b]) => (
+                  <tr key={k}>
+                    <td className="muted whitespace-nowrap">{k}</td>
+                    <td className="ink2">{a}</td>
+                    <td className="font-medium">{b}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Sub>
+      </Block>
+
+      <Block id="validation-group" title="Validation">
+        <Sub
+          id="validation"
+
+          title="Validation Plan"
+          intro={
+            <p>
+              Each sample is analysed by both PlasticOptics and Raman/FTIR. Research collaborators: Prof. Sarit S.
+              Agasti (JNCASR) and Prof. Suryasarathi Bose (IISc).
+            </p>
+          }
+        >
+          <ol className="grid gap-3">
+            {stage0Done.map((d, i) => (
+              <li key={d} className="grid grid-cols-[28px_1fr] gap-3 text-[15px]">
+                <span className="num text-[13px] muted pt-0.5">0{i + 1}</span>
+                <span>{d}</span>
               </li>
             ))}
           </ol>
-          <figure className="flex flex-col items-center gap-2">
-            <Membrane />
-            <figcaption className="text-[12px] muted text-center">Illustration: stained plastic particles fluoresce.</figcaption>
-          </figure>
-        </div>
-      </Block>
+          <div className="mt-8 grid sm:grid-cols-3 gap-px bg-[var(--po-line)] border hair">
+            {[
+              ["Iron", "Iron particles must be excluded from plastic counts."],
+              ["Organics", "Organic matter can bind dyes; differential staining must distinguish it."],
+              ["Turbidity", "Suspended solids can obscure particles."],
+            ].map(([t, b]) => (
+              <div key={t} className="bg-[var(--po-paper)] p-4">
+                <div className="font-medium">{t}</div>
+                <p className="mt-1 text-[13px] ink2">{b}</p>
+              </div>
+            ))}
+          </div>
+        </Sub>
 
-      <Block id="compare" title="Comparison with Spectroscopy">
-        <div className="overflow-x-auto -mx-6 md:mx-0 px-6 md:px-0">
-          <table className="po-table min-w-[520px]">
+        <Sub
+          id="standards"
+
+          title="Regulatory Size Classes"
+          intro={<p>Results must align with official size classifications.</p>}
+        >
+          <table className="po-table">
             <thead>
               <tr>
-                <th />
-                <th>FTIR / Raman lab</th>
-                <th>PlasticOptics</th>
+                <th>Method</th>
+                <th>Size range</th>
+                <th>Note</th>
               </tr>
             </thead>
             <tbody>
-              {compare.map(([k, a, b]) => (
-                <tr key={k}>
-                  <td className="muted whitespace-nowrap">{k}</td>
-                  <td className="ink2">{a}</td>
-                  <td className="font-medium">{b}</td>
-                </tr>
-              ))}
+              <tr>
+                <td className="font-medium">
+                  EU drinking water, 2024 <Src id="eu" />
+                </td>
+                <td className="num">20 µm – 5 mm</td>
+                <td className="ink2">Filter cascade; at least 1,000 litres per sample; counts per m³</td>
+              </tr>
+              <tr>
+                <td className="font-medium">
+                  California, 2022 <Src id="californiaNews" />
+                </td>
+                <td className="num">&gt; 20 or 50 µm</td>
+                <td className="ink2">Source water first, treated water next; FTIR or Raman</td>
+              </tr>
             </tbody>
           </table>
-        </div>
-      </Block>
-
-      <Block
-        id="validation"
-       
-        title="Validation Plan"
-        intro={<p>Each sample is analysed by both PlasticOptics and Raman/FTIR. Research collaborators: Prof. Sarit S. Agasti (JNCASR) and Prof. Suryasarathi Bose (IISc).</p>}
-      >
-        <ol className="grid gap-3">
-          {stage0Done.map((d, i) => (
-            <li key={d} className="grid grid-cols-[28px_1fr] gap-3 text-[15px]">
-              <span className="num text-[13px] muted pt-0.5">0{i + 1}</span>
-              <span>{d}</span>
-            </li>
-          ))}
-        </ol>
-        <div className="mt-8 grid sm:grid-cols-3 gap-px bg-[var(--po-line)] border hair">
-          {[
-            ["Iron", "Iron particles must be excluded from plastic counts."],
-            ["Organics", "Organic matter can bind dyes; differential staining must distinguish it."],
-            ["Turbidity", "Suspended solids can obscure particles."],
-          ].map(([t, b]) => (
-            <div key={t} className="bg-[var(--po-paper)] p-4">
-              <div className="font-medium">{t}</div>
-              <p className="mt-1 text-[13px] ink2">{b}</p>
-            </div>
-          ))}
-        </div>
-      </Block>
-
-      <Block
-        id="standards"
-       
-        title="Regulatory Size Classes"
-        intro={<p>Results must align with official size classifications.</p>}
-      >
-        <table className="po-table">
-          <thead>
-            <tr>
-              <th>Method</th>
-              <th>Size range</th>
-              <th>Note</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="font-medium">
-                EU drinking water, 2024 <Src id="eu" />
-              </td>
-              <td className="num">20 µm – 5 mm</td>
-              <td className="ink2">Filter cascade; at least 1,000 litres per sample; counts per m³</td>
-            </tr>
-            <tr>
-              <td className="font-medium">
-                California, 2022 <Src id="californiaNews" />
-              </td>
-              <td className="num">&gt; 20 or 50 µm</td>
-              <td className="ink2">Source water first, treated water next; FTIR or Raman</td>
-            </tr>
-          </tbody>
-        </table>
+        </Sub>
       </Block>
 
       <Block id="removal" title="Removal Chemistry">

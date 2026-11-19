@@ -54,15 +54,24 @@ function PageList({ onNavigate }: { onNavigate?: () => void }) {
   );
 }
 
-/** Sections of the current page, read from [data-toc], with the section in view highlighted. */
-function SectionList() {
+type TocItem = { id: string; label: string; level: number; parent: string | null };
+
+/** Contents of the current page, read from [data-toc], with the section in view highlighted. */
+function Contents() {
   const { pathname } = useLocation();
-  const [items, setItems] = useState<{ id: string; label: string }[]>([]);
+  const [items, setItems] = useState<TocItem[]>([]);
   const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
     const t = setTimeout(() => {
-      setItems(Array.from(document.querySelectorAll<HTMLElement>("[data-toc]")).map((el) => ({ id: el.id, label: el.dataset.toc || el.id })));
+      let parent: string | null = null;
+      setItems(
+        Array.from(document.querySelectorAll<HTMLElement>("[data-toc]")).map((el) => {
+          const level = Number(el.dataset.tocLevel || 1);
+          if (level === 1) parent = el.id;
+          return { id: el.id, label: el.dataset.toc || el.id, level, parent: level === 1 ? null : parent };
+        }),
+      );
     }, 0);
     return () => clearTimeout(t);
   }, [pathname]);
@@ -84,17 +93,23 @@ function SectionList() {
   }, [items]);
 
   if (!items.length) return null;
+  const activeGroup = items.find((i) => i.id === active)?.parent ?? active;
   return (
-    <nav aria-label="Sections on this page" className="mt-6 pt-6 border-t hair">
-      <ul className="grid gap-0.5 border-l hair">
+    <nav aria-label="Contents of this page">
+      <div className="mono text-[11px] uppercase tracking-wide muted mb-3">Contents</div>
+      <ul className="grid border-l hair">
         {items.map((it) => {
-          const on = it.id === active;
+          const on = it.id === active || (it.level === 1 && it.id === activeGroup);
           return (
             <li key={it.id}>
               <a
                 href={`#${it.id}`}
-                className={`-ml-px block border-l py-1 pl-3 text-[13.5px] leading-snug transition-colors ${
-                  on ? "border-[var(--po-ink)] text-[var(--po-ink)]" : "border-transparent muted hover:text-[var(--po-ink)]"
+                className={`-ml-px block border-l leading-snug transition-colors ${
+                  it.level === 1 ? "pl-3 pt-2.5 pb-1 text-[13.5px] font-medium" : "pl-6 py-1 text-[13px]"
+                } ${
+                  on
+                    ? "border-[var(--po-ink)] text-[var(--po-ink)]"
+                    : `border-transparent hover:text-[var(--po-ink)] ${it.level === 1 ? "ink2" : "muted"}`
                 }`}
               >
                 {it.label}
@@ -157,19 +172,18 @@ export function PlasticLayout({ children }: { children: React.ReactNode }) {
         )}
       </div>
 
-      <div className="mx-auto max-w-[1180px] lg:grid lg:grid-cols-[250px_minmax(0,1fr)]">
-        {/* Left column: pages, then sections of the current page */}
+      <div className="mx-auto max-w-[1280px] lg:grid lg:grid-cols-[200px_minmax(0,1fr)_210px] xl:grid-cols-[230px_minmax(0,1fr)_240px]">
+        {/* Left column: pages */}
         <aside className="hidden lg:block no-print">
-          <div className="sticky top-0 max-h-screen overflow-y-auto py-10 pl-8 pr-6">
+          <div className="sticky top-0 max-h-screen overflow-y-auto py-10 pl-8 pr-5">
             <Wordmark />
             <div className="mt-10">
               <PageList />
             </div>
-            <SectionList />
           </div>
         </aside>
 
-        <main className="min-w-0 lg:border-l hair">
+        <main className="min-w-0 lg:border-x hair">
           <div className="px-6 md:px-12 max-w-[800px]">
             {children}
             <NextPage />
@@ -181,6 +195,12 @@ export function PlasticLayout({ children }: { children: React.ReactNode }) {
             </a>
           </footer>
         </main>
+        {/* Right column: contents of the current page */}
+        <aside className="hidden lg:block no-print">
+          <div className="sticky top-0 max-h-screen overflow-y-auto py-10 pl-6 pr-6">
+            <Contents />
+          </div>
+        </aside>
       </div>
     </div>
   );

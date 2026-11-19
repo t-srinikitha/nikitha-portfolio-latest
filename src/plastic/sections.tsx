@@ -32,32 +32,28 @@ export function PhaseCards() {
 export function WhyNow() {
   return (
     <div className="grid gap-10">
-      <ol className="border-l hair ml-1.5">
+      <p className="max-w-[64ch]">
         {whyNowIndia.map((w) => (
-          <li key={w.when} className="relative pl-6 pb-6 last:pb-0">
-            <span className="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full bg-[var(--po-accent)]" />
-            <div className="num text-[13px]">{w.when}</div>
-            <p className="mt-1 text-[15px] max-w-[62ch]">
-              {w.text}{" "}
-              {w.src.map((s) => (
-                <Src key={s} id={s} />
-              ))}
-            </p>
-          </li>
+          <span key={w.text}>
+            {w.text}{" "}
+            {w.src.map((x) => (
+              <Src key={x} id={x} />
+            ))}{" "}
+          </span>
         ))}
-      </ol>
+      </p>
       <div>
-        <h3 className="font-medium">Testing available in India today</h3>
+        <h4 className="font-medium">Testing available in India today</h4>
         <div className="mt-3 grid sm:grid-cols-2 gap-px bg-[var(--po-line)] border hair">
           {labs.map((l) => (
             <div key={l.name} className="bg-[var(--po-paper)] p-5">
-              <div className="text-[13px] muted">{l.name}, per sample</div>
+              <div className="text-[13px] muted">{l.name}</div>
               <div className="num text-[22px] mt-1">{l.price}</div>
               <p className="mt-2 text-[13.5px] ink2 leading-snug">{l.detail}</p>
             </div>
           ))}
         </div>
-        <p className="mt-3 text-[13px] muted">Prices are quotes obtained by PlasticOptics in 2026.</p>
+        <p className="mt-3 text-[13px] muted">Prices per sample, as quoted to PlasticOptics in 2026.</p>
       </div>
     </div>
   );
@@ -167,7 +163,7 @@ export function CostComparison() {
     <div className="grid gap-6">
       {layers.map((layer) => (
         <div key={layer.name}>
-          <h3 className="font-medium">{layer.name}</h3>
+          <h4 className="font-medium">{layer.name}</h4>
           <div
             className={`mt-3 grid sm:grid-cols-3 gap-px border ${
               layer.strong ? "bg-[var(--po-ink)] border-[var(--po-ink)]" : "bg-[var(--po-line)] hair"

@@ -43,18 +43,15 @@ export const focus =
 
 export const whyNowIndia = [
   {
-    when: "February 2026",
-    text: "The Madras High Court ordered that PET bottled water carry a warning in bold red letters: “This water may contain Micro/Nano Plastics.” The order also covers packaged salt and sugar.",
+    text: "In February 2026 the Madras High Court ordered that PET bottled water carry a warning in bold red letters: “This water may contain Micro/Nano Plastics.” The order also covers packaged salt and sugar.",
     src: ["madrasHc"] as const,
   },
   {
-    when: "April 2026",
-    text: "The Supreme Court declined to interfere with the order.",
+    text: "In April the Supreme Court declined to interfere with the order.",
     src: ["supremeCourt"] as const,
   },
   {
-    when: "September 2026",
-    text: "The High Court refused requests from FSSAI and industry bodies to recall the order. FSSAI regulations on labelling and certification are expected to follow.",
+    text: "In September the High Court refused requests from FSSAI and industry bodies to recall it. FSSAI regulations on labelling and certification are expected to follow.",
     src: ["madrasHcRecall"] as const,
   },
 ];
@@ -62,7 +59,7 @@ export const whyNowIndia = [
 export const labs = [
   {
     name: "SGS",
-    price: "₹74,820–84,870 + GST",
+    price: "₹75,000",
     detail: "Samples are shipped abroad for analysis. Results take more than 10 days.",
   },
   {
@@ -73,7 +70,7 @@ export const labs = [
 ];
 
 export const discovery = [
-  "PlasticOptics has spoken to 10–15 beverage contract manufacturers in Gujarat, Maharashtra, Goa and Bengaluru. None has yet received a request from its buyers for microplastic testing.",
+  "None of the 10–15 beverage contract manufacturers consulted in Gujarat, Maharashtra, Goa and Bengaluru has yet received a request from its buyers for microplastic testing.",
   "Testing laboratories receive such requests about once a year. Awareness of the problem is the main barrier.",
 ];
 

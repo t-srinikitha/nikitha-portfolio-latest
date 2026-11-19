@@ -31,11 +31,35 @@ export function Block({
 }) {
   const label = toc ?? (typeof title === "string" ? title : id);
   return (
-    <section id={id} data-toc={label} className="border-t hair -mx-6 md:-mx-12 px-6 md:px-12 py-12 md:py-14 scroll-mt-16 lg:scroll-mt-6">
+    <section id={id} data-toc={label} data-toc-level="1" className="border-t hair -mx-6 md:-mx-12 px-6 md:px-12 py-12 md:py-14 scroll-mt-16 lg:scroll-mt-6">
       <h2 className="serif text-[27px] md:text-[31px] leading-[1.15] max-w-[30ch]">{title}</h2>
       {intro && <div className="mt-4 ink2 max-w-[64ch] grid gap-3">{intro}</div>}
       {children && <div className="mt-8">{children}</div>}
     </section>
+  );
+}
+
+/** A subsection inside a Block, listed under it in the contents. */
+export function Sub({
+  id,
+  toc,
+  title,
+  intro,
+  children,
+}: {
+  id: string;
+  toc?: string;
+  title: React.ReactNode;
+  intro?: React.ReactNode;
+  children?: React.ReactNode;
+}) {
+  const label = toc ?? (typeof title === "string" ? title : id);
+  return (
+    <div id={id} data-toc={label} data-toc-level="2" className="po-sub scroll-mt-16 lg:scroll-mt-6">
+      <h3 className="serif text-[22px] md:text-[24px] leading-[1.2]">{title}</h3>
+      {intro && <div className="mt-3 ink2 max-w-[64ch] grid gap-3">{intro}</div>}
+      {children && <div className="mt-6">{children}</div>}
+    </div>
   );
 }
 
