@@ -7,7 +7,7 @@ import  ProjectsPage  from "./pages/ProjectsPage";
 import ClimatePage from "./pages/ClimatePage";
 import { Toaster } from "./components/ui/sonner";
 
-// PlasticOptics is a standalone microsite with its own theme and navigation.
+// PlasticOptics shares the site theme and header, with its own page navigation.
 const PlasticSite = lazy(() => import("./plastic/PlasticSite"));
 
 // The microsite used to live at /plastic.
@@ -37,9 +37,11 @@ function App() {
           <Route
             path="/plasticoptics/*"
             element={
-              <Suspense fallback={<div className="min-h-screen" style={{ background: "#f5f4ef" }} />}>
-                <PlasticSite />
-              </Suspense>
+              <Layout>
+                <Suspense fallback={<div className="min-h-screen" />}>
+                  <PlasticSite />
+                </Suspense>
+              </Layout>
             }
           />
           <Route path="/plastic/*" element={<OldPlasticRedirect />} />

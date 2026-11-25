@@ -64,7 +64,7 @@ export default function Overview() {
         <Sub id="customers" title="Target Customers">
           <ul className="grid gap-2 max-w-[64ch]">
             {discovery.map((d) => (
-              <li key={d} className="text-[15px]">
+              <li key={d} className="text-[14px]">
                 {d}
               </li>
             ))}
@@ -80,7 +80,7 @@ export default function Overview() {
           <h4 className="mt-10 font-medium">The Microplastics Index</h4>
           <ul className="mt-2 grid gap-2 max-w-[64ch]">
             {microplasticsIndex.map((x) => (
-              <li key={x} className="text-[15px]">
+              <li key={x} className="text-[14px]">
                 {x}
               </li>
             ))}
@@ -136,7 +136,7 @@ export default function Overview() {
         <Sub id="status" title="Progress to Date" intro={<p>{status.summary}</p>}>
           <ul className="grid gap-2">
             {status.inPlace.map((x) => (
-              <li key={x} className="text-[15px]">
+              <li key={x} className="text-[14px]">
                 {x}
               </li>
             ))}
@@ -181,7 +181,7 @@ export default function Overview() {
                 href={c.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group bg-[var(--po-paper)] p-5 hover:bg-white transition-colors"
+                className="group bg-[var(--po-paper)] p-5 hover:bg-[var(--po-paper-hover)] transition-colors"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
@@ -209,7 +209,7 @@ export default function Overview() {
           <div className="mt-10">
             <StageList detail={false} />
           </div>
-          <p className="mt-6 text-[15px]">
+          <p className="mt-6 text-[14px]">
             <Link to="/plasticoptics/technology#roadmap" className="ulink">
               Each stage in detail
             </Link>

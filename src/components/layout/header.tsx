@@ -13,7 +13,7 @@ export function Header() {
   }, [])
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-cream dark:bg-cream-dark border-b border-black dark:border-white">
+    <header className="print:hidden fixed top-0 left-0 right-0 z-50 bg-cream dark:bg-cream-dark border-b border-black dark:border-white">
       <div className="max-w-4xl mx-auto px-6">
         <div className="flex items-center justify-between h-14">
           {/* Logo */}

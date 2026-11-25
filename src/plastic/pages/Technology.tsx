@@ -184,7 +184,7 @@ export default function Technology() {
         >
           <ol className="grid gap-3">
             {stage0Done.map((d, i) => (
-              <li key={d} className="grid grid-cols-[28px_1fr] gap-3 text-[15px]">
+              <li key={d} className="grid grid-cols-[28px_1fr] gap-3 text-[14px]">
                 <span className="num text-[13px] muted pt-0.5">0{i + 1}</span>
                 <span>{d}</span>
               </li>

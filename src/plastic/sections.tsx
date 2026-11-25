@@ -10,9 +10,9 @@ export function PhaseCards() {
   return (
     <div className="grid md:grid-cols-3 gap-px bg-[var(--po-line)] border hair">
       {phases.map((x) => (
-        <div key={x.n} className={`p-5 ${x.n === 1 ? "bg-white" : "bg-[var(--po-paper)]"}`}>
+        <div key={x.n} className={`p-5 ${x.n === 1 ? "bg-[var(--po-paper-hover)]" : "bg-[var(--po-paper)]"}`}>
           <div className="flex items-baseline justify-between gap-3">
-            <h3 className="serif text-[24px] leading-none">{x.name}</h3>
+            <h3 className="serif text-[17px] leading-snug">{x.name}</h3>
             <span
               className={`mono text-[10.5px] uppercase tracking-wide px-1.5 py-0.5 whitespace-nowrap ${
                 x.n === 1 ? "bg-[var(--po-ink)] text-[var(--po-bg)]" : "bg-[var(--po-chip)] ink2"
@@ -34,7 +34,7 @@ export function ProblemCards() {
     <div className="grid md:grid-cols-3 gap-px bg-[var(--po-line)] border hair">
       {problem.map((x) => (
         <div key={x.k} className="bg-[var(--po-paper)] p-5">
-          <h3 className="serif text-[22px] leading-none">{x.k}</h3>
+          <h3 className="serif text-[17px] leading-snug">{x.k}</h3>
           <p className="mt-3 text-[14px] ink2 leading-relaxed">{x.text}</p>
           {x.src.length > 0 && (
             <div className="mt-3 flex gap-3">
@@ -99,11 +99,11 @@ export function StageList({ detail = true }: { detail?: boolean }) {
           <div className={`num text-[26px] leading-none ${x.current ? "text-[var(--po-accent)]" : ""}`}>{x.n}</div>
           <div>
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <h3 className="font-medium text-[16px]">{x.name}</h3>
+              <h3 className="font-medium text-[14px]">{x.name}</h3>
               <span className="mono text-[12px] muted">{x.when}</span>
               {x.current && <span className="chip !bg-[var(--po-lime)] !text-black">Current</span>}
             </div>
-            <p className="mt-1.5 text-[14.5px] max-w-[60ch]">{x.what}</p>
+            <p className="mt-1.5 text-[14px] max-w-[60ch]">{x.what}</p>
             {detail && (
               <ul className="mt-2 grid gap-1 text-[13.5px] ink2 max-w-[60ch] list-disc pl-4">
                 {x.notes.map((n) => (
@@ -163,7 +163,7 @@ export function CostComparison() {
               <div key={c.k} className="bg-[var(--po-paper)] p-5">
                 <div className="text-[13px] muted">{c.k}</div>
                 <div
-                  className={`mt-1 text-[24px] leading-tight ${c.v.startsWith("₹") ? "num" : "serif"} ${
+                  className={`mt-1 text-[19px] leading-tight ${c.v.startsWith("₹") ? "num" : "serif"} ${
                     layer.strong ? "text-[var(--po-accent)]" : ""
                   }`}
                 >

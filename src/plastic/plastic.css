@@ -1,35 +1,41 @@
-/* PlasticOptics microsite. Light only, print-friendly. Scoped under .po */
+/* PlasticOptics pages, in the profile site theme (light and dark). Scoped under .po */
 .po {
-  --po-bg: #f5f4ef;
-  --po-paper: #fbfaf7;
-  --po-ink: #17171a;
-  --po-ink-2: #44434a;
-  --po-muted: #7a786f;
-  --po-line: #e2e0d7;
-  --po-line-2: #cfccc1;
-  --po-chip: #ebe9e1;
-  --po-accent: #d9481f; /* Nile Red emission */
-  --po-accent-soft: #f6dfd5;
-  --po-detect: #2f56c8; /* excitation blue */
-  --po-detect-soft: #dfe6f8;
+  --po-bg: #fdf6e3;
+  --po-paper: #fffbf0;
+  --po-paper-hover: #ffffff;
+  --po-ink: #000000;
+  --po-ink-2: #3f3c34;
+  --po-muted: #6b665a;
+  --po-line: #ddd3b8;
+  --po-line-2: #b9ae90;
+  --po-chip: #f1e7cc;
+  --po-accent: #c2410c;
   --po-lime: #dfff00;
 
-  --po-serif: "Newsreader", "Iowan Old Style", Georgia, serif;
-  --po-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --po-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --po-sans: "Inter", "JetBrains Mono", "Space Mono", ui-monospace, monospace;
+  --po-serif: var(--po-sans);
+  --po-mono: var(--po-sans);
 
-  background: var(--po-bg);
   color: var(--po-ink);
   font-family: var(--po-sans);
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.65;
-  -webkit-font-smoothing: antialiased;
-  font-feature-settings: "ss01", "cv11";
-  color-scheme: light;
+}
+.dark .po {
+  --po-bg: #1a1a1a;
+  --po-paper: #222222;
+  --po-paper-hover: #2a2a2a;
+  --po-ink: #ffffff;
+  --po-ink-2: #cfcfcf;
+  --po-muted: #a3a3a3;
+  --po-line: #3d3d3d;
+  --po-line-2: #5c5c5c;
+  --po-chip: #303030;
+  --po-accent: #ff8a5c;
 }
 .po h1, .po h2, .po h3, .po h4, .po h5, .po h6, .po button, .po input { font-family: var(--po-sans); }
 .po ::selection { background: var(--po-lime); color: #000; }
-.po .serif { font-family: var(--po-serif); font-weight: 400; letter-spacing: -0.012em; }
+.po .serif { font-family: var(--po-serif); font-weight: 700; }
 .po .mono { font-family: var(--po-mono); font-feature-settings: normal; }
 .po .num { font-family: var(--po-mono); font-variant-numeric: tabular-nums; }
 .po .muted { color: var(--po-muted); }
@@ -77,7 +83,19 @@
 
 @media print {
   .po .no-print { display: none !important; }
-  .po { background: #fff; }
+  .po, .dark .po {
+    --po-bg: #ffffff;
+    --po-paper: #fffbf0;
+    --po-paper-hover: #ffffff;
+    --po-ink: #000000;
+    --po-ink-2: #3f3c34;
+    --po-muted: #6b665a;
+    --po-line: #ddd3b8;
+    --po-line-2: #b9ae90;
+    --po-chip: #f1e7cc;
+    --po-accent: #c2410c;
+    background: #fff;
+  }
 }
 
 /* Subsections inside a top-level section */

@@ -129,7 +129,7 @@ export default function Business() {
           <div className="grid md:grid-cols-2 gap-4">
             <div className="border hair bg-[var(--po-paper)] p-5">
               <div className="font-medium">External laboratory (SGS or Eurofins)</div>
-              <div className="num text-[28px] mt-2">₹75,000</div>
+              <div className="num text-[24px] mt-2">₹75,000</div>
               <div className="text-[13px] muted">per sample, quotes obtained by PlasticOptics</div>
               <ul className="mt-4 text-[13.5px] grid gap-1.5 ink2">
                 <li>SGS: results in more than 10 days</li>
@@ -139,7 +139,7 @@ export default function Business() {
             </div>
             <div className="border-2 border-[var(--po-ink)] bg-[var(--po-paper)] p-5">
               <div className="font-medium">PlasticOptics, on site</div>
-              <div className="num text-[28px] mt-2">₹2,000</div>
+              <div className="num text-[24px] mt-2">₹2,000</div>
               <div className="text-[13px] muted">per test cartridge, with a ₹8 lakh analyser</div>
               <ul className="mt-4 text-[13.5px] grid gap-1.5 ink2">
                 <li>Results in 20–30 minutes</li>
@@ -213,7 +213,7 @@ export default function Business() {
               <li key={p.step} className="bg-[var(--po-paper)] p-5">
                 <div className="flex items-baseline gap-3">
                   <span className="num text-[13px] muted">0{i + 1}</span>
-                  <h4 className="serif text-[22px] leading-none">{p.step}</h4>
+                  <h4 className="serif text-[17px] leading-snug">{p.step}</h4>
                 </div>
                 <div className="mt-2 mono text-[11.5px] muted">{p.stage}</div>
                 <p className="mt-3 text-[14px] ink2 leading-relaxed">{p.body}</p>

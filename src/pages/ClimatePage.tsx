@@ -1,9 +1,6 @@
+import { ExternalLink } from "lucide-react";
+import { Footer } from "@/components/layout/footer";
 import { useTitle } from "@/lib/site";
-import { useState, useEffect, useRef } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, ExternalLink } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 
 interface TimelineEvent {
   year: number;
@@ -198,337 +195,85 @@ const timelineEventsByYear: Record<number, TimelineEvent[]> = {
   ]
 };
 
-function ProjectCard({ event, isVisible, isFirstInYear, isLastInYear }: { 
-  event: TimelineEvent; 
-  isVisible: boolean;
-  isFirstInYear: boolean;
-  isLastInYear: boolean;
-}) {
+const years = Object.keys(timelineEventsByYear)
+  .map(Number)
+  .sort((a, b) => a - b);
+
+function Event({ event }: { event: TimelineEvent }) {
   return (
-    <div className={`relative transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-100 translate-y-0'}`}>
-      {/* Mobile Layout */}
-      <div className="md:hidden pb-8">
-        <div className="ml-6 pl-6 border-l-2 border-primary/30">
-          <Card className="bg-white/5 border-white/20 backdrop-blur-sm hover:bg-white/10 transition-all duration-300">
-            <CardContent className="p-6">
-              <div className="mb-3">
-                <h3 className="text-2xl font-bold mb-1 text-white">{event.title}</h3>
-                {event.subtitle && (
-                  <p className="text-gray-400 text-sm mb-1">{event.subtitle}</p>
-                )}
-                {event.period && (
-                  <p className="text-primary text-xs font-medium">{event.period}</p>
-                )}
-              </div>
+    <div className="p-6 border border-black/20 dark:border-white/20">
+      <h3 className="font-medium mb-1">{event.title}</h3>
+      {event.subtitle && <p className="text-xs opacity-60">{event.subtitle}</p>}
+      {event.period && <p className="text-xs opacity-60 mt-1">{event.period}</p>}
+      <p className="text-sm opacity-70 mt-4">{event.description}</p>
 
-              <p className="text-gray-300 leading-relaxed mb-4 text-sm">
-                {event.description}
-              </p>
+      {event.highlights && event.highlights.length > 0 && (
+        <ul className="mt-4 space-y-2 list-disc pl-5 text-sm opacity-70">
+          {event.highlights.map((h) => (
+            <li key={h}>{h}</li>
+          ))}
+        </ul>
+      )}
 
-              {event.highlights && event.highlights.length > 0 && (
-                <div className="mb-4">
-                  <ul className="space-y-2">
-                    {event.highlights.map((highlight, idx) => (
-                      <li key={idx} className="text-gray-300 text-sm leading-relaxed flex items-start gap-2">
-                        <span className="text-primary mt-1.5 flex-shrink-0">•</span>
-                        <span>{highlight}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {event.metrics && event.metrics.length > 0 && (
-                <div className="grid grid-cols-2 gap-3 mb-4">
-                  {event.metrics.map((metric, idx) => (
-                    <div key={idx} className="text-center p-3 bg-black/20 rounded-lg">
-                      <div className="text-2xl font-bold text-primary mb-1">{metric.value}</div>
-                      <div className="text-gray-300 text-xs">{metric.label}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {event.links && event.links.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {event.links.map((link, idx) => (
-                    <Badge key={idx} variant="outline" className="text-gray-300 border-gray-600 hover:border-primary transition-colors text-xs">
-                      <a 
-                        href={link.url} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="flex items-center gap-1"
-                      >
-                        {link.label} <ExternalLink className="h-3 w-3" />
-                      </a>
-                    </Badge>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+      {event.metrics && event.metrics.length > 0 && (
+        <div className="mt-6 flex flex-wrap gap-2">
+          {event.metrics.map((m) => (
+            <span key={m.label} className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">
+              <span className="font-bold">{m.value}</span> {m.label}
+            </span>
+          ))}
         </div>
-      </div>
+      )}
 
-      {/* Desktop Layout */}
-      <div className="hidden md:block">
-        <div className="flex gap-8 lg:gap-12">
-          {/* Spacer for year column */}
-          <div className="flex-shrink-0 w-28 lg:w-36"></div>
-          
-          {/* Timeline connector */}
-          <div className="flex-shrink-0 relative">
-            <div className={`w-1 ${isLastInYear ? 'h-full' : 'h-24'} bg-gradient-to-b from-primary/50 via-primary/30 to-primary/20`}></div>
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-primary border-2 border-black shadow-md"></div>
-          </div>
-
-          {/* Content Card */}
-          <div className="flex-1 pb-12">
-            <Card className="bg-white/5 border-white/20 backdrop-blur-sm hover:bg-white/10 transition-all duration-300">
-              <CardContent className="p-8">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <h3 className="text-2xl font-bold mb-2 text-white">{event.title}</h3>
-                    {event.subtitle && (
-                      <p className="text-gray-400 text-base mb-2">{event.subtitle}</p>
-                    )}
-                    {event.period && (
-                      <p className="text-primary text-sm font-medium mb-4">{event.period}</p>
-                    )}
-                  </div>
-                  {event.badge && (
-                    <Badge variant="secondary">{event.badge}</Badge>
-                  )}
-                </div>
-
-                <p className="text-gray-300 leading-relaxed mb-6">
-                  {event.description}
-                </p>
-
-                {event.highlights && event.highlights.length > 0 && (
-                  <div className="mb-6">
-                    <ul className="space-y-3">
-                      {event.highlights.map((highlight, idx) => (
-                        <li key={idx} className="text-gray-300 leading-relaxed flex items-start gap-3">
-                          <span className="text-primary mt-2 flex-shrink-0">•</span>
-                          <span>{highlight}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {event.metrics && event.metrics.length > 0 && (
-                  <div className="grid grid-cols-3 gap-4 mb-6">
-                    {event.metrics.map((metric, idx) => (
-                      <div key={idx} className="text-center p-4 bg-black/20 rounded-lg">
-                        <div className="text-3xl font-bold text-primary mb-2">{metric.value}</div>
-                        <div className="text-gray-300 text-sm">{metric.label}</div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {event.links && event.links.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {event.links.map((link, idx) => (
-                      <Badge key={idx} variant="outline" className="text-gray-300 border-gray-600 hover:border-primary transition-colors">
-                        <a 
-                          href={link.url} 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
-                          className="flex items-center gap-1"
-                        >
-                          {link.label} <ExternalLink className="h-3 w-3" />
-                        </a>
-                      </Badge>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function YearSection({ year, events, visibleIndices, startIndex, setRef }: { 
-  year: number; 
-  events: TimelineEvent[];
-  visibleIndices: Set<number>;
-  startIndex: number;
-  setRef: (index: number, el: HTMLDivElement | null) => void;
-}) {
-  return (
-    <div className="relative">
-      {/* Year Header - Mobile */}
-      <div className="md:hidden mb-6">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center">
-            <div className="w-3 h-3 rounded-full bg-primary"></div>
-          </div>
-          <div className="text-4xl font-bold text-primary">{year}</div>
-        </div>
-      </div>
-
-      {/* Year Header - Desktop */}
-      <div className="hidden md:block mb-8">
-        <div className="flex gap-8 lg:gap-12">
-          <div className="flex-shrink-0 w-28 lg:w-36">
-            <div className="sticky top-1/2 -translate-y-1/2 h-fit">
-              <div className="text-5xl lg:text-6xl font-bold text-primary mb-3">{year}</div>
-              <div className="h-1 w-20 bg-primary"></div>
-            </div>
-          </div>
-          <div className="flex-shrink-0 w-1"></div>
-          <div className="flex-1"></div>
-        </div>
-      </div>
-
-      {/* Projects for this year */}
-      <div className="space-y-0">
-        {events.map((event, eventIndex) => {
-          const globalIndex = startIndex + eventIndex;
-          const isFirstInYear = eventIndex === 0;
-          const isLastInYear = eventIndex === events.length - 1;
-          
-          return (
-            <div
-              key={`${year}-${eventIndex}`}
-              ref={(el) => {
-                setRef(globalIndex, el);
-              }}
+      {event.links && event.links.length > 0 && (
+        <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+          {event.links.map((l) => (
+            <a
+              key={l.url}
+              href={l.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-sm underline underline-offset-4 opacity-70 hover:opacity-100 transition-opacity"
             >
-              <ProjectCard 
-                event={event} 
-                isVisible={true}
-                isFirstInYear={isFirstInYear}
-                isLastInYear={isLastInYear}
-              />
-            </div>
-          );
-        })}
-      </div>
+              {l.label} <ExternalLink className="h-3 w-3" />
+            </a>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
 
 export default function ClimatePage() {
   useTitle("Climate & Sustainability Journey | Sri Nikitha T");
-  const [visibleItems, setVisibleItems] = useState<Set<number>>(new Set());
-  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  const years = Object.keys(timelineEventsByYear)
-    .map(Number)
-    .sort((a, b) => a - b);
-
-  // Calculate total number of events
-  const totalEvents = years.reduce((sum, year) => sum + timelineEventsByYear[year].length, 0);
-  
-  // Initialize refs array
-  useEffect(() => {
-    itemRefs.current = new Array(totalEvents).fill(null);
-  }, [totalEvents]);
-
-  useEffect(() => {
-    const observers: IntersectionObserver[] = [];
-
-    itemRefs.current.forEach((ref, index) => {
-      if (!ref) return;
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setVisibleItems((prev) => new Set([...prev, index]));
-            }
-          });
-        },
-        {
-          threshold: 0.1,
-          rootMargin: "0px 0px -50px 0px"
-        }
-      );
-
-      observer.observe(ref);
-      observers.push(observer);
-    });
-
-    return () => {
-      observers.forEach((observer) => observer.disconnect());
-    };
-  }, [totalEvents]);
-
-  let globalIndex = 0;
-  
-  const setRef = (index: number, el: HTMLDivElement | null) => {
-    itemRefs.current[index] = el;
-  };
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <div className="container mx-auto px-4 py-16 max-w-6xl">
-        {/* Back Button */}
-        <div className="mb-8">
-          <Button variant="ghost" asChild className="gap-2 text-white hover:text-primary">
-            <a href="/">
-              <ArrowLeft className="h-4 w-4" />
-              Back to Home
-            </a>
-          </Button>
+    <div className="min-h-screen">
+      <div className="max-w-4xl mx-auto px-6 py-20">
+        <h1 className="text-3xl font-bold mb-2">Climate & Sustainability Journey</h1>
+        <p className="text-sm opacity-60 mb-12">
+          A timeline of my work in sustainability, climate innovation, and environmental impact from 2017-2021
+        </p>
+
+        <div className="space-y-12">
+          {years.map((year) => (
+            <section key={year} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
+              <h2 className="md:col-span-1 md:sticky md:top-20 text-2xl font-bold">{year}</h2>
+              <div className="md:col-span-3 space-y-4">
+                {timelineEventsByYear[year].map((event) => (
+                  <Event key={event.title} event={event} />
+                ))}
+              </div>
+            </section>
+          ))}
         </div>
 
-        {/* Page Header */}
-        <div className="mb-16 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-white">
-            Climate & Sustainability Journey
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-300 leading-relaxed max-w-3xl mx-auto">
-            A timeline of my work in sustainability, climate innovation, and environmental impact from 2017-2021
-          </p>
-        </div>
-
-        {/* Timeline */}
-        <div className="relative">
-          {/* Mobile: Vertical line on the left */}
-          <div className="md:hidden absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-transparent"></div>
-          
-          {/* Desktop: Vertical line */}
-          <div className="hidden md:block absolute left-[120px] lg:left-[144px] top-0 bottom-0 w-1 bg-gradient-to-b from-primary via-primary/30 to-transparent"></div>
-
-          <div className="space-y-0">
-            {years.map((year) => {
-              const events = timelineEventsByYear[year];
-              const startIndex = globalIndex;
-              globalIndex += events.length;
-              
-              return (
-                <YearSection
-                  key={year}
-                  year={year}
-                  events={events}
-                  visibleIndices={visibleItems}
-                  startIndex={startIndex}
-                  setRef={setRef}
-                />
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Background Statement */}
-        <div className="mt-20 text-center">
-          <Card className="bg-primary/10 border-primary/20 backdrop-blur-sm inline-block">
-            <CardContent className="p-8">
-              <p className="text-xl text-gray-300 leading-relaxed max-w-3xl">
-                Early in my career, I immersed myself in innovation and sustainability across diverse industries, from manufacturing and process innovation to grassroots innovation, water treatment, and sustainable housing solutions. This journey has given me a deep, multifaceted understanding of systems and how to drive meaningful impact. Across each role, I've focused on creating systematic change that extends beyond individual projects. Today, that same passion for sustainable impact continues to drive me forward as I engage with teams and explore new opportunities to make a difference.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+        <p className="mt-16 pt-12 border-t border-black/10 dark:border-white/10 text-sm leading-relaxed opacity-80">
+          Early in my career, I immersed myself in innovation and sustainability across diverse industries, from manufacturing and process innovation to grassroots innovation, water treatment, and sustainable housing solutions. This journey has given me a deep, multifaceted understanding of systems and how to drive meaningful impact. Across each role, I've focused on creating systematic change that extends beyond individual projects. Today, that same passion for sustainable impact continues to drive me forward as I engage with teams and explore new opportunities to make a difference.
+        </p>
       </div>
+
+      <Footer />
     </div>
   );
 }

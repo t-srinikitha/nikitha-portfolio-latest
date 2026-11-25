@@ -4,20 +4,6 @@ import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import { EMAIL, PAGES } from "./data";
 import "./plastic.css";
 
-const FONTS_HREF =
-  "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap";
-
-function useFonts() {
-  useEffect(() => {
-    if (document.querySelector(`link[data-po-fonts]`)) return;
-    const l = document.createElement("link");
-    l.rel = "stylesheet";
-    l.href = FONTS_HREF;
-    l.setAttribute("data-po-fonts", "");
-    document.head.appendChild(l);
-  }, []);
-}
-
 function Wordmark({ small }: { small?: boolean }) {
   return (
     <Link to="/plasticoptics" className="inline-flex items-center gap-2.5">
@@ -28,7 +14,7 @@ function Wordmark({ small }: { small?: boolean }) {
         <circle cx="14" cy="7.5" r="0.9" fill="currentColor" />
         <circle cx="8" cy="16" r="0.9" fill="currentColor" />
       </svg>
-      <span className={`serif ${small ? "text-[19px]" : "text-[22px]"} leading-none`}>PlasticOptics</span>
+      <span className={`serif ${small ? "text-[15px]" : "text-[17px]"} leading-none`}>PlasticOptics</span>
     </Link>
   );
 }
@@ -43,7 +29,7 @@ function PageList({ onNavigate }: { onNavigate?: () => void }) {
             end
             onClick={onNavigate}
             className={({ isActive }) =>
-              `block py-1.5 text-[15px] transition-colors ${isActive ? "text-[var(--po-ink)] font-medium" : "muted hover:text-[var(--po-ink)]"}`
+              `block py-1.5 text-[14px] transition-colors ${isActive ? "text-[var(--po-ink)] font-medium" : "muted hover:text-[var(--po-ink)]"}`
             }
           >
             {p.label}
@@ -182,14 +168,13 @@ function NextPage() {
       to={next.path}
       className="group border-t hair -mx-6 md:-mx-12 px-6 md:px-12 py-10 flex items-center justify-between no-print"
     >
-      <span className="serif text-[24px]">{next.label}</span>
+      <span className="serif text-[19px]">{next.label}</span>
       <ArrowRight className="h-5 w-5 muted group-hover:translate-x-0.5 transition-transform" />
     </Link>
   );
 }
 
 export function PlasticLayout({ children }: { children: React.ReactNode }) {
-  useFonts();
   const { pathname, hash } = useLocation();
   const [open, setOpen] = useState(false);
 
@@ -202,7 +187,7 @@ export function PlasticLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="po min-h-screen">
       {/* Mobile / tablet top bar */}
-      <div className="lg:hidden sticky top-0 z-40 bg-[var(--po-bg)]/95 backdrop-blur border-b hair no-print">
+      <div className="lg:hidden sticky top-14 z-40 bg-[var(--po-bg)] border-b hair no-print">
         <div className="flex items-center justify-between px-5 h-14">
           <Wordmark small />
           <button
@@ -223,10 +208,10 @@ export function PlasticLayout({ children }: { children: React.ReactNode }) {
         )}
       </div>
 
-      <div className="mx-auto max-w-[1280px] lg:grid lg:grid-cols-[200px_minmax(0,1fr)_210px] xl:grid-cols-[230px_minmax(0,1fr)_240px]">
+      <div className="mx-auto max-w-[1280px] lg:grid lg:grid-cols-[210px_minmax(0,1fr)_210px] xl:grid-cols-[230px_minmax(0,1fr)_240px]">
         {/* Left column: pages */}
         <aside className="hidden lg:block no-print">
-          <div className="sticky top-0 max-h-screen overflow-y-auto py-10 pl-8 pr-5">
+          <div className="sticky top-14 max-h-[calc(100vh-3.5rem)] overflow-y-auto py-10 pl-8 pr-5">
             <Wordmark />
             <div className="mt-10">
               <PageList />
@@ -248,7 +233,7 @@ export function PlasticLayout({ children }: { children: React.ReactNode }) {
         </main>
         {/* Right column: contents of the current page */}
         <aside className="hidden lg:block no-print">
-          <div className="sticky top-0 max-h-screen overflow-y-auto py-10 pl-7 pr-7">
+          <div className="sticky top-14 max-h-[calc(100vh-3.5rem)] overflow-y-auto py-10 pl-7 pr-7">
             <Contents />
           </div>
         </aside>

@@ -8,8 +8,8 @@ export const lakh = (n: number, d = 1) => `₹${n.toFixed(d)} L`;
 export function PageHead({ title, lede }: { title: React.ReactNode; lede?: React.ReactNode }) {
   return (
     <header className="pt-10 md:pt-16 pb-10 md:pb-12">
-      <h1 className="serif text-[34px] leading-[1.08] md:text-[46px] md:leading-[1.05] max-w-[20ch]">{title}</h1>
-      {lede && <div className="mt-5 text-[16.5px] md:text-[17.5px] leading-relaxed ink2 max-w-[62ch]">{lede}</div>}
+      <h1 className="serif text-[30px] leading-[1.15] md:text-[40px] md:leading-[1.15] max-w-[20ch]">{title}</h1>
+      {lede && <div className="mt-5 text-[14px] leading-relaxed ink2 max-w-[62ch]">{lede}</div>}
     </header>
   );
 }
@@ -31,8 +31,8 @@ export function Block({
 }) {
   const label = toc ?? (typeof title === "string" ? title : id);
   return (
-    <section id={id} data-toc={label} data-toc-level="1" className="border-t hair -mx-6 md:-mx-12 px-6 md:px-12 py-12 md:py-14 scroll-mt-16 lg:scroll-mt-6">
-      <h2 className="serif text-[27px] md:text-[31px] leading-[1.15] max-w-[30ch]">{title}</h2>
+    <section id={id} data-toc={label} data-toc-level="1" className="border-t hair -mx-6 md:-mx-12 px-6 md:px-12 py-12 md:py-14 scroll-mt-28 lg:scroll-mt-20">
+      <h2 className="serif text-[22px] md:text-[26px] leading-[1.15] max-w-[30ch]">{title}</h2>
       {intro && <div className="mt-4 ink2 max-w-[64ch] grid gap-3">{intro}</div>}
       {children && <div className="mt-8">{children}</div>}
     </section>
@@ -55,8 +55,8 @@ export function Sub({
 }) {
   const label = toc ?? (typeof title === "string" ? title : id);
   return (
-    <div id={id} data-toc={label} data-toc-level="2" className="po-sub scroll-mt-16 lg:scroll-mt-6">
-      <h3 className="serif text-[22px] md:text-[24px] leading-[1.2]">{title}</h3>
+    <div id={id} data-toc={label} data-toc-level="2" className="po-sub scroll-mt-28 lg:scroll-mt-20">
+      <h3 className="serif text-[17px] md:text-[19px] leading-[1.2]">{title}</h3>
       {intro && <div className="mt-3 ink2 max-w-[64ch] grid gap-3">{intro}</div>}
       {children && <div className="mt-6">{children}</div>}
     </div>
@@ -65,7 +65,7 @@ export function Sub({
 
 /** A closing sentence that states what the section shows. */
 export function Conclusion({ children }: { children: React.ReactNode }) {
-  return <p className="mt-6 text-[16px] leading-relaxed max-w-[64ch]">{children}</p>;
+  return <p className="mt-6 text-[14px] leading-relaxed max-w-[64ch]">{children}</p>;
 }
 
 export function Stat({ v, k, accent }: { v: React.ReactNode; k: React.ReactNode; accent?: boolean }) {
@@ -90,7 +90,7 @@ export function NextLinks({ items }: { items: { to: string; title: string; body:
   return (
     <div className="grid sm:grid-cols-2 gap-px bg-[var(--po-line)] border hair">
       {items.map((it) => (
-        <Link key={it.to} to={it.to} className="group bg-[var(--po-paper)] p-5 hover:bg-white transition-colors">
+        <Link key={it.to} to={it.to} className="group bg-[var(--po-paper)] p-5 hover:bg-[var(--po-paper-hover)] transition-colors">
           <div className="flex items-center justify-between">
             <span className="serif text-[20px]">{it.title}</span>
             <ArrowRight className="h-4 w-4 muted group-hover:translate-x-0.5 transition-transform" />
@@ -105,7 +105,7 @@ export function NextLinks({ items }: { items: { to: string; title: string; body:
 export function Callout({ children, tone = "ink" }: { children: React.ReactNode; tone?: "ink" | "accent" }) {
   return (
     <div
-      className={`border-l-2 pl-4 py-1 text-[15.5px] leading-relaxed ${
+      className={`border-l-2 pl-4 py-1 text-[14px] leading-relaxed ${
         tone === "accent" ? "border-[var(--po-accent)]" : "border-[var(--po-ink)]"
       }`}
     >
@@ -178,7 +178,7 @@ export function Figure({ title, note, children }: { title: string; note?: React.
   return (
     <figure className="border hair bg-[var(--po-paper)] p-4 md:p-6">
       <figcaption className="mb-5">
-        <div className="font-medium text-[14.5px]">{title}</div>
+        <div className="font-medium text-[14px]">{title}</div>
         {note && <div className="mt-0.5 text-[13px] muted">{note}</div>}
       </figcaption>
       {children}
