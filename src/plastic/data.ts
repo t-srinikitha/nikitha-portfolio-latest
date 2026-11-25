@@ -53,7 +53,7 @@ export const problem: { k: string; text: string; src: (keyof typeof SOURCES)[] }
   },
   {
     k: "Testing",
-    text: "SGS and Eurofins quote ₹75,000 per test. Results take more than ten days, and SGS ships samples abroad.",
+    text: "SGS and Eurofins quote ₹75,000 per test. SGS ships samples abroad, and its results take more than ten days.",
     src: [],
   },
 ];

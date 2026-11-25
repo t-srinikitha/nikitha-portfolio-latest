@@ -132,8 +132,8 @@ export default function Business() {
               <div className="num text-[28px] mt-2">₹75,000</div>
               <div className="text-[13px] muted">per sample, quotes obtained by PlasticOptics</div>
               <ul className="mt-4 text-[13.5px] grid gap-1.5 ink2">
-                <li>Results in 10 days or more</li>
-                <li>Samples often shipped abroad</li>
+                <li>SGS: results in more than 10 days</li>
+                <li>SGS: samples shipped abroad</li>
                 <li>Results arrive after the batch has shipped</li>
               </ul>
             </div>
