@@ -25,7 +25,7 @@ const milestones = [
   {
     label: "Plasticoptics",
     title: "Founder",
-    text: "Building an affordable test to detect microplastics in water and food.",
+    text: "Building a test for microplastics in drinking water first, then food and air.",
     tags: ["Microplastics", "Hardware"],
   },
   {
@@ -105,8 +105,8 @@ export default function MinimalPortfolio() {
             </p>
 
             <p className="text-sm leading-relaxed opacity-70 max-w-lg">
-              I'm building a TDS meter for plastics: an affordable test that detects microplastics
-              in water. Materials engineer (IIT Kharagpur), Young India Fellow (Ashoka). Before
+              I'm building Plasticoptics to measure and remove microplastics from water, food and
+              air, starting with a fast, affordable test for drinking water. Materials engineer (IIT Kharagpur), Young India Fellow (Ashoka). Before
               this, 8+ years building across government, manufacturing and developer tools.
             </p>
 
@@ -161,7 +161,7 @@ export default function MinimalPortfolio() {
       {/* Building */}
       <section className="max-w-4xl mx-auto px-6 py-20">
         <h2 className="text-sm font-medium mb-8 opacity-60">What I'm Building</h2>
-        <p className="text-lg mb-8 max-w-2xl">Plasticoptics: a TDS meter for plastics.</p>
+        <p className="text-lg mb-8 max-w-2xl">A test cartridge and benchtop analyser that count microplastics in drinking water.</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {building.map((x) => (
             <div key={x.title} className="p-6 border border-black/20 dark:border-white/20">
