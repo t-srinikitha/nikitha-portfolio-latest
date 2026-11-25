@@ -43,7 +43,7 @@ export const focus =
 export const problem: { k: string; text: string; src: (keyof typeof SOURCES)[] }[] = [
   {
     k: "Health",
-    text: "A litre of bottled water contains about 240,000 plastic particles. People with microplastics in their arteries had 4.5 times the risk of heart attack, stroke or death over about three years.",
+    text: "One study estimated about 240,000 plastic particles in a litre of bottled water, about 90% of them nanoplastics. In patients with carotid artery disease, those with micro- or nanoplastics in their plaque had 4.5 times the risk of heart attack, stroke or death. The study shows an association, not a cause.",
     src: ["pnasBottled", "nejmPlaque"],
   },
   {
@@ -347,7 +347,7 @@ export const market = {
 /* ───────────────────────── Current status ───────────────────────── */
 
 export const status = {
-  summary: "PlasticOptics is at the idea stage. The groundwork is done; the method has not yet been tested in the laboratory.",
+  summary: "PlasticOptics is in Stage 0. Fluorescence experiments on Kaveri river samples are under way in a home laboratory, with results cross-checked by Raman spectroscopy. The method is not yet validated.",
   inPlace: [
     "Access to a Raman spectrometer for reference testing.",
     "Most of the materials required for the Stage 0 experiments.",
