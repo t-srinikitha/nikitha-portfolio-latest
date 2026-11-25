@@ -27,7 +27,7 @@ export function Header() {
           {/* Navigation */}
           <nav className="flex items-center gap-8">
             <a href="/plasticoptics" className="text-sm hover:opacity-60 transition-opacity hidden sm:block">
-              Plasticoptics
+              PlasticOptics
             </a>
             <a
               href={MAILTO}

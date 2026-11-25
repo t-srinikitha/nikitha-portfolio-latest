@@ -1,7 +1,7 @@
 // PlasticOptics microsite content.
 // Primary source: "PlasticOptics" Google Doc, V2 tab (stages, unit economics,
 // Stage 0 budget). Later stages (food, removal, in-line analysis) come from the
-// "Plasticoptics Master Plan". External facts carry sources.
+// "PlasticOptics Master Plan". External facts carry sources.
 // Market sizes and total capital are back-of-the-envelope estimates.
 // Money is INR. L = lakh (1e5), Cr = crore (1e7).
 

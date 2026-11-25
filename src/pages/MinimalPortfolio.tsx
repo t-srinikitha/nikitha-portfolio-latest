@@ -23,7 +23,7 @@ const building = [
 
 const milestones = [
   {
-    label: "Plasticoptics",
+    label: "PlasticOptics",
     title: "Founder",
     text: "Building a test for microplastics in drinking water first, then food and air.",
     tags: ["Microplastics", "Hardware"],
@@ -75,7 +75,7 @@ function Divider() {
 }
 
 export default function MinimalPortfolio() {
-  useTitle("Sri Nikitha T | Founder, Plasticoptics");
+  useTitle("Sri Nikitha T | Founder, PlasticOptics");
 
   return (
     <div className="min-h-screen">
@@ -100,12 +100,12 @@ export default function MinimalPortfolio() {
                     opacity: 0.8
                   }}
                 />
-                <span className="relative">Founder, Plasticoptics</span>
+                <span className="relative">Founder, PlasticOptics</span>
               </span>
             </p>
 
             <p className="text-sm leading-relaxed opacity-70 max-w-lg">
-              I'm building Plasticoptics to measure and remove microplastics from water, food and
+              I'm building PlasticOptics to measure and remove microplastics from water, food and
               air, starting with a fast, affordable test for drinking water. Materials engineer (IIT Kharagpur), Young India Fellow (Ashoka). Before
               this, 8+ years building across government, manufacturing and developer tools.
             </p>
@@ -174,7 +174,7 @@ export default function MinimalPortfolio() {
           href="/plasticoptics"
           className="mt-8 inline-flex items-center gap-2 text-sm opacity-70 hover:opacity-100 transition-opacity"
         >
-          Read more about Plasticoptics <ArrowRight className="h-4 w-4" />
+          Read more about PlasticOptics <ArrowRight className="h-4 w-4" />
         </a>
       </section>
 
