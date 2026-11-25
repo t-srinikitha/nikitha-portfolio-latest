@@ -1,4 +1,6 @@
 import { Github, Linkedin, Twitter, Mail } from "lucide-react"
+import { Link } from "react-router-dom"
+import { MAILTO } from "@/lib/site"
 
 const socialLinks = [
   {
@@ -18,7 +20,7 @@ const socialLinks = [
   },
   {
     name: "Email",
-    href: "mailto:t.srinikitha@gmail.com",
+    href: MAILTO,
     icon: Mail,
   },
 ]
@@ -47,6 +49,21 @@ export function Footer() {
             })}
           </div>
           
+          {/* Text links */}
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs">
+            <Link to="/projects" className="hover:opacity-60 transition-opacity">
+              Other things I've built
+            </Link>
+            <a
+              href="https://devopsforpms.substack.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-60 transition-opacity"
+            >
+              Newsletter (archive)
+            </a>
+          </div>
+
           {/* Copyright */}
           <p className="text-xs opacity-60">
             © {new Date().getFullYear()} Sri Nikitha T

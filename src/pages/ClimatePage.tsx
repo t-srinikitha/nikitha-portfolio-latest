@@ -1,3 +1,4 @@
+import { useTitle } from "@/lib/site";
 import { useState, useEffect, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -145,9 +146,9 @@ const timelineEventsByYear: Record<number, TimelineEvent[]> = {
       year: 2020,
       title: "Microplastics Research",
       subtitle: "Team FishEye | Frugal Science Course, Stanford University",
-      description: "Developed a device to detect microplastics in waterbodies as part of the Frugal Science course by Prof. Manu Prakash at Stanford University, addressing critical environmental health concerns.",
+      description: "Tried to build a Raman spectrometer to detect microplastics in waterbodies as part of the Frugal Science course by Prof. Manu Prakash at Stanford University, addressing critical environmental health concerns.",
       highlights: [
-        "Developed a device to detect microplastics in waterbodies as part of Frugal Science course by Prof. Manu Prakash",
+        "Tried to build a Raman spectrometer to detect microplastics in waterbodies as part of Frugal Science course by Prof. Manu Prakash",
         "Addressed critical environmental health concerns related to microplastics contamination",
         "Worked on innovative, low-cost solutions for environmental monitoring",
         "Focused on detecting microplastics that affect zooplanktons responsible for 90% of the oxygen we breathe"
@@ -415,6 +416,7 @@ function YearSection({ year, events, visibleIndices, startIndex, setRef }: {
 }
 
 export default function ClimatePage() {
+  useTitle("Climate & Sustainability Journey | Sri Nikitha T");
   const [visibleItems, setVisibleItems] = useState<Set<number>>(new Set());
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -521,7 +523,7 @@ export default function ClimatePage() {
           <Card className="bg-primary/10 border-primary/20 backdrop-blur-sm inline-block">
             <CardContent className="p-8">
               <p className="text-xl text-gray-300 leading-relaxed max-w-3xl">
-                Early in my career, I immersed myself in innovation and sustainability across diverse industries—from manufacturing and process innovation to grassroots innovation, water treatment, and sustainable housing solutions. This journey has given me a deep, multifaceted understanding of systems and how to drive meaningful impact. Across each role, I've focused on creating systematic change that extends beyond individual projects. Today, that same passion for sustainable impact continues to drive me forward as I engage with teams and explore new opportunities to make a difference.
+                Early in my career, I immersed myself in innovation and sustainability across diverse industries, from manufacturing and process innovation to grassroots innovation, water treatment, and sustainable housing solutions. This journey has given me a deep, multifaceted understanding of systems and how to drive meaningful impact. Across each role, I've focused on creating systematic change that extends beyond individual projects. Today, that same passion for sustainable impact continues to drive me forward as I engage with teams and explore new opportunities to make a difference.
               </p>
             </CardContent>
           </Card>

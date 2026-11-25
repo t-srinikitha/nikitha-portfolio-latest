@@ -1,6 +1,11 @@
 {
   "redirects": [
     {
+      "source": "/work-with-me",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/letter-to-self",
       "destination": "https://letter-to-self-t-srinikithas-projects.vercel.app/",
       "permanent": false

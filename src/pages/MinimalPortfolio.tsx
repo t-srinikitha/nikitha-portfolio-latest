@@ -1,19 +1,81 @@
-import { useState, useEffect } from "react";
 import { Github, Linkedin, Twitter, Mail, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
 import { Footer } from "@/components/layout/footer";
+import { MAILTO, useTitle } from "@/lib/site";
 
-const roles = ["Builder", "Systems Thinker", "AI Product Manager"];
+const building = [
+  {
+    title: "The problem",
+    text: "Microplastics are in our water and food. Testing for them today needs a lab, a spectrometer and days of waiting.",
+  },
+  {
+    title: "My approach",
+    text: "Fluorescence plus AI particle counting, tested on Indian water from day one.",
+  },
+  {
+    title: "In the lab now",
+    text: "Stage 0: proving the science. I'm running fluorescence experiments on Kaveri river samples in my home lab and cross-checking results with Raman spectroscopy.",
+  },
+  {
+    title: "Looking for",
+    text: "Academic collaborators, pilot partners in beverages and water, and funding for lab equipment.",
+  },
+];
+
+const milestones = [
+  {
+    label: "Plasticoptics",
+    title: "Founder",
+    text: "Building an affordable test to detect microplastics in water and food.",
+    tags: ["Microplastics", "Hardware"],
+  },
+  {
+    label: "Stanford",
+    title: "Frugal Science",
+    text: "Team FishEye in Prof. Manu Prakash's Frugal Science course. Our first attempt at low-cost microplastics detection.",
+    tags: ["Frugal Science", "2021"],
+  },
+  {
+    label: "DrDroid (YC-backed)",
+    title: "Building AI Agents",
+    text: "Led product strategy for an AI SRE agent that automates debugging and incident resolution. From user research to shipping AI-powered automation.",
+    tags: ["AI/ML", "SRE Automation"],
+  },
+  {
+    label: "Facets.cloud",
+    title: "Product Management",
+    text: "Took the product from 0 to $410K ARR with 15+ enterprise customers and 500+ users.",
+    tags: ["$410K ARR", "15 Customers"],
+  },
+  {
+    label: "French Startup",
+    title: "International Manufacturing",
+    text: "Delivered ₹1Cr project for sustainable housing. End-to-end FRP manufacturing setup in 3 months.",
+    tags: ["₹1Cr Value", "3-Month Delivery"],
+  },
+  {
+    label: "NRB Bearings",
+    title: "Manufacturing Process Ownership",
+    text: "Traced corroded-bearing wastage to a coating step run by monthly-rotating apprentices. Took over the process and cut wastage by 90%.",
+    tags: ["Manufacturing", "90% less wastage"],
+  },
+  {
+    label: "Telangana Government",
+    title: "State-wide Entrepreneurship Programs",
+    text: "Designed innovation courses across 33 districts. Telangana became India's first state with a Grassroots Innovation Policy. Two innovators received Padma Shri, one featured in a Netflix movie.",
+    tags: ["Policy Design", "33 Districts"],
+  },
+];
+
+function Divider() {
+  return (
+    <div className="max-w-4xl mx-auto px-6">
+      <div className="border-t border-black/10 dark:border-white/10" />
+    </div>
+  );
+}
 
 export default function MinimalPortfolio() {
-  const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
+  useTitle("Sri Nikitha T | Founder, Plasticoptics");
 
   return (
     <div className="min-h-screen">
@@ -38,34 +100,34 @@ export default function MinimalPortfolio() {
                     opacity: 0.8
                   }}
                 />
-                <span className="relative">{roles[currentRoleIndex]}</span>
+                <span className="relative">Founder, Plasticoptics</span>
               </span>
             </p>
 
             <p className="text-sm leading-relaxed opacity-70 max-w-lg">
-              Problem solver with 8+ years of experience building products 
-              from 0→1→scale across government, manufacturing, and developer tools.
-              IIT Kharagpur & Ashoka University alumnus.
+              I'm building a TDS meter for plastics: an affordable test that detects microplastics
+              in water. Materials engineer (IIT Kharagpur), Young India Fellow (Ashoka). Before
+              this, 8+ years building across government, manufacturing and developer tools.
             </p>
 
             {/* CTA */}
-            <div className="flex gap-4 pt-4">
+            <div className="flex flex-wrap gap-4 pt-4">
               <a 
-                href="mailto:t.srinikitha@gmail.com"
-                className="inline-flex items-center gap-2 px-5 py-2 border border-black dark:border-white rounded-full text-sm hover:bg-black hover:text-cream dark:hover:bg-white dark:hover:text-cream-dark transition-colors"
+                href={MAILTO}
+                className="inline-flex items-center gap-2 px-5 py-2 whitespace-nowrap border border-black dark:border-white rounded-full text-sm hover:bg-black hover:text-cream dark:hover:bg-white dark:hover:text-cream-dark transition-colors"
               >
                 Get in touch
               </a>
-              <Link 
-                to="/projects"
-                className="inline-flex items-center gap-2 px-5 py-2 text-sm opacity-70 hover:opacity-100 transition-opacity"
+              <a 
+                href="/plastic"
+                className="inline-flex items-center gap-2 px-5 py-2 whitespace-nowrap text-sm opacity-70 hover:opacity-100 transition-opacity"
               >
-                View projects <ArrowRight className="h-4 w-4" />
-              </Link>
+                What I'm building <ArrowRight className="h-4 w-4" />
+              </a>
             </div>
 
             {/* Social */}
-            <div className="flex gap-4 pt-4">
+            <div className="flex flex-wrap gap-4 pt-4">
               <a href="https://github.com/t-srinikitha" target="_blank" rel="noopener noreferrer" className="opacity-50 hover:opacity-100 transition-opacity">
                 <Github className="h-4 w-4" fill="currentColor" />
               </a>
@@ -94,10 +156,85 @@ export default function MinimalPortfolio() {
         </div>
       </section>
 
-      {/* Divider */}
-      <div className="max-w-4xl mx-auto px-6">
-        <div className="border-t border-black/10 dark:border-white/10" />
-      </div>
+      <Divider />
+
+      {/* Building */}
+      <section className="max-w-4xl mx-auto px-6 py-20">
+        <h2 className="text-sm font-medium mb-8 opacity-60">What I'm Building</h2>
+        <p className="text-lg mb-8 max-w-2xl">Plasticoptics: a TDS meter for plastics.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {building.map((x) => (
+            <div key={x.title} className="p-6 border border-black/20 dark:border-white/20">
+              <h3 className="font-medium mb-2">{x.title}</h3>
+              <p className="text-sm opacity-70">{x.text}</p>
+            </div>
+          ))}
+        </div>
+        <a
+          href="/plastic"
+          className="mt-8 inline-flex items-center gap-2 text-sm opacity-70 hover:opacity-100 transition-opacity"
+        >
+          Read more about Plasticoptics <ArrowRight className="h-4 w-4" />
+        </a>
+      </section>
+
+      <Divider />
+
+      {/* Story */}
+      <section className="max-w-4xl mx-auto px-6 py-20">
+        <h2 className="text-sm font-medium mb-8 opacity-60">My Story</h2>
+        <div className="max-w-2xl space-y-4 text-sm leading-relaxed opacity-80">
+          <p>
+            When I was 15, my father told me the story of Sintex: a pipe manufacturer pivoted to
+            making overhead tanks because of an idea from an IITian.
+          </p>
+          <p>My father said I should become that IITian. So I did.</p>
+          <p>
+            But at IIT, I realized most problems aren't solved with just better engineering. They
+            need better understanding. So I went to Ashoka University to learn how to think in
+            systems, not just solutions.
+          </p>
+          <p>
+            In 2021, in Prof. Manu Prakash's Frugal Science course at Stanford, our team tried to
+            build a Raman spectrometer out of origami to detect microplastics. Raman turned out to
+            be a poor tool for counting particles. The problem stayed with me.
+          </p>
+          <p>
+            Different industries, same approach: understand the system, then build. This time the
+            system is water.
+          </p>
+        </div>
+        <p className="text-lg mt-10 max-w-2xl">
+          Talk → Understand → Empathise → Build → Feedback → Iterate → Repeat
+        </p>
+      </section>
+
+      <Divider />
+
+      {/* Journey */}
+      <section className="max-w-4xl mx-auto px-6 py-20">
+        <h2 className="text-sm font-medium mb-8 opacity-60">My Journey</h2>
+        <div className="space-y-8">
+          {milestones.map((m) => (
+            <div key={m.label} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
+              <p className="md:col-span-1 text-xs opacity-50">{m.label}</p>
+              <div className="md:col-span-3">
+                <h3 className="font-medium mb-2">{m.title}</h3>
+                <p className="text-sm opacity-70 mb-3">{m.text}</p>
+                <div className="flex flex-wrap gap-2">
+                  {m.tags.map((t) => (
+                    <span key={t} className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <Divider />
 
       {/* Quote */}
       <section className="max-w-4xl mx-auto px-6 py-20">
@@ -107,163 +244,16 @@ export default function MinimalPortfolio() {
         </blockquote>
       </section>
 
-      {/* Divider */}
-      <div className="max-w-4xl mx-auto px-6">
-        <div className="border-t border-black/10 dark:border-white/10" />
-      </div>
+      <Divider />
 
-      {/* What I Do */}
-      <section className="max-w-4xl mx-auto px-6 py-20">
-        <h2 className="text-sm font-medium mb-8 opacity-60">What I Do</h2>
-        
-        <p className="text-lg mb-8 max-w-2xl">
-          Talk → Understand → Empathise → Build → Feedback → Iterate → Repeat
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-6 border border-black/20 dark:border-white/20">
-            <h3 className="font-medium mb-2">User-centric approach</h3>
-            <p className="text-sm opacity-70">
-              I talk to users and understand their problems deeply before building anything.
-            </p>
-          </div>
-          <div className="p-6 border border-black/20 dark:border-white/20">
-            <h3 className="font-medium mb-2">From Zero to Product</h3>
-            <p className="text-sm opacity-70">
-              Earlier built policies, now building products with AI. It feels empowering.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Divider */}
-      <div className="max-w-4xl mx-auto px-6">
-        <div className="border-t border-black/10 dark:border-white/10" />
-      </div>
-
-      {/* Key Milestones */}
-      <section className="max-w-4xl mx-auto px-6 py-20">
-        <h2 className="text-sm font-medium mb-8 opacity-60">Key Milestones</h2>
-
-        <div className="space-y-8">
-          {/* DrDroid */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
-            <div className="md:col-span-1">
-              <p className="text-xs opacity-50">DrDroid (YC-backed)</p>
-            </div>
-            <div className="md:col-span-3">
-              <h3 className="font-medium mb-2">Building AI Agents</h3>
-              <p className="text-sm opacity-70 mb-3">
-                Leading product strategy for an AI SRE agent that automates debugging 
-                and incident resolution. From user research to shipping AI-powered automation.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">AI/ML</span>
-                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">SRE Automation</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Facets */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
-            <div className="md:col-span-1">
-              <p className="text-xs opacity-50">Facets.cloud</p>
-            </div>
-            <div className="md:col-span-3">
-              <h3 className="font-medium mb-2">Product Management</h3>
-              <p className="text-sm opacity-70 mb-3">
-                Scaled from 0 to $410K ARR. 
-                Built product-market fit with 15+ enterprise customers and 500+ users.
-                Conducted 100+ user interviews for product feedback and feature prioritization.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">$410K ARR</span>
-                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">15 Customers</span>
-              </div>
-            </div>
-          </div>
-
-          {/* France */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
-            <div className="md:col-span-1">
-              <p className="text-xs opacity-50">French Startup</p>
-            </div>
-            <div className="md:col-span-3">
-              <h3 className="font-medium mb-2">International Manufacturing</h3>
-              <p className="text-sm opacity-70 mb-3">
-                Delivered ₹1Cr project for sustainable housing. 
-                End-to-end FRP manufacturing setup in 3 months.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">₹1Cr Value</span>
-                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">3-Month Delivery</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Telangana */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
-            <div className="md:col-span-1">
-              <p className="text-xs opacity-50">Telangana Government</p>
-            </div>
-            <div className="md:col-span-3">
-              <h3 className="font-medium mb-2">State-wide Entrepreneurship Programs</h3>
-              <p className="text-sm opacity-70 mb-3">
-                Designed innovation courses across 31 districts. Telangana became India's first 
-                state with a Grassroots Innovation Policy. Two innovators received Padma Shri, 
-                one featured in a Netflix movie.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">Policy Design</span>
-                <span className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">31 Districts</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Divider */}
-      <div className="max-w-4xl mx-auto px-6">
-        <div className="border-t border-black/10 dark:border-white/10" />
-      </div>
-
-      {/* My Story */}
-      <section className="max-w-4xl mx-auto px-6 py-20">
-        <h2 className="text-sm font-medium mb-8 opacity-60">My Story</h2>
-        
-        <div className="max-w-2xl space-y-4 text-sm leading-relaxed opacity-80">
-          <p>
-            When I was 15, my father told me the story of Sintex — a pipe manufacturer 
-            pivoted to making overhead tanks because of an idea from an IITian.
-          </p>
-          <p>
-            My father said I should become that IITian. So I did.
-          </p>
-          <p>
-            But at IIT, I realized most problems aren't solved with just better engineering — 
-            they need better understanding. So I went to Ashoka University to learn how to 
-            think in systems, not just solutions.
-          </p>
-          <p>
-            Now I ship across government, manufacturing, and developer tools. Different 
-            industries, same approach: understand the system, then build.
-          </p>
-        </div>
-      </section>
-
-      {/* Divider */}
-      <div className="max-w-4xl mx-auto px-6">
-        <div className="border-t border-black/10 dark:border-white/10" />
-      </div>
-
-      {/* CTA */}
+      {/* Connect */}
       <section className="max-w-4xl mx-auto px-6 py-20 text-center">
-        <h2 className="text-2xl font-medium mb-4">Let's build something together</h2>
+        <h2 className="text-2xl font-medium mb-4">Working on microplastics?</h2>
         <p className="text-sm opacity-70 mb-8 max-w-md mx-auto">
-          Product strategy, system design, or AI-powered solutions.
+          Connect with me if you are interested in solving the microplastics problem.
         </p>
-        <a 
-          href="mailto:t.srinikitha@gmail.com"
+        <a
+          href={MAILTO}
           className="inline-flex items-center gap-2 px-6 py-2.5 border border-black dark:border-white rounded-full text-sm hover:bg-black hover:text-cream dark:hover:bg-white dark:hover:text-cream-dark transition-colors"
         >
           <Mail className="h-4 w-4" />
@@ -271,7 +261,6 @@ export default function MinimalPortfolio() {
         </a>
       </section>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

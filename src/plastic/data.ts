@@ -5,7 +5,7 @@
 // Market sizes and total capital are back-of-the-envelope estimates.
 // Money is INR. L = lakh (1e5), Cr = crore (1e7).
 
-export const EMAIL = "t.srinikitha@gmail.com";
+export { EMAIL } from "@/lib/site";
 
 export const PAGES = [
   { path: "/plastic", label: "Overview" },

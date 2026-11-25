@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { Sun, Moon } from "lucide-react"
 import { useTheme } from "next-themes"
+import { MAILTO } from "@/lib/site"
 
 export function Header() {
   const [mounted, setMounted] = useState(false)
@@ -25,27 +26,16 @@ export function Header() {
 
           {/* Navigation */}
           <nav className="flex items-center gap-8">
-            <Link
-              to="/projects"
-              className="text-sm hover:opacity-60 transition-opacity hidden sm:block"
-            >
-              Projects
-            </Link>
-            <a
-              href="https://devopsforpms.substack.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm hover:opacity-60 transition-opacity hidden sm:block"
-            >
-              Newsletter
+            <a href="/plastic" className="text-sm hover:opacity-60 transition-opacity hidden sm:block">
+              Plasticoptics
             </a>
-            <Link
-              to="/work-with-me"
+            <a
+              href={MAILTO}
               className="text-sm px-4 py-1.5 border border-black dark:border-white rounded-full hover:bg-black hover:text-cream dark:hover:bg-white dark:hover:text-cream-dark transition-colors"
             >
-              Hire me
-            </Link>
-            
+              Contact
+            </a>
+
             {/* Theme Toggle */}
             {mounted && (
               <button

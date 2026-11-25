@@ -1,5 +1,6 @@
 import { ProjectCard } from "@/components/project-card";
 import { Footer } from "@/components/layout/footer";
+import { useTitle } from "@/lib/site";
 
 const allProjects = [
   {
@@ -47,11 +48,13 @@ const allProjects = [
 ];
 
 export default function ProjectsPage() {
+  useTitle("Other things I've built | Sri Nikitha T");
+
   return (
     <div className="min-h-screen">
       <div className="max-w-4xl mx-auto px-6 py-20">
         <div className="mb-12">
-          <h1 className="text-3xl font-bold mb-2">Projects</h1>
+          <h1 className="text-3xl font-bold mb-2">Other things I've built</h1>
           <p className="text-sm opacity-60">
             Side projects and experiments
           </p>
