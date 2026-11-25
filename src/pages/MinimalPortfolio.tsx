@@ -22,31 +22,43 @@ const building = [
   },
 ];
 
-const milestones = [
+// Newest first.
+const journey = [
   {
-    label: "Stanford",
-    title: "Frugal Science",
-    text: "Team FishEye in Prof. Manu Prakash's Frugal Science course. Our first attempt at low-cost microplastics detection.",
-    tags: ["Frugal Science", "2021"],
+    org: "PlasticOptics",
+    role: "Founder",
+    text: "Building a test for microplastics in drinking water first, then food and air.",
   },
   {
-    label: "NRB Bearings",
-    title: "Manufacturing Process Ownership",
+    org: "DrDroid (YC-backed)",
+    role: "Product, AI agents",
+    text: "Led product strategy for an AI SRE agent that automates debugging and incident resolution.",
+  },
+  {
+    org: "Facets.cloud",
+    role: "Founding Product Manager",
+    text: "Took the product from 0 to $410K ARR, with 15+ enterprise customers and 500+ users.",
+  },
+  {
+    org: "Stanford, 2021",
+    role: "Frugal Science",
+    text: "Team FishEye in Prof. Manu Prakash's course. Our first attempt at low-cost microplastics detection.",
+  },
+  {
+    org: "French Startup",
+    role: "International manufacturing",
+    text: "Delivered a ₹1Cr sustainable housing project, with end-to-end FRP manufacturing set up in 3 months.",
+  },
+  {
+    org: "Telangana Government",
+    role: "State-wide entrepreneurship programs",
+    text: "Designed innovation courses across 33 districts. Telangana became India's first state with a Grassroots Innovation Policy. Two innovators received the Padma Shri, and one was featured in a Netflix movie.",
+  },
+  {
+    org: "NRB Bearings",
+    role: "Manufacturing process ownership",
     text: "Traced corroded-bearing wastage to a coating step run by monthly-rotating apprentices. Took over the process and cut wastage by 90%.",
-    tags: ["Manufacturing", "90% less wastage"],
   },
-  {
-    label: "Facets.cloud",
-    title: "Product Management",
-    text: "Took the product from 0 to $410K ARR with 15+ enterprise customers and 500+ users.",
-    tags: ["$410K ARR", "15 Customers"],
-  },
-];
-
-const alsoDid = [
-  { label: "DrDroid (YC-backed)", text: "Led product strategy for an AI SRE agent." },
-  { label: "French Startup", text: "Delivered a ₹1Cr sustainable housing project in 3 months." },
-  { label: "Telangana Government", text: "Designed innovation courses across 33 districts." },
 ];
 
 function Divider() {
@@ -200,35 +212,21 @@ export default function MinimalPortfolio() {
       {/* Journey */}
       <section className="max-w-4xl mx-auto px-6 py-20">
         <h2 className="text-2xl font-bold mb-8">My Journey</h2>
-        <div className="space-y-8">
-          {milestones.map((m) => (
-            <div key={m.label} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
-              <p className="md:col-span-1 text-xs opacity-50">{m.label}</p>
-              <div className="md:col-span-3">
-                <h3 className="font-medium mb-2">{m.title}</h3>
-                <p className="text-sm opacity-70 mb-3">{m.text}</p>
-                <div className="flex flex-wrap gap-2">
-                  {m.tags.map((t) => (
-                    <span key={t} className="text-xs px-2 py-1 border border-black/20 dark:border-white/20">
-                      {t}
-                    </span>
-                  ))}
-                </div>
+        <ol className="border-t border-black/10 dark:border-white/10">
+          {journey.map((j) => (
+            <li
+              key={j.org}
+              className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-2 py-6 border-b border-black/10 dark:border-white/10"
+            >
+              <div>
+                <h3 className="font-medium">{j.org}</h3>
+                <p className="mt-1 text-xs opacity-60">{j.role}</p>
               </div>
-            </div>
+              <p className="md:col-span-2 text-sm leading-relaxed opacity-80">{j.text}</p>
+            </li>
           ))}
-        </div>
-        <dl className="mt-12 pt-8 border-t border-black/10 dark:border-white/10 space-y-3">
-          {alsoDid.map((x) => (
-            <div key={x.label} className="grid grid-cols-1 md:grid-cols-4 gap-x-4 gap-y-1">
-              <dt className="md:col-span-1 text-xs opacity-60">{x.label}</dt>
-              <dd className="md:col-span-3 text-sm opacity-70">{x.text}</dd>
-            </div>
-          ))}
-        </dl>
+        </ol>
       </section>
-
-      <Divider />
 
       {/* Connect */}
       <section className="max-w-4xl mx-auto px-6 py-20 text-center">
