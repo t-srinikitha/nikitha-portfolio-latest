@@ -19,8 +19,8 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['Inter', 'JetBrains Mono', 'Space Mono', 'ui-monospace', 'monospace'],
-				mono: ['Inter', 'JetBrains Mono', 'Space Mono', 'ui-monospace', 'monospace'],
+				sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+				mono: ['IBM Plex Sans', 'JetBrains Mono', 'ui-monospace', 'monospace'], // IBM Plex Sans is loaded for the rupee sign only
 			},
 			colors: {
 				cream: '#FDF6E3',

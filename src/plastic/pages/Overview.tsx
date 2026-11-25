@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import {
+  EMAIL,
   goal,
+  stage0Done,
   focus,
   discovery,
   customers,
@@ -21,17 +23,24 @@ export default function Overview() {
   return (
     <>
       <PageHead
-        title="Microplastic Detection and Removal for Water, Food and Air"
+        title="Test water for microplastics on site, in 30 minutes"
         lede={
-          <>
-            <p>{goal}</p>
-            <p className="mt-3">
-              PlasticOptics begins with drinking water in India, where a single laboratory test costs ₹75,000 and takes
-              more than ten days.
-            </p>
-          </>
+          <p>
+            A laboratory quoted us ₹75,000 per sample. We are building a cartridge and analyser designed to do it for
+            ₹2,000. {goal}
+          </p>
         }
       />
+      <dl className="grid sm:grid-cols-2 gap-8 pb-12 md:pb-16">
+        <div>
+          <dd className="num text-[40px] md:text-[56px] leading-none font-bold muted">₹75,000</dd>
+          <dt className="mt-3 text-[13px] muted">one laboratory test, as quoted to us in 2026</dt>
+        </div>
+        <div>
+          <dd className="num text-[40px] md:text-[56px] leading-none font-bold text-[var(--po-accent)]">₹2,000</dd>
+          <dt className="mt-3 text-[13px] muted">target price of one cartridge, read by an ₹8 lakh analyser</dt>
+        </div>
+      </dl>
 
       <Block id="problem" title="The Problem">
         <ProblemCards />
@@ -127,6 +136,24 @@ export default function Overview() {
         </Sub>
       </Block>
 
+      <Block id="plan" title="The Plan" intro={<p>Stage 0 is the first step of Phase 1. Food and air follow water.</p>}>
+        <Sub id="phases" title="Water, Food and Air">
+          <PhaseCards />
+        </Sub>
+
+        <Sub id="stages" title="Phase 1 Stages" intro={<p>{focus}</p>}>
+          <StageTimeline />
+          <div className="mt-10">
+            <StageList detail={false} />
+          </div>
+          <p className="mt-6 text-[14px]">
+            <Link to="/plasticoptics/technology#roadmap" className="ulink">
+              Each stage in detail
+            </Link>
+          </p>
+        </Sub>
+      </Block>
+
       <Block
         id="ask"
         toc="The Ask"
@@ -144,6 +171,16 @@ export default function Overview() {
         </Sub>
 
         <Sub id="funding" title="Use of Funds">
+          <h4 className="font-medium">What it proves</h4>
+          <ol className="mt-3 mb-10 grid gap-3">
+            {stage0Done.map((d, i) => (
+              <li key={d} className="grid grid-cols-[28px_1fr] gap-3">
+                <span className="num text-[13px] muted pt-0.5">0{i + 1}</span>
+                <span>{d}</span>
+              </li>
+            ))}
+          </ol>
+          <h4 className="mb-3 font-medium">What it buys</h4>
           <table className="po-table max-w-[520px] text-[14px]">
             <thead>
               <tr>
@@ -197,24 +234,13 @@ export default function Overview() {
             ))}
           </div>
         </Sub>
-      </Block>
 
-      <Block id="plan" title="The Plan" intro={<p>Stage 0 is the first step of Phase 1. Food and air follow water.</p>}>
-        <Sub id="phases" title="Water, Food and Air">
-          <PhaseCards />
-        </Sub>
-
-        <Sub id="stages" title="Phase 1 Stages" intro={<p>{focus}</p>}>
-          <StageTimeline />
-          <div className="mt-10">
-            <StageList detail={false} />
-          </div>
-          <p className="mt-6 text-[14px]">
-            <Link to="/plasticoptics/technology#roadmap" className="ulink">
-              Each stage in detail
-            </Link>
-          </p>
-        </Sub>
+        <div className="po-sub">
+          <p className="max-w-[62ch]">Researchers, water and beverage companies, funders: I'd like to hear from you.</p>
+          <a href={`mailto:${EMAIL}?subject=PlasticOptics`} className="btn mt-5">
+            Get in touch
+          </a>
+        </div>
       </Block>
     </>
   );

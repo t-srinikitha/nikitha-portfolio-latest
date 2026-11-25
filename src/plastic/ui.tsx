@@ -8,7 +8,7 @@ export const lakh = (n: number, d = 1) => `₹${n.toFixed(d)} L`;
 export function PageHead({ title, lede }: { title: React.ReactNode; lede?: React.ReactNode }) {
   return (
     <header className="pt-10 md:pt-16 pb-10 md:pb-12">
-      <h1 className="serif text-[30px] leading-[1.15] md:text-[40px] md:leading-[1.15] max-w-[20ch]">{title}</h1>
+      <h1 className="serif text-[30px] leading-[1.15] md:text-[40px] md:leading-[1.15] max-w-[22ch]">{title}</h1>
       {lede && <div className="mt-5 text-[14px] leading-relaxed ink2 max-w-[62ch]">{lede}</div>}
     </header>
   );
@@ -31,7 +31,7 @@ export function Block({
 }) {
   const label = toc ?? (typeof title === "string" ? title : id);
   return (
-    <section id={id} data-toc={label} data-toc-level="1" className="border-t hair -mx-6 md:-mx-12 px-6 md:px-12 py-12 md:py-14 scroll-mt-28 lg:scroll-mt-20">
+    <section id={id} data-toc={label} data-toc-level="1" className="border-t hair -mx-6 md:-mx-12 px-6 md:px-12 py-12 md:py-14 scroll-mt-[104px]">
       <h2 className="serif text-[22px] md:text-[26px] leading-[1.15] max-w-[30ch]">{title}</h2>
       {intro && <div className="mt-4 ink2 max-w-[64ch] grid gap-3">{intro}</div>}
       {children && <div className="mt-8">{children}</div>}
@@ -55,7 +55,7 @@ export function Sub({
 }) {
   const label = toc ?? (typeof title === "string" ? title : id);
   return (
-    <div id={id} data-toc={label} data-toc-level="2" className="po-sub scroll-mt-28 lg:scroll-mt-20">
+    <div id={id} data-toc={label} data-toc-level="2" className="po-sub scroll-mt-[104px]">
       <h3 className="serif text-[17px] md:text-[19px] leading-[1.2]">{title}</h3>
       {intro && <div className="mt-3 ink2 max-w-[64ch] grid gap-3">{intro}</div>}
       {children && <div className="mt-6">{children}</div>}

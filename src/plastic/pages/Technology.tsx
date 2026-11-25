@@ -235,6 +235,12 @@ export default function Technology() {
             </tbody>
           </table>
         </Sub>
+
+        <Sub id="health" title="Health Evidence">
+          <p className="ink2 max-w-[62ch]">
+            In patients with carotid artery disease, those with micro- or nanoplastics in their plaque had 4.5 times the risk of heart attack, stroke or death. The study shows an association, not a cause. <Src id="nejmPlaque" />
+          </p>
+        </Sub>
       </Block>
 
       <Block id="roadmap" title="R&D Roadmap" intro={<p>The work is planned in three phases, beginning with water.</p>}>

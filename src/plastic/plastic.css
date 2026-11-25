@@ -12,13 +12,13 @@
   --po-accent: #c2410c;
   --po-lime: #dfff00;
 
-  --po-sans: "Inter", "JetBrains Mono", "Space Mono", ui-monospace, monospace;
-  --po-serif: var(--po-sans);
-  --po-mono: var(--po-sans);
+  --po-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --po-serif: var(--po-mono);
+  --po-mono: "IBM Plex Sans", "JetBrains Mono", ui-monospace, monospace; /* Plex is the rupee sign only */
 
   color: var(--po-ink);
   font-family: var(--po-sans);
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.65;
 }
 .dark .po {
@@ -33,7 +33,8 @@
   --po-chip: #303030;
   --po-accent: #ff8a5c;
 }
-.po h1, .po h2, .po h3, .po h4, .po h5, .po h6, .po button, .po input { font-family: var(--po-sans); }
+.po h1, .po h2, .po h3, .po h4, .po h5, .po h6 { font-family: var(--po-mono); }
+.po button, .po input { font-family: var(--po-sans); }
 .po ::selection { background: var(--po-lime); color: #000; }
 .po .serif { font-family: var(--po-serif); font-weight: 700; }
 .po .mono { font-family: var(--po-mono); font-feature-settings: normal; }

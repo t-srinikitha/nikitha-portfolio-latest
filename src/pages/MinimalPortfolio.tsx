@@ -1,4 +1,5 @@
 import { Github, Linkedin, Twitter, Mail, ArrowRight } from "lucide-react";
+import { Checkerboard } from "@/components/layout/checkerboard";
 import { Footer } from "@/components/layout/footer";
 import { MAILTO, useTitle } from "@/lib/site";
 
@@ -23,34 +24,10 @@ const building = [
 
 const milestones = [
   {
-    label: "PlasticOptics",
-    title: "Founder",
-    text: "Building a test for microplastics in drinking water first, then food and air.",
-    tags: ["Microplastics", "Hardware"],
-  },
-  {
     label: "Stanford",
     title: "Frugal Science",
     text: "Team FishEye in Prof. Manu Prakash's Frugal Science course. Our first attempt at low-cost microplastics detection.",
     tags: ["Frugal Science", "2021"],
-  },
-  {
-    label: "DrDroid (YC-backed)",
-    title: "Building AI Agents",
-    text: "Led product strategy for an AI SRE agent that automates debugging and incident resolution. From user research to shipping AI-powered automation.",
-    tags: ["AI/ML", "SRE Automation"],
-  },
-  {
-    label: "Facets.cloud",
-    title: "Product Management",
-    text: "Took the product from 0 to $410K ARR with 15+ enterprise customers and 500+ users.",
-    tags: ["$410K ARR", "15 Customers"],
-  },
-  {
-    label: "French Startup",
-    title: "International Manufacturing",
-    text: "Delivered ₹1Cr project for sustainable housing. End-to-end FRP manufacturing setup in 3 months.",
-    tags: ["₹1Cr Value", "3-Month Delivery"],
   },
   {
     label: "NRB Bearings",
@@ -59,11 +36,17 @@ const milestones = [
     tags: ["Manufacturing", "90% less wastage"],
   },
   {
-    label: "Telangana Government",
-    title: "State-wide Entrepreneurship Programs",
-    text: "Designed innovation courses across 33 districts. Telangana became India's first state with a Grassroots Innovation Policy. Two innovators received Padma Shri, one featured in a Netflix movie.",
-    tags: ["Policy Design", "33 Districts"],
+    label: "Facets.cloud",
+    title: "Product Management",
+    text: "Took the product from 0 to $410K ARR with 15+ enterprise customers and 500+ users.",
+    tags: ["$410K ARR", "15 Customers"],
   },
+];
+
+const alsoDid = [
+  { label: "DrDroid (YC-backed)", text: "Led product strategy for an AI SRE agent." },
+  { label: "French Startup", text: "Delivered a ₹1Cr sustainable housing project in 3 months." },
+  { label: "Telangana Government", text: "Designed innovation courses across 33 districts." },
 ];
 
 function Divider() {
@@ -80,7 +63,9 @@ export default function MinimalPortfolio() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="max-w-4xl mx-auto px-6 py-24">
+      <div className="relative border-b border-black/10 dark:border-white/10">
+      <Checkerboard />
+      <section className="relative max-w-4xl mx-auto px-6 py-24">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
           {/* Text Content */}
           <div className="lg:col-span-2 space-y-6">
@@ -95,19 +80,24 @@ export default function MinimalPortfolio() {
                 <span 
                   className="absolute inset-0 -skew-y-1 -rotate-1 scale-x-105"
                   style={{ 
-                    backgroundColor: '#DFFF00',
+                    backgroundColor: "#DFFF00",
                     clipPath: 'polygon(2% 15%, 98% 5%, 100% 85%, 3% 95%)',
-                    opacity: 0.8
+                    opacity: 1
                   }}
                 />
-                <span className="relative">Founder, PlasticOptics</span>
+                <span className="relative text-black">Founder, PlasticOptics</span>
               </span>
             </p>
 
+            <p className="font-mono text-xl lg:text-2xl leading-snug max-w-xl">
+              In 2021 our team tried to build a Raman spectrometer out of origami to find
+              microplastics. It was the wrong tool. Now I'm working on the right one.
+            </p>
+
             <p className="text-sm leading-relaxed opacity-70 max-w-lg">
-              I'm building PlasticOptics to measure and remove microplastics from water, food and
-              air, starting with a fast, affordable test for drinking water. Materials engineer (IIT Kharagpur), Young India Fellow (Ashoka). Before
-              this, 8+ years building across government, manufacturing and developer tools.
+              I'm building PlasticOptics to measure and remove microplastics, starting with a fast,
+              affordable test for drinking water. Materials engineer (IIT Kharagpur), Young India Fellow
+              (Ashoka). 8+ years building across government, manufacturing and developer tools.
             </p>
 
             {/* CTA */}
@@ -155,12 +145,11 @@ export default function MinimalPortfolio() {
           </div>
         </div>
       </section>
-
-      <Divider />
+      </div>
 
       {/* Building */}
       <section className="max-w-4xl mx-auto px-6 py-20">
-        <h2 className="text-sm font-medium mb-8 opacity-60">What I'm Building</h2>
+        <h2 className="text-2xl font-bold mb-8">What I'm Building</h2>
         <p className="text-lg mb-8 max-w-2xl">A test cartridge and benchtop analyser that count microplastics in drinking water.</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {building.map((x) => (
@@ -182,7 +171,7 @@ export default function MinimalPortfolio() {
 
       {/* Story */}
       <section className="max-w-4xl mx-auto px-6 py-20">
-        <h2 className="text-sm font-medium mb-8 opacity-60">My Story</h2>
+        <h2 className="text-2xl font-bold mb-8">My Story</h2>
         <div className="max-w-2xl space-y-4 text-sm leading-relaxed opacity-80">
           <p>
             When I was 15, my father told me the story of Sintex: a pipe manufacturer pivoted to
@@ -204,16 +193,13 @@ export default function MinimalPortfolio() {
             system is water.
           </p>
         </div>
-        <p className="text-lg mt-10 max-w-2xl">
-          Talk → Understand → Empathise → Build → Feedback → Iterate → Repeat
-        </p>
       </section>
 
       <Divider />
 
       {/* Journey */}
       <section className="max-w-4xl mx-auto px-6 py-20">
-        <h2 className="text-sm font-medium mb-8 opacity-60">My Journey</h2>
+        <h2 className="text-2xl font-bold mb-8">My Journey</h2>
         <div className="space-y-8">
           {milestones.map((m) => (
             <div key={m.label} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
@@ -232,16 +218,14 @@ export default function MinimalPortfolio() {
             </div>
           ))}
         </div>
-      </section>
-
-      <Divider />
-
-      {/* Quote */}
-      <section className="max-w-4xl mx-auto px-6 py-20">
-        <blockquote className="text-xl lg:text-2xl text-center leading-relaxed">
-          "Do what feels like play to you,<br />
-          but looks like work to others"
-        </blockquote>
+        <dl className="mt-12 pt-8 border-t border-black/10 dark:border-white/10 space-y-3">
+          {alsoDid.map((x) => (
+            <div key={x.label} className="grid grid-cols-1 md:grid-cols-4 gap-x-4 gap-y-1">
+              <dt className="md:col-span-1 text-xs opacity-60">{x.label}</dt>
+              <dd className="md:col-span-3 text-sm opacity-70">{x.text}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       <Divider />

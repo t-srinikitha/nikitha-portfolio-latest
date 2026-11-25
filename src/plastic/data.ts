@@ -43,8 +43,8 @@ export const focus =
 export const problem: { k: string; text: string; src: (keyof typeof SOURCES)[] }[] = [
   {
     k: "Health",
-    text: "One study estimated about 240,000 plastic particles in a litre of bottled water, about 90% of them nanoplastics. In patients with carotid artery disease, those with micro- or nanoplastics in their plaque had 4.5 times the risk of heart attack, stroke or death. The study shows an association, not a cause.",
-    src: ["pnasBottled", "nejmPlaque"],
+    text: "One study estimated about 240,000 plastic particles in a litre of bottled water, about 90% of them nanoplastics.",
+    src: ["pnasBottled"],
   },
   {
     k: "Regulation",

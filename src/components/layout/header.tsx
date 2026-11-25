@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { Sun, Moon } from "lucide-react"
 import { useTheme } from "next-themes"
 import { MAILTO } from "@/lib/site"
@@ -7,14 +7,15 @@ import { MAILTO } from "@/lib/site"
 export function Header() {
   const [mounted, setMounted] = useState(false)
   const { theme, setTheme } = useTheme()
+  const wide = useLocation().pathname.startsWith("/plasticoptics")
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
   return (
-    <header className="print:hidden fixed top-0 left-0 right-0 z-50 bg-cream dark:bg-cream-dark border-b border-black dark:border-white">
-      <div className="max-w-4xl mx-auto px-6">
+    <header className="print:hidden font-mono fixed top-0 left-0 right-0 z-50 bg-cream dark:bg-cream-dark border-b border-black dark:border-white">
+      <div className={`mx-auto px-6 ${wide ? "max-w-[1060px] md:px-12" : "max-w-4xl"}`}>
         <div className="flex items-center justify-between h-14">
           {/* Logo */}
           <Link

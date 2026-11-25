@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import { EMAIL, PAGES } from "./data";
 import "./plastic.css";
 
@@ -19,24 +19,32 @@ function Wordmark({ small }: { small?: boolean }) {
   );
 }
 
-function PageList({ onNavigate }: { onNavigate?: () => void }) {
+function PageTabs() {
   return (
-    <ul className="grid gap-0.5">
-      {PAGES.map((p) => (
-        <li key={p.path}>
-          <NavLink
-            to={p.path}
-            end
-            onClick={onNavigate}
-            className={({ isActive }) =>
-              `block py-1.5 text-[14px] transition-colors ${isActive ? "text-[var(--po-ink)] font-medium" : "muted hover:text-[var(--po-ink)]"}`
-            }
-          >
-            {p.label}
-          </NavLink>
-        </li>
-      ))}
-    </ul>
+    <nav aria-label="PlasticOptics pages" className="no-print sticky top-14 z-40 bg-[var(--po-bg)] border-b hair">
+      <div className="mx-auto max-w-[1060px] px-6 md:px-12 h-12 flex items-center gap-8">
+        <div className="hidden sm:block">
+          <Wordmark small />
+        </div>
+        <ul className="flex h-full gap-6">
+          {PAGES.map((p) => (
+            <li key={p.path} className="h-full">
+              <NavLink
+                to={p.path}
+                end
+                className={({ isActive }) =>
+                  `mono h-full flex items-center border-b-2 text-[13px] transition-colors ${
+                    isActive ? "border-[var(--po-ink)] font-medium" : "border-transparent muted hover:text-[var(--po-ink)]"
+                  }`
+                }
+              >
+                {p.label}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
   );
 }
 
@@ -176,50 +184,17 @@ function NextPage() {
 
 export function PlasticLayout({ children }: { children: React.ReactNode }) {
   const { pathname, hash } = useLocation();
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (!hash) window.scrollTo(0, 0);
     else setTimeout(() => document.getElementById(hash.slice(1))?.scrollIntoView(), 50);
-    setOpen(false);
   }, [pathname, hash]);
 
   return (
     <div className="po min-h-screen">
-      {/* Mobile / tablet top bar */}
-      <div className="lg:hidden sticky top-14 z-40 bg-[var(--po-bg)] border-b hair no-print">
-        <div className="flex items-center justify-between px-5 h-14">
-          <Wordmark small />
-          <button
-            type="button"
-            onClick={() => setOpen((o) => !o)}
-            aria-expanded={open}
-            aria-controls="po-menu"
-            className="inline-flex items-center gap-2 text-[13.5px] px-3 py-1.5 border hair rounded"
-          >
-            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-            {PAGES.find((p) => p.path === pathname.replace(/\/$/, ""))?.label ?? "Menu"}
-          </button>
-        </div>
-        {open && (
-          <div id="po-menu" className="px-5 pb-5 pt-3 border-t hair">
-            <PageList onNavigate={() => setOpen(false)} />
-          </div>
-        )}
-      </div>
-
-      <div className="mx-auto max-w-[1280px] lg:grid lg:grid-cols-[210px_minmax(0,1fr)_210px] xl:grid-cols-[230px_minmax(0,1fr)_240px]">
-        {/* Left column: pages */}
-        <aside className="hidden lg:block no-print">
-          <div className="sticky top-14 max-h-[calc(100vh-3.5rem)] overflow-y-auto py-10 pl-8 pr-5">
-            <Wordmark />
-            <div className="mt-10">
-              <PageList />
-            </div>
-          </div>
-        </aside>
-
-        <main className="min-w-0 lg:border-x hair">
+      <PageTabs />
+      <div className="mx-auto max-w-[1060px] lg:grid lg:grid-cols-[minmax(0,1fr)_240px]">
+        <main className="min-w-0 lg:border-r hair">
           <div className="px-6 md:px-12 max-w-[800px]">
             {children}
             <NextPage />
@@ -233,7 +208,7 @@ export function PlasticLayout({ children }: { children: React.ReactNode }) {
         </main>
         {/* Right column: contents of the current page */}
         <aside className="hidden lg:block no-print">
-          <div className="sticky top-14 max-h-[calc(100vh-3.5rem)] overflow-y-auto py-10 pl-7 pr-7">
+          <div className="sticky top-[104px] max-h-[calc(100vh-104px)] overflow-y-auto py-10 pl-7 pr-7">
             <Contents />
           </div>
         </aside>
