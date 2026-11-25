@@ -1,6 +1,16 @@
 {
   "redirects": [
     {
+      "source": "/plastic",
+      "destination": "/plasticoptics",
+      "permanent": true
+    },
+    {
+      "source": "/plastic/:path*",
+      "destination": "/plasticoptics/:path*",
+      "permanent": true
+    },
+    {
       "source": "/work-with-me",
       "destination": "/",
       "permanent": true
@@ -13,11 +23,11 @@
   ],
   "rewrites": [
     {
-      "source": "/plastic",
+      "source": "/plasticoptics",
       "destination": "/plastic.html"
     },
     {
-      "source": "/plastic/:path*",
+      "source": "/plasticoptics/:path*",
       "destination": "/plastic.html"
     },
     {

@@ -8,9 +8,9 @@
 export { EMAIL } from "@/lib/site";
 
 export const PAGES = [
-  { path: "/plastic", label: "Overview" },
-  { path: "/plastic/technology", label: "Technology" },
-  { path: "/plastic/business", label: "Business" },
+  { path: "/plasticoptics", label: "Overview" },
+  { path: "/plasticoptics/technology", label: "Technology" },
+  { path: "/plasticoptics/business", label: "Business" },
 ];
 
 /* ───────────────────────── V2: overview ───────────────────────── */

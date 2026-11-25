@@ -20,7 +20,7 @@ function useFonts() {
 
 function Wordmark({ small }: { small?: boolean }) {
   return (
-    <Link to="/plastic" className="inline-flex items-center gap-2.5">
+    <Link to="/plasticoptics" className="inline-flex items-center gap-2.5">
       <svg viewBox="0 0 24 24" className={small ? "h-5 w-5" : "h-6 w-6"} aria-hidden>
         <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" strokeWidth="1.3" />
         <circle cx="9" cy="10" r="2.2" fill="var(--po-accent)" />

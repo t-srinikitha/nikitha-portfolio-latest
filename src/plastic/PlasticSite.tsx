@@ -23,11 +23,11 @@ export default function PlasticSite() {
         <Route path="technology" element={<Technology />} />
         <Route path="business" element={<Business />} />
         {/* Old addresses */}
-        <Route path="science" element={<Navigate to="/plastic/technology" replace />} />
-        <Route path="roadmap" element={<Navigate to="/plastic/technology#roadmap" replace />} />
-        <Route path="market" element={<Navigate to="/plastic/business" replace />} />
-        <Route path="numbers" element={<Navigate to="/plastic/business#model" replace />} />
-        <Route path="*" element={<Navigate to="/plastic" replace />} />
+        <Route path="science" element={<Navigate to="/plasticoptics/technology" replace />} />
+        <Route path="roadmap" element={<Navigate to="/plasticoptics/technology#roadmap" replace />} />
+        <Route path="market" element={<Navigate to="/plasticoptics/business" replace />} />
+        <Route path="numbers" element={<Navigate to="/plasticoptics/business#model" replace />} />
+        <Route path="*" element={<Navigate to="/plasticoptics" replace />} />
       </Routes>
     </PlasticLayout>
   );

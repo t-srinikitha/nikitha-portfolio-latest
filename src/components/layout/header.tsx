@@ -26,7 +26,7 @@ export function Header() {
 
           {/* Navigation */}
           <nav className="flex items-center gap-8">
-            <a href="/plastic" className="text-sm hover:opacity-60 transition-opacity hidden sm:block">
+            <a href="/plasticoptics" className="text-sm hover:opacity-60 transition-opacity hidden sm:block">
               Plasticoptics
             </a>
             <a

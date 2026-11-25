@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Navigate, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Navigate, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { Layout } from "./components/layout/layout";
 import  MinimalPortfolio from "./pages/MinimalPortfolio";
@@ -9,6 +9,12 @@ import { Toaster } from "./components/ui/sonner";
 
 // PlasticOptics is a standalone microsite with its own theme and navigation.
 const PlasticSite = lazy(() => import("./plastic/PlasticSite"));
+
+// The microsite used to live at /plastic.
+function OldPlasticRedirect() {
+  const { pathname, search, hash } = useLocation();
+  return <Navigate to={pathname.replace(/^\/plastic/, "/plasticoptics") + search + hash} replace />;
+}
 
 function Portfolio() {
   return (
@@ -29,13 +35,14 @@ function App() {
       <Router>
         <Routes>
           <Route
-            path="/plastic/*"
+            path="/plasticoptics/*"
             element={
               <Suspense fallback={<div className="min-h-screen" style={{ background: "#f5f4ef" }} />}>
                 <PlasticSite />
               </Suspense>
             }
           />
+          <Route path="/plastic/*" element={<OldPlasticRedirect />} />
           <Route path="*" element={<Portfolio />} />
         </Routes>
         <Toaster />

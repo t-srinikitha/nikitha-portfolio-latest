@@ -119,7 +119,7 @@ export default function MinimalPortfolio() {
                 Get in touch
               </a>
               <a 
-                href="/plastic"
+                href="/plasticoptics"
                 className="inline-flex items-center gap-2 px-5 py-2 whitespace-nowrap text-sm opacity-70 hover:opacity-100 transition-opacity"
               >
                 What I'm building <ArrowRight className="h-4 w-4" />
@@ -171,7 +171,7 @@ export default function MinimalPortfolio() {
           ))}
         </div>
         <a
-          href="/plastic"
+          href="/plasticoptics"
           className="mt-8 inline-flex items-center gap-2 text-sm opacity-70 hover:opacity-100 transition-opacity"
         >
           Read more about Plasticoptics <ArrowRight className="h-4 w-4" />
