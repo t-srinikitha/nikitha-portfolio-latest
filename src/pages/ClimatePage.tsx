@@ -144,22 +144,6 @@ const timelineEventsByYear: Record<number, TimelineEvent[]> = {
   2020: [
     {
       year: 2020,
-      title: "Microplastics Research",
-      subtitle: "Team FishEye | Frugal Science Course, Stanford University",
-      description: "Tried to build a Raman spectrometer to detect microplastics in waterbodies as part of the Frugal Science course by Prof. Manu Prakash at Stanford University, addressing critical environmental health concerns.",
-      highlights: [
-        "Tried to build a Raman spectrometer to detect microplastics in waterbodies as part of Frugal Science course by Prof. Manu Prakash",
-        "Addressed critical environmental health concerns related to microplastics contamination",
-        "Worked on innovative, low-cost solutions for environmental monitoring",
-        "Focused on detecting microplastics that affect zooplanktons responsible for 90% of the oxygen we breathe"
-      ],
-      links: [
-        { label: "Team FishEye Project", url: "https://www.notion.so/Team-FishEye-a2dc826721a14dd88e1217f9154f4444?pvs=21" },
-        { label: "Frugal Science", url: "https://www.frugalscience.org/" }
-      ]
-    },
-    {
-      year: 2020,
       title: "Sustainable Housing with FRP",
       subtitle: "5Elements SDG",
       period: "2020 - 2021",
@@ -180,6 +164,22 @@ const timelineEventsByYear: Record<number, TimelineEvent[]> = {
     }
   ],
   2021: [
+    {
+      year: 2021,
+      title: "Microplastics Research",
+      subtitle: "Team FishEye | Frugal Science Course, Stanford University",
+      description: "Tried to build a Raman spectrometer to detect microplastics in waterbodies as part of the Frugal Science course by Prof. Manu Prakash at Stanford University, addressing critical environmental health concerns.",
+      highlights: [
+        "Tried to build a Raman spectrometer to detect microplastics in waterbodies as part of Frugal Science course by Prof. Manu Prakash",
+        "Addressed critical environmental health concerns related to microplastics contamination",
+        "Worked on innovative, low-cost solutions for environmental monitoring",
+        "Focused on detecting microplastics that affect zooplanktons responsible for 90% of the oxygen we breathe"
+      ],
+      links: [
+        { label: "Team FishEye Project", url: "https://www.notion.so/Team-FishEye-a2dc826721a14dd88e1217f9154f4444?pvs=21" },
+        { label: "Frugal Science", url: "https://www.frugalscience.org/" }
+      ]
+    },
     {
       year: 2021,
       title: "WedSmart",
